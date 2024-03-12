@@ -1,11 +1,15 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
 
 import "package:speech_to_text/speech_recognition_result.dart";
 import "package:speech_to_text/speech_to_text.dart";
 import 'package:lottie/lottie.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import "package:voice_assistant/api/api_service.dart";
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,6 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   bool showCloseButton = false;
 
+  String modeOfAI = "";
+  String imageUrlFromAI = "";
+  String answerTextFromAI = "";
+
   void initializeSpeechToText() async {
     await speechToTextInstance.initialize();
 
@@ -28,12 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void startListeningNow() async {
     FocusScope.of(context).unfocus();
 
-    await speechToTextInstance.listen(onResult: onSpeechToTextResult);
-
     setState(() {
       isLoading = true;
       showCloseButton = true;
     });
+
+    await speechToTextInstance.listen(onResult: onSpeechToTextResult);
   }
 
   void stopListeningNow() async {
@@ -48,8 +56,71 @@ class _HomeScreenState extends State<HomeScreen> {
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     recordedAudioString = recognitionResult.recognizedWords;
 
+    if (!speechToTextInstance.isListening) {
+      sendRequestToOpenAI(recordedAudioString);
+    }
+
     print("Speech Result:");
     print(recordedAudioString);
+  }
+
+  Future<void> sendRequestToOpenAI(String userInput) async {
+    stopListeningNow();
+
+    setState(() {
+      isLoading = true;
+    });
+
+    // send the request to AI
+    await APIService().requestOpenAI(userInput, modeOfAI, 2000).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (value.statusCode == 401) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Your API key is not working.",
+            ),
+          ),
+        );
+      }
+
+      userInputTextEditingController.clear();
+
+      final responseAvailable = jsonDecode(value.body);
+
+      if (modeOfAI == "chat") {
+        setState(() {
+          answerTextFromAI =
+              responseAvailable["choices"][0]["message"]["content"];
+
+          print("ChatGPT Chatbot: ");
+          print(answerTextFromAI);
+        });
+      } else {
+        //image generation
+        setState(() {
+          imageUrlFromAI = responseAvailable["data"][0]["url"];
+
+          print("Generated Dale E Image Url: ");
+          print(imageUrlFromAI);
+        });
+      }
+    }).catchError((errorMessage) {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error: " + errorMessage.toString(),
+          ),
+        ),
+      );
+    });
   }
 
   @override
@@ -77,9 +148,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          Container(
-            color: Color.fromRGBO(255, 239, 252, 1.0),
-            child: SingleChildScrollView(
+          // Container(
+          //   color: Color.fromRGBO(255, 239, 252, 1.0),
+                    Container(
+          color: Color.fromRGBO(255, 239, 252, 1.0),
+        ),
+            SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 13, top: 2, right: 13, bottom: 8),
@@ -89,40 +163,88 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        // chat button
                         SizedBox(
                           width: 130,
                           height: 48,
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // 处理 Chats 按钮点击事件
+                              // handle Chats button click event
+                              setState(() {
+                                if (modeOfAI == "chat") {
+                                  modeOfAI = "";
+                                } else {
+                                  modeOfAI = "chat";
+                                }
+                              });
                             },
                             icon: Image.asset(
                               "images/chats_icon.png",
                               width: 24,
                               height: 24,
                             ),
-                            label: Text("Chats"),
+                            label: Text(
+                              "chats",
+                              style: TextStyle(
+                                color: modeOfAI == "chat"
+                                    ? Color.fromRGBO(51, 40, 40, 1)
+                                    : Colors.black,
+                                fontFamily: "Arial",
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: modeOfAI == "chat"
+                                  ? Color.fromRGBO(232, 220, 253, 1)
+                                  : null,
+                            ),
                           ),
                         ),
+
+                        // images button
                         SizedBox(
                           width: 130,
                           height: 48,
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              // 处理 Images 按钮点击事件
+                              // handle images button click event
+                              setState(() {
+                                if (modeOfAI == "images") {
+                                  modeOfAI = "";
+                                } else {
+                                  modeOfAI = "images";
+                                }
+                              });
                             },
                             icon: Image.asset(
                               "images/images_icon.png",
                               width: 24,
                               height: 24,
                             ),
-                            label: Text("Images"),
+                            label: Text(
+                              "images",
+                              style: TextStyle(
+                                color: modeOfAI == "chat"
+                                    ? Color.fromRGBO(51, 40, 40, 1)
+                                    : Colors.black,
+                                fontFamily: "Arial",
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: modeOfAI == "images"
+                                  ? Color.fromRGBO(232, 220, 253, 1)
+                                  : null,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(height: 24),
-                    //text
+
+                    // hello text
                     Text(
                       "Hi, Alex",
                       style: TextStyle(
@@ -139,6 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
+                    // voice assistant
                     Center(
                       child: InkWell(
                         onTap: () {
@@ -151,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: speechToTextInstance.isListening
                             ? Center(
                                 child: Stack(
-                                  alignment: Alignment.topRight, // 将关闭按钮放置在右上角
+                                  alignment: Alignment.topRight,
                                   children: [
                                     isLoading
                                         ? LottieBuilder.asset(
@@ -190,7 +313,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                       ),
                     ),
-                    const SizedBox(height: 25),
 
                     // sound icon
                     Align(
@@ -265,16 +387,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   suffixIcon: InkWell(
                                     onTap: () {
                                       print("send user input");
+
+                                      if (userInputTextEditingController
+                                          .text.isNotEmpty) {
+                                        sendRequestToOpenAI(
+                                            userInputTextEditingController.text
+                                                .toString());
+                                      }
+
                                       // if (userInputTextEditingController
                                       //     .text.isNotEmpty) {
                                       //   setState(() {
-                                      //     answerTextFromOpenAI =
+                                      //     answerTextFromAI =
                                       //         "Hello, my name is MiMi. I am an AI assistant created by Amy and Hailey.";
                                       //   });
                                       //   if (speakFRIDAY == true) {
                                       //     print("it's friday");
                                       //     textToSpeechInstance
-                                      //         .speak(answerTextFromOpenAI);
+                                      //         .speak(answerTextFromAI);
                                       //   }
                                       // } else {
                                       //   sendRequestToOpenAI(
@@ -301,7 +431,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
+                    SizedBox(height: 10),
+
+                    // display result
+                    // modeOfAI == "chat" ? SelectableText(
+                    //   answerTextFromAI,
+                    // ) : modeOfAI == "image" && imageUrlFromAI.isNotEmpty ? Column() : Container()
 
                     Padding(
                       padding:
@@ -317,31 +452,80 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: 'How can I forget a bad memory?',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                  ),
-                                  border: InputBorder.none,
-                                ),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
+                            modeOfAI == "chat"
+                                ? answerTextFromAI.isNotEmpty
+                                    ? SelectableText(
+                                        answerTextFromAI,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    : Text(
+                                        'Welcome to MiMi, your friendly AI voice assistant! 🎉\n'
+                                        'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey. '
+                                        'I\'m here to help you with all sorts of tasks and make your day a little brighter! 😊\n'
+                                        'To get started, just tap on the microphone button and say something. '
+                                        'I\'m always ready to listen and assist you with:\n'
+                                        '- Answering questions on various topics 🌐\n'
+                                        '- Helping you write emails, essays, or any other text 📝\n'
+                                        '- Providing recommendations and suggestions 💡\n'
+                                        '- Engaging in fun conversations and sharing jokes 😄\n'
+                                        '- And so much more!\n'
+                                        'Feel free to explore my capabilities and let me know how I can be of assistance.',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                : modeOfAI == "images" &&
+                                        imageUrlFromAI.isNotEmpty
+                                    ? Column(
+                                        children: [
+                                          Image.network(imageUrlFromAI),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            "Generated Image",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : modeOfAI == ""
+                                        ? Text(
+                                            'Welcome to MiMi, your friendly AI voice assistant! 🎉\n'
+                                            'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey. '
+                                            'I\'m here to help you with all sorts of tasks and make your day a little brighter! 😊\n'
+                                            'To get started, just tap on the microphone button and say something. '
+                                            'I\'m always ready to listen and assist you with:\n'
+                                            '- Answering questions on various topics 🌐\n'
+                                            '- Helping you write emails, essays, or any other text 📝\n'
+                                            '- Providing recommendations and suggestions 💡\n'
+                                            '- Engaging in fun conversations and sharing jokes 😄\n'
+                                            '- And so much more!\n'
+                                            'Feel free to explore my capabilities and let me know how I can be of assistance.',
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        : Container(),
                           ],
                         ),
                       ),
                     )
+                    
                   ],
                 ),
               ),
             ),
-          ),
+          
         ],
       ),
     );
