@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Miscellaneous
 *.class
 *.log
@@ -44,3 +45,4 @@ app.*.map.json
 
 
 .DS_Store
+
