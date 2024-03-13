@@ -3,8 +3,15 @@ allprojects {
         google()
         mavenCentral()
     }
+    buildscript {
+    ext.kotlin_version = '1.9.21'
+    dependencies {
+        // ...
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // ...
+    }
 }
-
+}
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
