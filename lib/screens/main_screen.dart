@@ -49,10 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void startListeningNow() async {
     FocusScope.of(context).unfocus();
+
+    await Future.delayed(Duration(milliseconds: 600));
+
     setState(() {
       isLoading = true;
       showCloseButton = true;
-      isListeningToSpeech = true;
     });
 
     print('Before: ${speechToTextInstance.isListening}');
@@ -219,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        
+
         flexibleSpace: Container(
           decoration: BoxDecoration(
             color: Color.fromRGBO(255, 239, 252, 1.0), // Set background color
@@ -265,23 +267,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             });
                           },
-                          icon: Image.asset(
-                            "images/chats_icon.png",
-                            width: 24,
-                            height: 24,
-                          ),
+                          icon: modeOfAI == "chat"
+                              ? Image.asset(
+                                  "images/white_chats_icon.png",
+                                  width: 24,
+                                  height: 24,
+                                )
+                              : Image.asset(
+                                  "images/chats_icon.png",
+                                  width: 24,
+                                  height: 24,
+                                ),
                           label: Text("chats",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                   color: modeOfAI == "chat"
-                                      ? Color.fromRGBO(51, 40, 40, 1)
+                                      ? Color.fromRGBO(255, 255, 255, 1)
                                       : Colors.black,
                                   fontSize: 14,
                                 ),
                               )),
                           style: OutlinedButton.styleFrom(
                             backgroundColor: modeOfAI == "chat"
-                                ? Color.fromRGBO(232, 220, 253, 1)
+                                ? Color.fromRGBO(152, 149, 198, 1)
                                 : null,
                           ),
                         ),
@@ -302,23 +310,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             });
                           },
-                          icon: Image.asset(
-                            "images/images_icon.png",
-                            width: 24,
-                            height: 24,
-                          ),
+                          icon: modeOfAI == "images"
+                              ? Image.asset(
+                                  "images/white_images_icon.png",
+                                  width: 24,
+                                  height: 24,
+                                )
+                              : Image.asset(
+                                  "images/images_icon.png",
+                                  width: 24,
+                                  height: 24,
+                                ),
                           label: Text("images",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
-                                  color: modeOfAI == "chat"
-                                      ? Color.fromRGBO(51, 40, 40, 1)
+                                  color: modeOfAI == "images"
+                                      ? Color.fromRGBO(255, 255, 255, 1)
                                       : Colors.black,
-                                  fontSize: 14,
+                                  fontSize: 15,
                                 ),
                               )),
                           style: OutlinedButton.styleFrom(
                             backgroundColor: modeOfAI == "images"
-                                ? Color.fromRGBO(232, 220, 253, 1)
+                                ? Color.fromRGBO(152, 149, 198, 1)
                                 : null,
                           ),
                         ),
@@ -353,12 +367,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        // print('Before: ${speechToTextInstance.isListening}');
-                        startListeningNow();
-                        // speechToTextInstance.isListening
-                        //     ? stopListeningNow()
-                        //     : startListeningNow();
-                        // print('After: ${speechToTextInstance.isListening}');
+                        speechToTextInstance.isListening
+                            ? stopListeningNow()
+                            : startListeningNow();
                       },
                       child: speechToTextInstance.isListening
                           ? Center(
@@ -367,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   isLoading
                                       ? LottieBuilder.asset(
-                                          'images/voice_animation.json',
+                                          'images/ball_animation.json',
                                           width: 200,
                                           height: 200,
                                         )
@@ -571,21 +582,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Color.fromARGB(255, 101, 100, 100),
                                       ),
                                     )
-                                  : Text(
-                                      'Welcome to MiMi, your friendly AI voice assistant! 🎉\n',
-                                      // 'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey. '
-                                      // 'I\'m here to help you with all sorts of tasks and make your day a little brighter! 😊\n'
-                                      // 'To get started, just tap on the microphone button and say something. '
-                                      // 'I\'m always ready to listen and assist you with:\n'
-                                      // '- Answering questions on various topics 🌐\n'
-                                      // '- Helping you write emails, essays, or any other text 📝\n'
-                                      // '- Providing recommendations and suggestions 💡\n'
-                                      // '- Engaging in fun conversations and sharing jokes 😄\n'
-                                      // '- And so much more!\n'
-                                      // 'Feel free to explore my capabilities and let me know how I can be of assistance.',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w400,
+                                  : RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: SizedBox(
+                                              height: 30,
+                                              child: Center(
+                                                child: Text(
+                                                  'I\'m MiMi, your AI assistant!\n',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Color.fromRGBO(
+                                                        97, 42, 116, 1.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n I\'m here to help you with all sorts of tasks and make your day a little brighter!  ',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     )
                               : modeOfAI == "images"
@@ -866,11 +893,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor:
-                                                        Colors.grey,
+                                                        Color.fromRGBO(
+                                                            152, 149, 198, 1),
                                                   ),
-                                                  child: const Text("Download",
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
+                                                  child: Text(
+                                                    "Download",
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            255, 255, 255, 1),
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               )
                                             ],
@@ -917,8 +952,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.grey,
                                                 ),
                                               ),
-
-                                              // 添加更多 TextSpan 来设置其他部分的样式
                                             ],
                                           ),
                                         )
