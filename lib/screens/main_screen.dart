@@ -209,22 +209,34 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(255, 239, 252, 1.0),
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.0),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // Handle back button press
+              Navigator.pop(context);
+            },
           ),
         ),
-        title: Image.asset(
-          "images/arrow.png",
-          width: 24,
+        
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 239, 252, 1.0), // Set background color
+          ),
         ),
-        titleSpacing: 8,
-        elevation: 0,
+        elevation: 0, // Remove shadow
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('images/avatar.png'),
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
-          // Container(
-          //   color: Color.fromRGBO(255, 239, 252, 1.0),
           Container(
             color: Color.fromRGBO(255, 239, 252, 1.0),
           ),
@@ -555,7 +567,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: GoogleFonts.poppins(
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.normal,
-                                        color: Color.fromARGB(255, 101, 100, 100),
+                                        color:
+                                            Color.fromARGB(255, 101, 100, 100),
                                       ),
                                     )
                                   : Text(
@@ -883,7 +896,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Center(
                                                     child: Text(
                                                       'I\'m MiMi, your AI assistant!\n',
-                                                      style: GoogleFonts.poppins(
+                                                      style:
+                                                          GoogleFonts.poppins(
                                                         fontSize: 16.0,
                                                         fontWeight:
                                                             FontWeight.w400,
