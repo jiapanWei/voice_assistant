@@ -126,10 +126,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _navigateToAuthScreen(
-                        context, false); //TODO: create handlers
-                  },
+                  onPressed: () => AuthService().signInWithMicrosoft(),
                   style: _buttonStyle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

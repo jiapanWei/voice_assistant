@@ -15,4 +15,11 @@ class AuthService {
 
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
+  signInWithMicrosoft() async {
+    OAuthProvider oAuthProvider = OAuthProvider('microsoft.com');
+    oAuthProvider.setCustomParameters(
+        {'tenant': 'a8eec281-aaa3-4dae-ac9b-9a398b9215e7'});
+    await FirebaseAuth.instance.signInWithProvider(oAuthProvider);
+  }
 }

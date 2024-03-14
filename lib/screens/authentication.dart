@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:voice_assistant/services/auth_service.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -47,14 +49,27 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         userCredentials = await _firebaseAuth.createUserWithEmailAndPassword(
             email: _inputEmail, password: _inputPassword);
+
+        // Cloud Firestore
+        // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+        // await _firestore
+        //     .collection('Users')
+        //     .doc(userCredentials.user!.email)
+        //     .set(
+        //   {
+        //     'username': _inputUsername,
+        //     'email': _inputEmail,
+        //   },
+        // );
       }
 
       if (userCredentials.user != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-              builder: (context) => HomeScreen(
-                    inputUsername: _inputUsername,
-                  )),
+            builder: (context) => HomeScreen(
+              inputUsername: _inputUsername,
+            ),
+          ),
         );
       }
     } on FirebaseAuthException catch (error) {
@@ -205,37 +220,36 @@ class _AuthScreenState extends State<AuthScreen> {
                   ],
                 ),
               ),
-              // Container(
-              //   margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              //   child: ElevatedButton(
-              //     onPressed: () => AuthService().signInWithGoogle(),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Image.asset('images/google.png', height: 24, width: 24),
-              //         const SizedBox(width: 10),
-              //         const Text('Continue with Google'),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 5),
-              // Container(
-              //   margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              //   child: ElevatedButton(
-              //     onPressed: _submit, //TODO: create handlers
-              //     // onPressed: () => AuthService().signInWithApple(),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Image.asset('images/microsoft.png',
-              //             height: 24, width: 24),
-              //         const SizedBox(width: 10),
-              //         const Text('Continue with Microsoft'),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              Container(
+                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+                child: ElevatedButton(
+                  onPressed: () => AuthService().signInWithGoogle(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('images/google.png', height: 24, width: 24),
+                      const SizedBox(width: 10),
+                      const Text('Continue with Google'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+                child: ElevatedButton(
+                  onPressed: () => AuthService().signInWithMicrosoft(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('images/microsoft.png',
+                          height: 24, width: 24),
+                      const SizedBox(width: 10),
+                      const Text('Continue with Microsoft'),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
