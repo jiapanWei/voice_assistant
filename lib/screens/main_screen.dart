@@ -16,6 +16,8 @@ import "package:voice_assistant/api/api_service.dart";
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_assistant/screens/authentication.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -217,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               // Handle back button press
+              FirebaseAuth.instance.signOut();
               Navigator.pop(context);
             },
           ),

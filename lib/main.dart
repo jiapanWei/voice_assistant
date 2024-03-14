@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:voice_assistant/screens/login.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-  await FlutterDownloader.initialize(
-    debug: true, 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FlutterDownloader.initialize(
+    debug: true,
+  );
+  await FirebaseAuth.instance.signOut(); // user every time the app starts
   runApp(const MyApp());
 }
 
@@ -17,11 +25,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Virtual Assistant Application', //TODO: remove?
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, AsyncSnapshot<User?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.data != null) {
+              return HomeScreen();
+            }
+            return LoginScreen();
+          } else {
+            return const Scaffold(
+              // Add a loading spinner
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text('Loading...'),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
