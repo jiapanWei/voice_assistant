@@ -4,9 +4,21 @@ import 'package:voice_assistant/screens/authentication.dart';
 import 'package:voice_assistant/services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
-  final _buttonStyle = ElevatedButton.styleFrom(
-    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-  );
+  // Style for the transparent buttons
+  ButtonStyle transparentButtonStyle() {
+    return OutlinedButton.styleFrom(
+      side: const BorderSide(color: Colors.grey),
+      minimumSize: const Size(300, 37),
+    );
+  }
+
+  TextStyle buttonPoppinsFontStyle() {
+    return GoogleFonts.poppins(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: const Color.fromRGBO(119, 111, 105, 1.0),
+    );
+  }
 
   void _navigateToAuthScreen(BuildContext context, bool isNewUser) {
     Navigator.push(
@@ -18,7 +30,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 254, 205, 221),
+      backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -34,35 +46,46 @@ class LoginScreen extends StatelessWidget {
                 width: 200,
                 child: Image.asset('images/ball.png'),
               ),
-              Text(
-                "Hello, welcome !",
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(232, 160, 137, 251),
+              ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    colors: [
+                      Color.fromRGBO(97, 42, 116, 1),
+                      Color.fromRGBO(232, 160, 137, 1)
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcIn,
+                child: const Text(
+                  'Hello, welcome!',
+                  style: TextStyle(fontSize: 24),
                 ),
               ),
               Text(
                 "Log in or create an account!",
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  color: const Color.fromARGB(232, 160, 137, 251),
+                style: GoogleFonts.bricolageGrotesque(
+                  textStyle: const TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
               const SizedBox(height: 15),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: ElevatedButton(
+                child: OutlinedButton(
+                  style: transparentButtonStyle(),
                   onPressed: () {
                     _navigateToAuthScreen(context, true);
                   },
-                  style: _buttonStyle,
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 15),
+                        'Register',
+                        style: buttonPoppinsFontStyle(),
                       ),
                     ],
                   ),
@@ -71,18 +94,17 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 5),
               Container(
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: ElevatedButton(
+                child: OutlinedButton(
+                  style: transparentButtonStyle(),
                   onPressed: () {
                     _navigateToAuthScreen(context, false);
                   },
-                  style: _buttonStyle,
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(width: 10),
                       Text(
                         'Log in',
-                        style: TextStyle(fontSize: 15),
+                        style: buttonPoppinsFontStyle(),
                       ),
                     ],
                   ),
@@ -98,7 +120,14 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    Text(" OR "),
+                    Text(
+                      " OR ",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10,
+                      ),
+                    ),
                     Expanded(
                       child: Divider(
                         color: Colors.grey,
@@ -109,15 +138,18 @@ class LoginScreen extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: ElevatedButton(
+                child: OutlinedButton(
+                  style: transparentButtonStyle(),
                   onPressed: () => AuthService().signInWithGoogle(),
-                  style: _buttonStyle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('images/google.png', height: 24, width: 24),
                       const SizedBox(width: 10),
-                      const Text('Continue with Google'),
+                      Text(
+                        'Continue with Google',
+                        style: buttonPoppinsFontStyle(),
+                      ),
                     ],
                   ),
                 ),
@@ -125,16 +157,19 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 5),
               Container(
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: ElevatedButton(
+                child: OutlinedButton(
+                  style: transparentButtonStyle(),
                   onPressed: () => AuthService().signInWithMicrosoft(),
-                  style: _buttonStyle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('images/microsoft.png',
                           height: 24, width: 24),
                       const SizedBox(width: 10),
-                      const Text('Continue with Microsoft'),
+                      Text(
+                        'Continue with Microsoft',
+                        style: buttonPoppinsFontStyle(),
+                      ),
                     ],
                   ),
                 ),
