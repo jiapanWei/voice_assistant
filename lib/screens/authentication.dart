@@ -9,7 +9,7 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
 
-  const AuthScreen({required this.isNewUser});
+  const AuthScreen({super.key, required this.isNewUser});
 
   @override
   State<AuthScreen> createState() {
@@ -21,6 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late bool _isLogin;
+  String _inputUsername = '';
   String _inputEmail = '';
   String _inputPassword = '';
 
@@ -50,7 +51,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (userCredentials.user != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                    inputUsername: _inputUsername,
+                  )),
         );
       }
     } on FirebaseAuthException catch (error) {
@@ -71,9 +75,9 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
                 context,
@@ -83,7 +87,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 254, 205, 221),
+      backgroundColor: const Color.fromARGB(255, 254, 205, 221),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -99,9 +103,23 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if (!_isLogin) // Add this line
+                            TextFormField(
+                              decoration:
+                                  const InputDecoration(labelText: 'Username'),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter a username.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _inputUsername = value!;
+                              },
+                            ),
                           TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Email Address'),
+                            decoration:
+                                const InputDecoration(labelText: 'Email'),
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             textCapitalization: TextCapitalization.none,
@@ -111,7 +129,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   !value.contains('@')) {
                                 return 'Please enter a valid email address.';
                               }
-
                               return null;
                             },
                             onSaved: (value) {

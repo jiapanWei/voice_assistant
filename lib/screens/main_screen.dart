@@ -20,7 +20,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/authentication.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String inputUsername;
+
+  HomeScreen({required this.inputUsername});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -262,13 +265,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: OutlinedButton.icon(
                           onPressed: () {
                             // handle Chats button click event
-                            setState(() {
-                              if (modeOfAI == "chat") {
-                                modeOfAI = "";
-                              } else {
-                                modeOfAI = "chat";
-                              }
-                            });
+                            setState(
+                              () {
+                                if (modeOfAI == "chat") {
+                                  modeOfAI = "";
+                                } else {
+                                  modeOfAI = "chat";
+                                }
+                              },
+                            );
                           },
                           icon: modeOfAI == "chat"
                               ? Image.asset(
@@ -345,26 +350,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
 
                   // hello text
-                  Text("Hi, Alex",
-                      style: GoogleFonts.bricolageGrotesque(
-                          textStyle: const TextStyle(
-                        fontSize: 20,
+                  Text(
+                    "Hi, ${widget.inputUsername} !",
+                    style: GoogleFonts.bricolageGrotesque(
+                      textStyle: const TextStyle(
+                        fontSize: 25,
                         color: Colors.black,
-                      ))
-
-                      // style: TextStyle(
-                      //   fontSize: 16,
-                      //   color: Colors.black,
-                      // ),
                       ),
+                    ),
+                  ),
                   const SizedBox(height: 5),
-
-                  Text("Say Something",
-                      style: GoogleFonts.bricolageGrotesque(
-                          textStyle: const TextStyle(
+                  Text(
+                    "Say Something",
+                    style: GoogleFonts.bricolageGrotesque(
+                      textStyle: const TextStyle(
                         fontSize: 20,
                         color: Colors.grey,
-                      ))),
+                      ),
+                    ),
+                  ),
 
                   // voice assistant
                   Center(
@@ -439,9 +443,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: FloatingActionButton(
                             onPressed: () {
                               if (!isLoading) {
-                                setState(() {
-                                  speakAI = !speakAI;
-                                });
+                                setState(
+                                  () {
+                                    speakAI = !speakAI;
+                                  },
+                                );
                               }
                               textToSpeechInstance.stop();
                             },
@@ -510,8 +516,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     if (userInputTextEditingController
                                         .text.isNotEmpty) {
                                       sendRequestToOpenAI(
-                                          userInputTextEditingController.text
-                                              .toString());
+                                        userInputTextEditingController.text
+                                            .toString(),
+                                      );
                                     }
 
                                     // if (userInputTextEditingController
@@ -705,61 +712,62 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         SchedulerBinding
                                                             .instance
                                                             ?.addPostFrameCallback(
-                                                                (_) {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            SnackBar(
-                                                              content:
-                                                                  const Row(
-                                                                children: [
-                                                                  Icon(
-                                                                      Icons
-                                                                          .check_circle,
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          173,
-                                                                          173,
-                                                                          255)),
-                                                                  SizedBox(
-                                                                      width: 8),
-                                                                  Text(
-                                                                    'Image downloaded successfully!',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          "Arial",
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          6),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
+                                                          (_) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content:
+                                                                    const Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                        Icons
+                                                                            .check_circle,
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            173,
+                                                                            173,
+                                                                            255)),
+                                                                    SizedBox(
+                                                                        width:
                                                                             8),
+                                                                    Text(
+                                                                      'Image downloaded successfully!',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            "Arial",
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            6),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                                backgroundColor:
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        129,
+                                                                        129,
+                                                                        230),
                                                               ),
-                                                              backgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          129,
-                                                                          129,
-                                                                          230),
-                                                            ),
-                                                          );
-                                                          isDownloadComplete =
-                                                              false;
-                                                        });
+                                                            );
+                                                            isDownloadComplete =
+                                                                false;
+                                                          },
+                                                        );
                                                       }
 
                                                       // FlutterDownloader
