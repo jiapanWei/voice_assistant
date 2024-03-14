@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/authentication.dart';
+import 'package:voice_assistant/services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   final _buttonStyle = ElevatedButton.styleFrom(
@@ -109,10 +110,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _navigateToAuthScreen(
-                        context, false); //TODO: create handlers
-                  },
+                  onPressed: () => AuthService().signInWithGoogle(),
                   style: _buttonStyle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

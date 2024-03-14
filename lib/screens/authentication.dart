@@ -205,36 +205,37 @@ class _AuthScreenState extends State<AuthScreen> {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: ElevatedButton(
-                  onPressed: _submit, //TODO: create handlers
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/google.png', height: 24, width: 24),
-                      const SizedBox(width: 10),
-                      const Text('Continue with Google'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: ElevatedButton(
-                  onPressed: _submit, //TODO: create handlers
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/microsoft.png',
-                          height: 24, width: 24),
-                      const SizedBox(width: 10),
-                      const Text('Continue with Microsoft'),
-                    ],
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+              //   child: ElevatedButton(
+              //     onPressed: () => AuthService().signInWithGoogle(),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Image.asset('images/google.png', height: 24, width: 24),
+              //         const SizedBox(width: 10),
+              //         const Text('Continue with Google'),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 5),
+              // Container(
+              //   margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+              //   child: ElevatedButton(
+              //     onPressed: _submit, //TODO: create handlers
+              //     // onPressed: () => AuthService().signInWithApple(),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Image.asset('images/microsoft.png',
+              //             height: 24, width: 24),
+              //         const SizedBox(width: 10),
+              //         const Text('Continue with Microsoft'),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
