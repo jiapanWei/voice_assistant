@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/login.dart';
 import 'package:voice_assistant/services/auth_service.dart';
+import 'package:voice_assistant/screens/auth_sign_in_providers.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 
@@ -302,45 +303,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 ],
               ),
             ),
-
-            Container(
-              margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              child: OutlinedButton(
-                style: transparentButtonStyle(),
-                onPressed: () => AuthService().signInWithGoogle(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('images/google.png', height: 24, width: 24),
-                    const SizedBox(width: 10),
-                    Text(
-                      'Continue with Google',
-                      style: buttonPoppinsFontStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            googleAuthButton(),
             const SizedBox(height: 5),
-
-            Container(
-              margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              child: OutlinedButton(
-                style: transparentButtonStyle(),
-                onPressed: () => AuthService().signInWithMicrosoft(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('images/microsoft.png', height: 24, width: 24),
-                    const SizedBox(width: 10),
-                    Text(
-                      'Continue with Microsoft',
-                      style: buttonPoppinsFontStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            microsoftAuthButton(),
           ],
         ),
       ),

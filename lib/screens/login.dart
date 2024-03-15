@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/authentication.dart';
 import 'package:voice_assistant/services/auth_service.dart';
+import 'package:voice_assistant/screens/auth_sign_in_providers.dart';
 
 class LoginScreen extends StatelessWidget {
   // Style for the transparent buttons
@@ -136,44 +137,9 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: OutlinedButton(
-                  style: transparentButtonStyle(),
-                  onPressed: () => AuthService().signInWithGoogle(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/google.png', height: 24, width: 24),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Continue with Google',
-                        style: buttonPoppinsFontStyle(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              googleAuthButton(),
               const SizedBox(height: 5),
-              Container(
-                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: OutlinedButton(
-                  style: transparentButtonStyle(),
-                  onPressed: () => AuthService().signInWithMicrosoft(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/microsoft.png',
-                          height: 24, width: 24),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Continue with Microsoft',
-                        style: buttonPoppinsFontStyle(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              microsoftAuthButton(),
             ],
           ),
         ),
