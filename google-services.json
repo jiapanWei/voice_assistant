@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "350941602304",
+    "project_id": "flutter-virtual-assistant",
+    "storage_bucket": "flutter-virtual-assistant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350941602304:android:2b8f53bdea020a11ce2ee5",
+        "android_client_info": {
+          "package_name": "com.example.friday_virtual_assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350941602304-u8rr8mhrhr70n2473v1bav3877bft6ms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7ah4TMBnqe6sagzmX2OUHLsMEzW5-qmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350941602304-2kuhlrfbs3rd07jpvqc2du00cb76hjsr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "350941602304-4rm348rjreake6loob5udpqdt62epfl1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fridayVirtualAssistant.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350941602304:android:8f42108cb1db7b88ce2ee5",
+        "android_client_info": {
+          "package_name": "com.example.voice_assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350941602304-7dh1ti6g0cmb40e7ks5dpna5esopuu5c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.voice_assistant",
+            "certificate_hash": "99e256362e98bd1136dd20beb0ce88a7de757ffb"
+          }
+        },
+        {
+          "client_id": "350941602304-u8rr8mhrhr70n2473v1bav3877bft6ms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7ah4TMBnqe6sagzmX2OUHLsMEzW5-qmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350941602304-2kuhlrfbs3rd07jpvqc2du00cb76hjsr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "350941602304-4rm348rjreake6loob5udpqdt62epfl1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fridayVirtualAssistant.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
