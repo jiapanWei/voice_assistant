@@ -111,32 +111,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 18),
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      " OR ",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 10,
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              dividerLine(),
               googleAuthButton(),
               const SizedBox(height: 5),
               microsoftAuthButton(),

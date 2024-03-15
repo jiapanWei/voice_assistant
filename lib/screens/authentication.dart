@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:voice_assistant/services/auth_service.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/login.dart';
-import 'package:voice_assistant/services/auth_service.dart';
 import 'package:voice_assistant/screens/auth_sign_in_providers.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
@@ -283,26 +283,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
             ),
-
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 18),
-              child: const Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text(" OR "),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            dividerLine(),
             googleAuthButton(),
             const SizedBox(height: 5),
             microsoftAuthButton(),
