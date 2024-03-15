@@ -318,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   // hi text
                   Text(
-                    "Hi, Alex${widget.inputUsername} !",
+                    "Hi, ${widget.inputUsername} !",
                     style: GoogleFonts.bricolageGrotesque(
                       textStyle: const TextStyle(
                         fontSize: 20,
