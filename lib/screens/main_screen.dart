@@ -18,25 +18,30 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/authentication.dart';
+import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
+
+const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
+const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
 
 class HomeScreen extends StatefulWidget {
   final String inputUsername;
 
-  HomeScreen({required this.inputUsername});
+  const HomeScreen({
+    super.key,
+    required this.inputUsername,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController userInputTextEditingController =
-      TextEditingController();
+  TextEditingController userInputTextEditingController = TextEditingController();
 
   final SpeechToText speechToTextInstance = SpeechToText();
   String recordedAudioString = "";
   bool isLoading = false;
   bool showCloseButton = false;
-  bool isListeningToSpeech = false;
 
   String modeOfAI = "";
   String imageUrlFromAI = "";
@@ -55,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void startListeningNow() async {
     FocusScope.of(context).unfocus();
 
-    await Future.delayed(Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 600));
 
     setState(() {
       isLoading = true;
@@ -75,16 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = false;
       showCloseButton = false;
-      isListeningToSpeech = false;
     });
   }
 
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     print('onSpeechToTextResult called');
-    print(
-        'recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
+    print('recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
     print('recognitionResult.finalResult: ${recognitionResult.finalResult}');
-    // print('recognitionResult.isCompleted: ${recognitionResult.isCompleted}');
     recordedAudioString = recognitionResult.recognizedWords;
 
     if (!speechToTextInstance.isListening) {
@@ -104,14 +106,13 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.black,
             fontFamily: "Arial",
             fontSize: 16,
-            // fontWeight: FontWeight.bold,
           ),
         ),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        backgroundColor: Color.fromARGB(255, 254, 205, 221),
+        backgroundColor: snackBarColorPink,
       ),
     );
   }
@@ -147,8 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (modeOfAI == "chat") {
         setState(() {
-          answerTextFromAI =
-              responseAvailable["choices"][0]["message"]["content"];
+          answerTextFromAI = responseAvailable["choices"][0]["message"]["content"];
 
           print("AI Chatbot: ");
           print(answerTextFromAI);
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Error: " + errorMessage.toString(),
+            "Error: ${errorMessage.toString()}",
           ),
         ),
       );
@@ -217,9 +217,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               // Handle back button press
               FirebaseAuth.instance.signOut();
@@ -227,14 +227,13 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(255, 239, 252, 1.0), // Set background color
+          decoration: const BoxDecoration(
+            color: backgroundColorPink,
           ),
         ),
-        elevation: 0, // Remove shadow
-        actions: [
+        elevation: 0,
+        actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
@@ -246,104 +245,40 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           Container(
-            color: Color.fromRGBO(255, 239, 252, 1.0),
+            color: backgroundColorPink,
           ),
           SingleChildScrollView(
             child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 13, top: 2, right: 13, bottom: 8),
+              padding: const EdgeInsets.only(left: 13, top: 2, right: 13, bottom: 8),
               child: Column(
                 children: [
                   // button row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // chat button
-                      SizedBox(
-                        width: 130,
-                        height: 48,
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            // handle Chats button click event
-                            setState(
-                              () {
-                                if (modeOfAI == "chat") {
-                                  modeOfAI = "";
-                                } else {
-                                  modeOfAI = "chat";
-                                }
-                              },
-                            );
-                          },
-                          icon: modeOfAI == "chat"
-                              ? Image.asset(
-                                  "images/white_chats_icon.png",
-                                  width: 24,
-                                  height: 24,
-                                )
-                              : Image.asset(
-                                  "images/chats_icon.png",
-                                  width: 24,
-                                  height: 24,
-                                ),
-                          label: Text("chats",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: modeOfAI == "chat"
-                                      ? Color.fromRGBO(255, 255, 255, 1)
-                                      : Colors.black,
-                                  fontSize: 14,
-                                ),
-                              )),
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: modeOfAI == "chat"
-                                ? Color.fromRGBO(152, 149, 198, 1)
-                                : null,
-                          ),
-                        ),
+                      ModeButtonBuilder.buildModeButton(
+                        "chat",
+                        "chats",
+                        "images/chats_icon.png",
+                        "images/white_chats_icon.png",
+                        modeOfAI,
+                        (mode) {
+                          setState(() {
+                            modeOfAI = mode;
+                          });
+                        },
                       ),
-
-                      // images button
-                      SizedBox(
-                        width: 130,
-                        height: 48,
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            // handle images button click event
-                            setState(() {
-                              if (modeOfAI == "images") {
-                                modeOfAI = "";
-                              } else {
-                                modeOfAI = "images";
-                              }
-                            });
-                          },
-                          icon: modeOfAI == "images"
-                              ? Image.asset(
-                                  "images/white_images_icon.png",
-                                  width: 24,
-                                  height: 24,
-                                )
-                              : Image.asset(
-                                  "images/images_icon.png",
-                                  width: 24,
-                                  height: 24,
-                                ),
-                          label: Text("images",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: modeOfAI == "images"
-                                      ? Color.fromRGBO(255, 255, 255, 1)
-                                      : Colors.black,
-                                  fontSize: 15,
-                                ),
-                              )),
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: modeOfAI == "images"
-                                ? Color.fromRGBO(152, 149, 198, 1)
-                                : null,
-                          ),
-                        ),
+                      ModeButtonBuilder.buildModeButton(
+                        "images",
+                        "images",
+                        "images/images_icon.png",
+                        "images/white_images_icon.png",
+                        modeOfAI,
+                        (mode) {
+                          setState(() {
+                            modeOfAI = mode;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -360,13 +295,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    "Say Something",
-                    style: GoogleFonts.bricolageGrotesque(
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.grey,
-                      ),
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        colors: [Color.fromRGBO(97, 42, 116, 1), Color.fromRGBO(232, 160, 137, 1)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.srcIn,
+                    child: Text(
+                      'Hello, welcome!',
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
 
@@ -374,9 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        speechToTextInstance.isListening
-                            ? stopListeningNow()
-                            : startListeningNow();
+                        speechToTextInstance.isListening ? stopListeningNow() : startListeningNow();
                       },
                       child: speechToTextInstance.isListening
                           ? Center(
@@ -478,8 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: Container(
-                          margin:
-                              const EdgeInsets.only(left: 13.0, right: 13.0),
+                          margin: const EdgeInsets.only(left: 13.0, right: 13.0),
                           decoration: BoxDecoration(
                               // color: Colors.white,
 
@@ -498,8 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // ],
                               ),
                           child: Container(
-                            margin:
-                                const EdgeInsets.only(left: 13.0, right: 13.0),
+                            margin: const EdgeInsets.only(left: 13.0, right: 13.0),
                             child: TextField(
                               controller: userInputTextEditingController,
                               decoration: InputDecoration(
@@ -513,11 +449,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onTap: () {
                                     print("send user input");
 
-                                    if (userInputTextEditingController
-                                        .text.isNotEmpty) {
+                                    if (userInputTextEditingController.text.isNotEmpty) {
                                       sendRequestToOpenAI(
-                                        userInputTextEditingController.text
-                                            .toString(),
+                                        userInputTextEditingController.text.toString(),
                                       );
                                     }
 
@@ -548,8 +482,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
                               ),
                             ),
                           ),
@@ -565,8 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // ) : modeOfAI == "image" && imageUrlFromAI.isNotEmpty ? Column() : Container()
 
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 13, vertical: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Color.fromRGBO(255, 239, 252, 1.0),
@@ -576,8 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 1.0,
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -588,16 +519,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: GoogleFonts.poppins(
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.normal,
-                                        color:
-                                            Color.fromARGB(255, 101, 100, 100),
+                                        color: Color.fromARGB(255, 101, 100, 100),
                                       ),
                                     )
                                   : RichText(
                                       text: TextSpan(
                                         children: [
                                           WidgetSpan(
-                                            alignment:
-                                                PlaceholderAlignment.middle,
+                                            alignment: PlaceholderAlignment.middle,
                                             child: SizedBox(
                                               height: 30,
                                               child: Center(
@@ -606,16 +535,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   style: GoogleFonts.poppins(
                                                     fontSize: 16.0,
                                                     fontWeight: FontWeight.w400,
-                                                    color: Color.fromRGBO(
-                                                        97, 42, 116, 1.0),
+                                                    color: Color.fromRGBO(97, 42, 116, 1.0),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                           TextSpan(
-                                            text:
-                                                'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n I\'m here to help you with all sorts of tasks and make your day a little brighter!  ',
+                                            text: 'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n I\'m here to help you with all sorts of tasks and make your day a little brighter!  ',
                                             style: GoogleFonts.poppins(
                                               fontSize: 14.0,
                                               fontWeight: FontWeight.normal,
@@ -633,8 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               SizedBox(
                                                 width: 225,
-                                                child: Image.network(
-                                                    imageUrlFromAI),
+                                                child: Image.network(imageUrlFromAI),
                                               ),
                                               const SizedBox(
                                                 height: 14,
@@ -644,128 +570,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 // height: 200,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    final imageUrl =
-                                                        imageUrlFromAI;
-                                                    final imageName =
-                                                        'downloaded_image.jpg'; //
+                                                    final imageUrl = imageUrlFromAI;
+                                                    final imageName = 'downloaded_image.jpg'; //
                                                     // final picturesDirectoryPath =
                                                     //     await getExternalStorageDirectoryPath();
-                                                    final publicDirectoryPath =
-                                                        await getPublicDirectoryPath(
-                                                            'Pictures');
+                                                    final publicDirectoryPath = await getPublicDirectoryPath('Pictures');
 
-                                                    if (publicDirectoryPath !=
-                                                        null) {
-                                                      final taskId =
-                                                          await FlutterDownloader
-                                                              .enqueue(
+                                                    if (publicDirectoryPath != null) {
+                                                      final taskId = await FlutterDownloader.enqueue(
                                                         url: imageUrl,
-                                                        savedDir:
-                                                            publicDirectoryPath,
+                                                        savedDir: publicDirectoryPath,
                                                         showNotification: true,
-                                                        openFileFromNotification:
-                                                            false,
+                                                        openFileFromNotification: false,
                                                         fileName: imageName,
                                                       );
 
-                                                      final downloadTask =
-                                                          await FlutterDownloader
-                                                              .loadTasksWithRawQuery(
-                                                                  query: "SELECT * FROM task WHERE task_id='" +
-                                                                      taskId! +
-                                                                      "'");
-                                                      if (downloadTask !=
-                                                              null &&
-                                                          downloadTask
-                                                              .isNotEmpty) {
-                                                        final taskDetails =
-                                                            downloadTask.first;
-                                                        final savedDir =
-                                                            taskDetails
-                                                                    .savedDir ??
-                                                                '';
-                                                        final filename =
-                                                            taskDetails
-                                                                    .filename ??
-                                                                '';
-                                                        final filePath =
-                                                            '$savedDir/$filename';
+                                                      final downloadTask = await FlutterDownloader.loadTasksWithRawQuery(query: "SELECT * FROM task WHERE task_id='" + taskId! + "'");
+                                                      if (downloadTask != null && downloadTask.isNotEmpty) {
+                                                        final taskDetails = downloadTask.first;
+                                                        final savedDir = taskDetails.savedDir ?? '';
+                                                        final filename = taskDetails.filename ?? '';
+                                                        final filePath = '$savedDir/$filename';
 
-                                                        if (filePath
-                                                            .isNotEmpty) {
-                                                          final result =
-                                                              await ImageGallerySaver
-                                                                  .saveFile(
-                                                                      filePath);
-                                                          print(
-                                                              'Image saved to gallery: $result');
+                                                        if (filePath.isNotEmpty) {
+                                                          final result = await ImageGallerySaver.saveFile(filePath);
+                                                          print('Image saved to gallery: $result');
                                                           setState(() {
-                                                            isDownloadComplete =
-                                                                true;
+                                                            isDownloadComplete = true;
                                                           });
                                                         } else {
-                                                          print(
-                                                              'File path is empty. Cannot save image to gallery.');
+                                                          print('File path is empty. Cannot save image to gallery.');
                                                         }
                                                       }
                                                       if (isDownloadComplete) {
-                                                        SchedulerBinding
-                                                            .instance
-                                                            ?.addPostFrameCallback(
+                                                        SchedulerBinding.instance?.addPostFrameCallback(
                                                           (_) {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
-                                                                content:
-                                                                    const Row(
+                                                                content: const Row(
                                                                   children: [
-                                                                    Icon(
-                                                                        Icons
-                                                                            .check_circle,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            173,
-                                                                            173,
-                                                                            255)),
-                                                                    SizedBox(
-                                                                        width:
-                                                                            8),
+                                                                    Icon(Icons.check_circle, color: Color.fromARGB(255, 173, 173, 255)),
+                                                                    SizedBox(width: 8),
                                                                     Text(
                                                                       'Image downloaded successfully!',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            "Arial",
-                                                                        fontSize:
-                                                                            16,
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontFamily: "Arial",
+                                                                        fontSize: 16,
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                duration:
-                                                                    Duration(
-                                                                        seconds:
-                                                                            6),
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
+                                                                duration: Duration(seconds: 6),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(8),
                                                                 ),
-                                                                backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        255,
-                                                                        129,
-                                                                        129,
-                                                                        230),
+                                                                backgroundColor: Color.fromARGB(255, 129, 129, 230),
                                                               ),
                                                             );
-                                                            isDownloadComplete =
-                                                                false;
+                                                            isDownloadComplete = false;
                                                           },
                                                         );
                                                       }
@@ -891,28 +754,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       //   }
                                                       // });
                                                     } else {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
+                                                      ScaffoldMessenger.of(context).showSnackBar(
                                                         const SnackBar(
-                                                          content: Text(
-                                                              'Failed to get external storage directory.'),
+                                                          content: Text('Failed to get external storage directory.'),
                                                         ),
                                                       );
                                                     }
                                                   },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Color.fromRGBO(
-                                                            152, 149, 198, 1),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Color.fromRGBO(152, 149, 198, 1),
                                                   ),
                                                   child: Text(
                                                     "Download",
                                                     style: GoogleFonts.poppins(
                                                       textStyle: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            255, 255, 255, 1),
+                                                        color: Color.fromRGBO(255, 255, 255, 1),
                                                         fontSize: 14,
                                                       ),
                                                     ),
@@ -935,28 +791,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                           text: TextSpan(
                                             children: [
                                               WidgetSpan(
-                                                alignment:
-                                                    PlaceholderAlignment.middle,
+                                                alignment: PlaceholderAlignment.middle,
                                                 child: SizedBox(
                                                   height: 30,
                                                   child: Center(
                                                     child: Text(
                                                       'I\'m MiMi, your AI assistant!\n',
-                                                      style:
-                                                          GoogleFonts.poppins(
+                                                      style: GoogleFonts.poppins(
                                                         fontSize: 16.0,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Color.fromRGBO(
-                                                            97, 42, 116, 1.0),
+                                                        fontWeight: FontWeight.w400,
+                                                        color: Color.fromRGBO(97, 42, 116, 1.0),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                               TextSpan(
-                                                text:
-                                                    'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n I\'m here to help you with all sorts of tasks and make your day a little brighter!  ',
+                                                text: 'Hi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n I\'m here to help you with all sorts of tasks and make your day a little brighter!  ',
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 14.0,
                                                   fontWeight: FontWeight.normal,
