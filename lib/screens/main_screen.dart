@@ -18,10 +18,23 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/authentication.dart';
+import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
+import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
+import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
+
+const double titleFontSize = 25;
+const Color titleColor = Colors.black;
 
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
 const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
+
+TextStyle titleStyle = GoogleFonts.bricolageGrotesque(
+  textStyle: const TextStyle(
+    fontSize: titleFontSize,
+    color: titleColor,
+  ),
+);
 
 class HomeScreen extends StatefulWidget {
   final String inputUsername;
@@ -287,24 +300,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   // hello text
                   Text(
                     "Hi, ${widget.inputUsername} !",
-                    style: GoogleFonts.bricolageGrotesque(
-                      textStyle: const TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
-                      ),
-                    ),
+                    style: titleStyle,
                   ),
                   const SizedBox(height: 5),
                   ShaderMask(
                     shaderCallback: (Rect bounds) {
-                      return LinearGradient(
+                      return const LinearGradient(
                         colors: [Color.fromRGBO(97, 42, 116, 1), Color.fromRGBO(232, 160, 137, 1)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ).createShader(bounds);
                     },
                     blendMode: BlendMode.srcIn,
-                    child: Text(
+                    child: const Text(
                       'Hello, welcome!',
                       style: TextStyle(fontSize: 20),
                     ),
@@ -316,46 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         speechToTextInstance.isListening ? stopListeningNow() : startListeningNow();
                       },
-                      child: speechToTextInstance.isListening
-                          ? Center(
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  isLoading
-                                      ? LottieBuilder.asset(
-                                          'images/ball_animation.json',
-                                          width: 200,
-                                          height: 200,
-                                        )
-                                      : Image.asset(
-                                          "images/ball.png",
-                                          height: 120,
-                                          width: 120,
-                                        ),
-                                  if (showCloseButton)
-                                    Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: Transform.scale(
-                                          scale: 0.75,
-                                          child: CloseButton(
-                                            color: Colors.grey,
-                                            onPressed: stopListeningNow,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            )
-                          : Image.asset(
-                              "images/ball.png",
-                              height: 120,
-                              width: 120,
-                            ),
+                      child: speechToTextInstance.isListening ? ListeningUI(isLoading: isLoading, showCloseButton: showCloseButton, stopListeningNow: stopListeningNow) : const NotListeningUI(),
                     ),
                   ),
 
@@ -365,47 +334,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 16.0, bottom: 32.0),
                       child: SizedBox(
-                        width: 40,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color.fromARGB(255, 242, 201, 249),
-                                Color.fromARGB(255, 255, 238, 252),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              if (!isLoading) {
-                                setState(
-                                  () {
-                                    speakAI = !speakAI;
-                                  },
-                                );
-                              }
-                              textToSpeechInstance.stop();
-                            },
-                            child: speakAI
-                                ? Image.asset(
-                                    "images/speaker_icon.png",
-                                    width: 20, //
-                                    height: 20,
-                                  )
-                                : Image.asset(
-                                    "images/mute_icon.png",
-                                    width: 20, //
-                                    height: 20,
-                                  ),
-                            shape: CircleBorder(),
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                            highlightElevation: 0,
-                          ),
+                        width: 50,
+                        child: SoundButton(
+                          speakAI: speakAI,
+                          isLoading: isLoading,
+                          onPressed: () {
+                            if (!isLoading) {
+                              setState(() {
+                                speakAI = !speakAI;
+                              });
+                            }
+                            textToSpeechInstance.stop();
+                          },
                         ),
                       ),
                     ),
@@ -418,22 +358,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           margin: const EdgeInsets.only(left: 13.0, right: 13.0),
                           decoration: BoxDecoration(
-                              // color: Colors.white,
+                            // color: Colors.white,
 
-                              borderRadius: BorderRadius.circular(30.0),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1.0,
-                              )
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Colors.grey.withOpacity(0.5),
-                              //     spreadRadius: 2,
-                              //     blurRadius: 5,
-                              //     offset: Offset(0, 3),
-                              //   ),
-                              // ],
-                              ),
+                            borderRadius: BorderRadius.circular(30.0),
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1.0,
+                            ),
+                          ),
                           child: Container(
                             margin: const EdgeInsets.only(left: 13.0, right: 13.0),
                             child: TextField(
@@ -455,22 +387,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       );
                                     }
 
-                                    // if (userInputTextEditingController
-                                    //     .text.isNotEmpty) {
-                                    //   setState(() {
-                                    //     answerTextFromAI =
-                                    //         "Hello, my name is MiMi. I am an AI assistant created by Amy and Hailey.";
-                                    //   });
-                                    //   if (speakFRIDAY == true) {
-                                    //     print("it's friday");
-                                    //     textToSpeechInstance
-                                    //         .speak(answerTextFromAI);
-                                    //   }
-                                    // } else {
-                                    //   sendRequestToOpenAI(
-                                    //       userInputTextEditingController.text
-                                    //           .toString());
-                                    // }
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(15),
@@ -632,127 +548,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           },
                                                         );
                                                       }
-
-                                                      // FlutterDownloader
-                                                      //     .registerCallback(
-                                                      //         (downloadId,
-                                                      //             status,
-                                                      //             progress) {
-                                                      //   print(
-                                                      //       'downloadId: $downloadId');
-                                                      //   print(
-                                                      //       'taskId: $taskId');
-                                                      //   if (downloadId ==
-                                                      //       taskId) {
-                                                      //     print(
-                                                      //         'status: $status');
-                                                      //     int ds =
-                                                      //         DownloadTaskStatus
-                                                      //             .complete
-                                                      //             .index;
-                                                      //     print(
-                                                      //         'DownloadTaskStatus: $ds');
-                                                      //     if (status ==
-                                                      //         DownloadTaskStatus
-                                                      //             .complete
-                                                      //             .index) {
-                                                      //       ScaffoldMessenger
-                                                      //               .of(context)
-                                                      //           .showSnackBar(
-                                                      //         SnackBar(
-                                                      //           content:
-                                                      //               const Row(
-                                                      //             children: [
-                                                      //               Icon(
-                                                      //                   Icons
-                                                      //                       .check_circle,
-                                                      //                   color: Colors
-                                                      //                       .green),
-                                                      //               SizedBox(
-                                                      //                   width:
-                                                      //                       8),
-                                                      //               Text(
-                                                      //                 'Image downloaded successfully!',
-                                                      //                 style:
-                                                      //                     TextStyle(
-                                                      //                   color: Colors
-                                                      //                       .white,
-                                                      //                   fontFamily:
-                                                      //                       "Arial",
-                                                      //                   fontSize:
-                                                      //                       16,
-                                                      //                 ),
-                                                      //               ),
-                                                      //             ],
-                                                      //           ),
-                                                      //           duration:
-                                                      //               Duration(
-                                                      //                   seconds:
-                                                      //                       3),
-                                                      //           shape:
-                                                      //               RoundedRectangleBorder(
-                                                      //             borderRadius:
-                                                      //                 BorderRadius
-                                                      //                     .circular(
-                                                      //                         8),
-                                                      //           ),
-                                                      //           backgroundColor:
-                                                      //               Colors.green[
-                                                      //                   700],
-                                                      //         ),
-                                                      //       );
-                                                      //     } else if (status ==
-                                                      //         DownloadTaskStatus
-                                                      //             .failed
-                                                      //             .index) {
-                                                      //       ScaffoldMessenger
-                                                      //               .of(context)
-                                                      //           .showSnackBar(
-                                                      //         SnackBar(
-                                                      //           content:
-                                                      //               const Row(
-                                                      //             children: [
-                                                      //               Icon(
-                                                      //                   Icons
-                                                      //                       .error,
-                                                      //                   color: Colors
-                                                      //                       .white),
-                                                      //               SizedBox(
-                                                      //                   width:
-                                                      //                       8),
-                                                      //               Text(
-                                                      //                 'Failed to download the image.',
-                                                      //                 style:
-                                                      //                     TextStyle(
-                                                      //                   color: Colors
-                                                      //                       .white,
-                                                      //                   fontFamily:
-                                                      //                       "Arial",
-                                                      //                   fontSize:
-                                                      //                       16,
-                                                      //                 ),
-                                                      //               ),
-                                                      //             ],
-                                                      //           ),
-                                                      //           duration:
-                                                      //               Duration(
-                                                      //                   seconds:
-                                                      //                       3),
-                                                      //           shape:
-                                                      //               RoundedRectangleBorder(
-                                                      //             borderRadius:
-                                                      //                 BorderRadius
-                                                      //                     .circular(
-                                                      //                         8),
-                                                      //           ),
-                                                      //           backgroundColor:
-                                                      //               Colors.red[
-                                                      //                   700],
-                                                      //         ),
-                                                      //       );
-                                                      //     }
-                                                      //   }
-                                                      // });
                                                     } else {
                                                       ScaffoldMessenger.of(context).showSnackBar(
                                                         const SnackBar(
