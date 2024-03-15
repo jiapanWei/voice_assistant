@@ -22,6 +22,7 @@ import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
 import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
+import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
 
 const double titleFontSize = 25;
 const Color titleColor = Colors.black;
@@ -128,6 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: snackBarColorPink,
       ),
     );
+  }
+
+  void handleTextSearch(String query) {
+    sendRequestToOpenAI(query);
   }
 
   Future<void> sendRequestToOpenAI(String userInput) async {
@@ -297,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // hello text
+                  // hi text
                   Text(
                     "Hi, ${widget.inputUsername} !",
                     style: titleStyle,
@@ -313,8 +318,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     blendMode: BlendMode.srcIn,
                     child: const Text(
-                      'Hello, welcome!',
-                      style: TextStyle(fontSize: 20),
+                      'say somthing',
+                      style: TextStyle(fontSize: 22),
                     ),
                   ),
 
@@ -328,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  // sound icon
+                  // sound button
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Padding(
@@ -352,66 +357,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   // text input field
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 13.0, right: 13.0),
-                          decoration: BoxDecoration(
-                            // color: Colors.white,
-
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 13.0, right: 13.0),
-                            child: TextField(
-                              controller: userInputTextEditingController,
-                              decoration: InputDecoration(
-                                hintText: "Search ...",
-                                hintStyle: GoogleFonts.poppins(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                border: InputBorder.none,
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    print("send user input");
-
-                                    if (userInputTextEditingController.text.isNotEmpty) {
-                                      sendRequestToOpenAI(
-                                        userInputTextEditingController.text.toString(),
-                                      );
-                                    }
-
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Image.asset(
-                                      "images/search_icon.png",
-                                      width: 24,
-                                      height: 24,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  TextInputField(onSearch: handleTextSearch),
                   const SizedBox(height: 10),
-
-                  // display result
-                  // modeOfAI == "chat" ? SelectableText(
-                  //   answerTextFromAI,
-                  // ) : modeOfAI == "image" && imageUrlFromAI.isNotEmpty ? Column() : Container()
 
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 13, vertical: 10.0),
