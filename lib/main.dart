@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:voice_assistant/screens/login.dart';
+import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

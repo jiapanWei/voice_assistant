@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:voice_assistant/screens/authentication.dart';
+import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 import 'package:voice_assistant/services/auth_service.dart';
-import 'package:voice_assistant/screens/auth_sign_in_providers.dart';
+import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
 
 class LoginScreen extends StatelessWidget {
   // Style for the transparent buttons
@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Register',
+                        'Sign up',
                         style: buttonPoppinsFontStyle(),
                       ),
                     ],

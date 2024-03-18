@@ -17,8 +17,8 @@ import 'package:text_to_speech/text_to_speech.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/authentication.dart';
-import 'package:voice_assistant/screens/login.dart';
+import 'package:voice_assistant/screens/authentications/auth_screen.dart';
+import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
 import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
@@ -55,7 +55,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
-  TextEditingController userInputTextEditingController = TextEditingController();
+  TextEditingController userInputTextEditingController =
+      TextEditingController();
 
   final SpeechToText speechToTextInstance = SpeechToText();
   String recordedAudioString = "";
@@ -104,7 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     print('onSpeechToTextResult called');
-    print('recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
+    print(
+        'recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
     print('recognitionResult.finalResult: ${recognitionResult.finalResult}');
     recordedAudioString = recognitionResult.recognizedWords;
 
@@ -171,7 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (modeOfAI == "chat") {
         setState(() {
-          answerTextFromAI = responseAvailable["choices"][0]["message"]["content"];
+          answerTextFromAI =
+              responseAvailable["choices"][0]["message"]["content"];
 
           print("AI Chatbot: ");
           print(answerTextFromAI);
@@ -280,7 +283,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(left: 13, top: 2, right: 13, bottom: 8),
+              padding:
+                  const EdgeInsets.only(left: 13, top: 2, right: 13, bottom: 8),
               child: Column(
                 children: [
                   // button row
@@ -330,7 +334,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
-                        colors: [Color.fromRGBO(97, 42, 116, 1), Color.fromRGBO(232, 160, 137, 1)],
+                        colors: [
+                          Color.fromRGBO(97, 42, 116, 1),
+                          Color.fromRGBO(232, 160, 137, 1)
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ).createShader(bounds);
@@ -355,9 +362,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        speechToTextInstance.isListening ? stopListeningNow() : startListeningNow();
+                        speechToTextInstance.isListening
+                            ? stopListeningNow()
+                            : startListeningNow();
                       },
-                      child: speechToTextInstance.isListening ? ListeningUI(isLoading: isLoading, showCloseButton: showCloseButton, stopListeningNow: stopListeningNow) : const NotListeningUI(),
+                      child: speechToTextInstance.isListening
+                          ? ListeningUI(
+                              isLoading: isLoading,
+                              showCloseButton: showCloseButton,
+                              stopListeningNow: stopListeningNow)
+                          : const NotListeningUI(),
                     ),
                   ),
 
@@ -389,7 +403,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 10),
 
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 13, vertical: 10.0),
                     child: Container(
                       margin: const EdgeInsets.only(left: 0, right: 0),
                       width: 450,
@@ -402,7 +417,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 1.0,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 16.0),
                       child: DisplayResult(
                         modeOfAI: modeOfAI,
                         answerTextFromAI: answerTextFromAI,
