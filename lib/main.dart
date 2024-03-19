@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.data != null) {
               return HomeScreen(
-                  inputUsername: snapshot.data!.displayName ?? 'there');
+                  username: snapshot.data!.displayName ?? 'there');
             }
             // return LoginScreen();
             return const SplashScreen();

@@ -34,7 +34,7 @@ class SuccessLoginScreen extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          "LOGGED IN SUCCESSFULLY\nWelcome, $username",
+          "Welcome, $username !\n\nEmail: ${user.email}\n\nClick the buttons on the left and right sides to return to the login page.",
           style: const TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),

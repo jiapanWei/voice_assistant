@@ -26,15 +26,15 @@ import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
 
-import 'package:voice_assistant/screens/auth_screen.dart';
 import 'package:voice_assistant/screens/login_screen.dart';
+import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String inputUsername;
+  final String username;
 
   const HomeScreen({
     super.key,
-    required this.inputUsername,
+    required this.username,
   });
 
   @override
@@ -235,19 +235,18 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(left: 16.0),
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: ()
-                // FirebaseAuth.instance.signOut();
-                // Navigator.pop(context);
-                async {
-              await FirebaseAuth.instance.signOut();
-              _navigatorKey.currentState?.pushReplacementNamed('/login');
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => LoginScreen(),
-              //   ),
-              // );
-            },
+            // onPressed: () async {
+            //   await FirebaseAuth.instance.signOut();
+            //   _navigatorKey.currentState?.pushReplacementNamed('/login');
+
+            onPressed: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SuccessLoginScreen(
+                  username: widget.username,
+                ),
+              ),
+            ),
           ),
         ),
         flexibleSpace: Container(
@@ -310,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   // hi text
                   Text(
-                    "Hi, ${widget.inputUsername} !",
+                    "Hi, ${widget.username} !",
                     style: bricolageGrotesqueFontStyle(),
                   ),
                   const SizedBox(height: 3),

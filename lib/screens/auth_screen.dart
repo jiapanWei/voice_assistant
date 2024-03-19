@@ -68,7 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (userCredentials.user != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => SuccessLoginScreen(username: username),
+            builder: (context) => HomeScreen(username: username),
           ),
         );
       }
@@ -212,7 +212,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                       horizontal: 6.0),
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(color: Colors.grey),
+                                      side:
+                                          const BorderSide(color: Colors.grey),
                                       minimumSize: const Size(300, 37),
                                     ),
                                     onPressed: _submit,
@@ -252,7 +253,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const PasswordResetScreen(),
+                                    builder: (context) =>
+                                        const PasswordResetScreen(),
                                   ),
                                 );
                               },
