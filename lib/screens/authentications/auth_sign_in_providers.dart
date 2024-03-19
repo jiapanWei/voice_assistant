@@ -10,7 +10,7 @@ ButtonStyle transparentButtonStyle() {
   );
 }
 
-TextStyle buttonPoppinsFontStyle() {
+TextStyle poppinsFontStyle() {
   return GoogleFonts.poppins(
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
@@ -49,7 +49,7 @@ Container googleAuthButton() {
         children: [
           Image.asset('images/google.png', height: 24.0, width: 24.0),
           const SizedBox(width: 10),
-          Text('Continue with Google', style: buttonPoppinsFontStyle()),
+          Text('Continue with Google', style: poppinsFontStyle()),
         ],
       ),
     ),
@@ -67,7 +67,7 @@ Container microsoftAuthButton() {
         children: [
           Image.asset('images/microsoft.png', height: 24.0, width: 24.0),
           const SizedBox(width: 10),
-          Text('Continue with Microsoft', style: buttonPoppinsFontStyle()),
+          Text('Continue with Microsoft', style: poppinsFontStyle()),
         ],
       ),
     ),

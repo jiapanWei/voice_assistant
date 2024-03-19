@@ -1,33 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
-import 'package:voice_assistant/services/auth_service.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
+import 'package:voice_assistant/screens/widgets/build_text_form_field.dart';
+import 'package:voice_assistant/screens/widgets/build_button.dart';
 
-final _firebaseAuth = FirebaseAuth.instance;
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
 
-  const AuthScreen({Key? key, required this.isNewUser}) : super(key: key);
+  const AuthScreen({required this.isNewUser});
 
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  State<AuthScreen> createState() {
+    return _AuthScreenState();
+  }
+}
+
+InputDecoration userInputDecoration(
+    {required String labelText, required IconData icon}) {
+  return InputDecoration(
+    prefixIcon: Icon(icon),
+    filled: true,
+    fillColor: Colors.grey[200],
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(105.0),
+      borderSide: BorderSide.none,
+    ),
+    labelText: labelText,
+    labelStyle: GoogleFonts.poppins(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: const Color.fromRGBO(119, 111, 105, 1.0),
+    ),
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+  );
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late bool _isLogin;
-  var _isAuthenticating = false;
-
   String _inputUsername = '';
   String _inputEmail = '';
   String _inputPassword = '';
@@ -38,106 +56,28 @@ class _AuthScreenState extends State<AuthScreen> {
     _isLogin = !widget.isNewUser;
   }
 
-  ButtonStyle transparentButtonStyle() {
-    return OutlinedButton.styleFrom(
-      side: const BorderSide(color: Colors.grey),
-      minimumSize: const Size(300, 37),
-    );
-  }
-
-  TextStyle buttonPoppinsFontStyle() {
-    return GoogleFonts.poppins(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-      color: const Color.fromRGBO(119, 111, 105, 1.0),
-    );
-  }
-
-  Widget buildInputField(String label, TextEditingController controller,
-      String? Function(String?) validator,
-      {bool isObscure = false}) {
-    final focusNode = FocusNode();
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 12.0),
-            child: Text(
-              label,
-              style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-            ),
-          ),
-          TextFormField(
-            focusNode: focusNode,
-            controller: controller,
-            obscureText: isObscure,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 12.0),
-            ),
-            validator: validator,
-            onChanged: (value) {
-              if (label == 'Username') {
-                _inputUsername = value!;
-              } else if (label == 'Email') {
-                _inputEmail = value!;
-              } else if (label == 'Password') {
-                _inputPassword = value!;
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _submit() async {
-    final isValid = _formKey.currentState!.validate();
-
-    if (!isValid) {
-      // show error message ...
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
 
     _formKey.currentState!.save();
 
+    UserCredential userCredentials;
+
     try {
-      setState(() {
-        _isAuthenticating = true;
-      });
       if (_isLogin) {
-        final userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
+        userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
             email: _inputEmail, password: _inputPassword);
       } else {
-        final userCredentials =
-            await _firebaseAuth.createUserWithEmailAndPassword(
-                email: _inputEmail, password: _inputPassword);
+        userCredentials = await _firebaseAuth.createUserWithEmailAndPassword(
+            email: _inputEmail, password: _inputPassword);
+      }
 
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredentials.user!.uid)
-            .set({
-          'username': _inputUsername,
-        });
-
-        if (userCredentials.user != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(
-                inputUsername: _inputUsername,
-              ),
-            ),
-          );
-        }
+      if (userCredentials.user != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => SuccessLoginScreen()),
+        );
       }
     } on FirebaseAuthException catch (error) {
       if (error.code == 'email-already-in-use') {
@@ -149,9 +89,6 @@ class _AuthScreenState extends State<AuthScreen> {
           content: Text(error.message ?? 'Authentication failed.'),
         ),
       );
-      setState(() {
-        _isAuthenticating = false;
-      });
     }
   }
 
@@ -161,9 +98,9 @@ class _AuthScreenState extends State<AuthScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: EdgeInsets.only(left: 16.0),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
                 context,
@@ -174,121 +111,154 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       ),
       backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _isLogin ? SizedBox(height: 80) : SizedBox(height: 50),
-            Card(
-              color: Colors.white,
-              margin: const EdgeInsets.only(
-                  top: 0, bottom: 20, left: 20, right: 20),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            // Login/Sign up Text Lable
-                            child: Text(
-                              _isLogin ? 'Login' : 'Sign up',
-                              style: GoogleFonts.poppins(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w500,
-                              ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                color: Colors.white,
+                margin: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _isLogin ? 'Login' : 'Create an account',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                        ),
+                          const SizedBox(height: 15),
 
-                        // Username
-                        if (!_isLogin)
-                          buildInputField(
-                            'Username',
-                            _usernameController,
-                            (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please enter a valid username.';
+                          // Username
+                          if (!_isLogin)
+                            TextFormField(
+                              decoration: userInputDecoration(
+                                  labelText: 'Username', icon: Icons.person),
+                              keyboardType: TextInputType.text,
+                              autocorrect: false,
+                              textCapitalization: TextCapitalization.none,
+                              obscureText: false,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter a valid username.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _inputUsername = value!;
+                              },
+                            ),
+
+                          const SizedBox(height: 15),
+                          // Email
+                          TextFormField(
+                            decoration: userInputDecoration(
+                                labelText: 'Email', icon: Icons.email),
+                            keyboardType: TextInputType.emailAddress,
+                            autocorrect: false,
+                            textCapitalization: TextCapitalization.none,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  !value.contains('@')) {
+                                return 'Please enter a valid email address.';
                               }
                               return null;
                             },
+                            onSaved: (value) {
+                              _inputEmail = value!;
+                            },
                           ),
-                        const SizedBox(height: 10),
 
-                        // Email
-                        buildInputField(
-                          'Email',
-                          _emailController,
-                          (value) {
-                            if (value == null ||
-                                value.trim().isEmpty ||
-                                !value.contains('@')) {
-                              return 'Please enter a valid email address.';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
-
-                        // Password
-                        buildInputField(
-                          'Password',
-                          _passwordController,
-                          (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                value.trim().length < 6) {
-                              return 'Password must be at least 6 characters long.';
-                            }
-                            return null;
-                          },
-                          isObscure: true,
-                        ),
-                      ],
+                          const SizedBox(height: 15),
+                          // Password
+                          TextFormField(
+                            decoration: userInputDecoration(
+                                labelText: 'password', icon: Icons.password),
+                            autocorrect: false,
+                            textCapitalization: TextCapitalization.none,
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  value.trim().length < 6) {
+                                return 'Password must be at least 6 characters long.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _inputPassword = value!;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 6.0),
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Colors.grey),
+                                      minimumSize: const Size(300, 37),
+                                    ),
+                                    onPressed: _submit,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          _isLogin ? 'Login' : 'Signup',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: const Color.fromRGBO(
+                                                119, 111, 105, 1.0),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLogin = !_isLogin;
+                              });
+                            },
+                            child: Text(
+                              _isLogin
+                                  ? "Don't have an account? Sign Up"
+                                  : 'Already have an account? Login',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            // Login/Sign up button
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: OutlinedButton(
-                style: transparentButtonStyle(),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                        inputUsername: _inputUsername,
-                      ),
-                    ),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      _isLogin ? 'Login' : 'Sign up',
-                      style: buttonPoppinsFontStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            dividerLine(),
-            googleAuthButton(),
-            const SizedBox(height: 5),
-            microsoftAuthButton(),
-          ],
+              dividerLine(),
+              googleAuthButton(),
+              const SizedBox(height: 5),
+              microsoftAuthButton(),
+            ],
+          ),
         ),
       ),
     );
