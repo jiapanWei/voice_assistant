@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voice_assistant/screens/splash_screen.dart';
 import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
               return HomeScreen(
                   inputUsername: snapshot.data!.displayName ?? 'there');
             }
-            return LoginScreen();
+            // return LoginScreen();
+            return SplashScreen();
           } else {
             return const Scaffold(
               // Add a loading spinner

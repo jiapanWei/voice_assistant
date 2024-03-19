@@ -50,6 +50,7 @@ dependencies:
   flutter_web_auth: ^0.3.0
   envied: ^0.5.3
   envied_generator: ^0.5.3
+  slide_to_act: ^2.0.2
 
 dev_dependencies:
   flutter_test:
