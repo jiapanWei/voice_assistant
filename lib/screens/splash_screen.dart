@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:slide_to_act/slide_to_act.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/login_screen.dart';
 
-const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
-const headingPoppinsFontStyle = TextStyle(
-    fontSize: 20.0, fontWeight: FontWeight.w400, color: Color(0xFF776F69));
-
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -34,22 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 200,
                 child: Image.asset('images/ball.png'),
               ),
-              ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return const LinearGradient(
-                    colors: [
-                      Color.fromRGBO(97, 42, 116, 1),
-                      Color.fromRGBO(232, 160, 137, 1)
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.srcIn,
-                child: const Text(
-                  'Hello, welcome!',
-                  style: TextStyle(fontSize: 24),
-                ),
+              gradientText(
+                text: 'Hello, welcome!',
+                style: const TextStyle(fontSize: 24),
               ),
               const SizedBox(height: 120),
               Padding(
@@ -63,14 +47,15 @@ class _SplashScreenState extends State<SplashScreen> {
                     color: Colors.pink,
                   ),
                   text: 'Get Started!',
-                  textStyle: headingPoppinsFontStyle,
+                  textStyle: headingPoppinsFontStyle(),
                   onSubmit: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       ),
                     );
+                    return null;
                   },
                 ),
               ),

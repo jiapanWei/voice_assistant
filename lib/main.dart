@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:voice_assistant/screens/splash_screen.dart';
-import 'package:voice_assistant/screens/login_screen.dart';
-import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:voice_assistant/screens/splash_screen.dart';
+import 'package:voice_assistant/screens/login_screen.dart';
+import 'package:voice_assistant/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Virtual Assistant Application', //TODO: remove?
+      title: 'Virtual Assistant Application',
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
                   inputUsername: snapshot.data!.displayName ?? 'there');
             }
             // return LoginScreen();
-            return SplashScreen();
+            return const SplashScreen();
           } else {
             return const Scaffold(
               // Add a loading spinner

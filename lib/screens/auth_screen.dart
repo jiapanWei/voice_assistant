@@ -1,28 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/authentications/password_reset_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
+
+import 'package:voice_assistant/screens/widgets/styles.dart';
+import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 
 import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:voice_assistant/screens/login_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
-import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
 
-  const AuthScreen({required this.isNewUser});
-
-  TextStyle poppinsFontStyle() {
-    return GoogleFonts.poppins(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-      color: const Color.fromRGBO(119, 111, 105, 1.0),
-    );
-  }
+  const AuthScreen({super.key, required this.isNewUser});
 
   @override
   State<AuthScreen> createState() {
@@ -111,21 +103,21 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
+        backgroundColor: backgroundColorPink,
         leading: Padding(
-          padding: EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           ),
         ),
       ),
-      backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
+      backgroundColor: backgroundColorPink,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -220,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                       horizontal: 6.0),
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      side: BorderSide(color: Colors.grey),
+                                      side: const BorderSide(color: Colors.grey),
                                       minimumSize: const Size(300, 37),
                                     ),
                                     onPressed: _submit,
@@ -249,7 +241,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               _isLogin
                                   ? "Don't have an account? Sign Up"
                                   : 'Already have an account? Login',
-                              style: poppinsFontStyle(),
+                              style: sidenotePoppinsFontStyle(),
                             ),
                           ),
 
@@ -260,13 +252,13 @@ class _AuthScreenState extends State<AuthScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => PasswordResetScreen(),
+                                    builder: (context) => const PasswordResetScreen(),
                                   ),
                                 );
                               },
                               child: Text(
                                 'Forgot Password?',
-                                style: poppinsFontStyle(),
+                                style: sidenotePoppinsFontStyle(),
                               ),
                             ),
                         ],

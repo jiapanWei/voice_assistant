@@ -9,10 +9,10 @@ class DisplayResultImage extends StatefulWidget {
   final Function(String) getPublicDirectoryPath;
 
   const DisplayResultImage({
-    Key? key,
+    super.key,
     required this.imageUrlFromAI,
     required this.getPublicDirectoryPath,
-  }) : super(key: key);
+  });
 
   @override
   _DisplayResultImageState createState() => _DisplayResultImageState();
@@ -43,7 +43,8 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                 final imageName = 'downloaded_image.jpg'; //
                 // final picturesDirectoryPath =
                 //     await getExternalStorageDirectoryPath();
-                final publicDirectoryPath = await widget.getPublicDirectoryPath('Pictures');
+                final publicDirectoryPath =
+                    await widget.getPublicDirectoryPath('Pictures');
 
                 if (publicDirectoryPath != null) {
                   final taskId = await FlutterDownloader.enqueue(
@@ -54,7 +55,11 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                     fileName: imageName,
                   );
 
-                  final downloadTask = await FlutterDownloader.loadTasksWithRawQuery(query: "SELECT * FROM task WHERE task_id='" + taskId! + "'");
+                  final downloadTask =
+                      await FlutterDownloader.loadTasksWithRawQuery(
+                          query: "SELECT * FROM task WHERE task_id='" +
+                              taskId! +
+                              "'");
                   if (downloadTask != null && downloadTask.isNotEmpty) {
                     final taskDetails = downloadTask.first;
                     final savedDir = taskDetails.savedDir ?? '';
@@ -68,7 +73,8 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                         isDownloadComplete = true;
                       });
                     } else {
-                      print('File path is empty. Cannot save image to gallery.');
+                      print(
+                          'File path is empty. Cannot save image to gallery.');
                     }
                   }
                   if (isDownloadComplete) {
@@ -78,7 +84,8 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                           SnackBar(
                             content: const Row(
                               children: [
-                                Icon(Icons.check_circle, color: Color.fromARGB(255, 173, 173, 255)),
+                                Icon(Icons.check_circle,
+                                    color: Color.fromARGB(255, 173, 173, 255)),
                                 SizedBox(width: 8),
                                 Text(
                                   'Image downloaded successfully!',
@@ -90,11 +97,12 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                                 ),
                               ],
                             ),
-                            duration: Duration(seconds: 6),
+                            duration: const Duration(seconds: 6),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            backgroundColor: Color.fromARGB(255, 129, 129, 230),
+                            backgroundColor:
+                                const Color.fromARGB(255, 129, 129, 230),
                           ),
                         );
                         isDownloadComplete = false;
@@ -104,18 +112,19 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Failed to get external storage directory.'),
+                      content:
+                          Text('Failed to get external storage directory.'),
                     ),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(152, 149, 198, 1),
+                backgroundColor: const Color.fromRGBO(152, 149, 198, 1),
               ),
               child: Text(
                 "Download",
                 style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontSize: 14,
                   ),

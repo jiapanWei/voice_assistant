@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:voice_assistant/screens/widgets/styles.dart';
+
 InputDecoration userInputDecoration(
     {required String labelText, required IconData icon}) {
   return InputDecoration(
@@ -12,11 +14,7 @@ InputDecoration userInputDecoration(
       borderSide: BorderSide.none,
     ),
     labelText: labelText,
-    labelStyle: GoogleFonts.poppins(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-      color: const Color.fromRGBO(119, 111, 105, 1.0),
-    ),
+    labelStyle: poppinsFontStyle(),
     floatingLabelBehavior: FloatingLabelBehavior.never,
   );
 }

@@ -12,13 +12,13 @@ class DisplayResult extends StatelessWidget {
   final Function(String) getPublicDirectoryPath;
 
   const DisplayResult({
-    Key? key,
+    super.key,
     required this.modeOfAI,
     required this.answerTextFromAI,
     required this.imageUrlFromAI,
     required this.isDownloadComplete,
     required this.getPublicDirectoryPath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class DisplayResult extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: Color.fromARGB(255, 101, 100, 100),
+                      color: const Color.fromARGB(255, 101, 100, 100),
                     ),
                   )
                 : RichText(

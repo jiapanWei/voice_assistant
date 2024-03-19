@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/services/auth_service.dart';
-
-ButtonStyle transparentButtonStyle() {
-  return OutlinedButton.styleFrom(
-    side: const BorderSide(color: Colors.grey),
-    minimumSize: const Size(300, 37),
-  );
-}
-
-TextStyle poppinsFontStyle() {
-  return GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(119, 111, 105, 1.0),
-  );
-}
 
 Container dividerLine() {
   return Container(

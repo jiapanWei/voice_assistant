@@ -17,8 +17,8 @@ import 'package:text_to_speech/text_to_speech.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/auth_screen.dart';
-import 'package:voice_assistant/screens/login_screen.dart';
+
+import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
 import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
@@ -26,19 +26,8 @@ import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
 
-const double titleFontSize = 16;
-const Color titleColor = Colors.black;
-
-const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
-const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
-
-TextStyle titleStyle = GoogleFonts.bricolageGrotesque(
-  textStyle: const TextStyle(
-    fontSize: 16,
-    color: Colors.black,
-    fontWeight: FontWeight.w400,
-  ),
-);
+import 'package:voice_assistant/screens/auth_screen.dart';
+import 'package:voice_assistant/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String inputUsername;
@@ -322,38 +311,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   // hi text
                   Text(
                     "Hi, ${widget.inputUsername} !",
-                    style: GoogleFonts.bricolageGrotesque(
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    style: bricolageGrotesqueFontStyle(),
                   ),
                   const SizedBox(height: 3),
-                  ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(97, 42, 116, 1),
-                          Color.fromRGBO(232, 160, 137, 1)
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(bounds);
-                    },
-                    blendMode: BlendMode.srcIn,
-                    child: Text(
-                      'Say Something',
-                      style: GoogleFonts.bricolageGrotesque(
-                        textStyle: const TextStyle(
-                          fontSize: 23,
-                          color: titleColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
+
+                  gradientText(
+                    text: 'Say Something',
+                    style: headingBricolageGrotesqueFontStyle(),
                   ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -410,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 450,
                       // height: 400,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 239, 252, 1.0),
+                        color: backgroundColorPink,
                         borderRadius: BorderRadius.circular(25.0),
                         border: Border.all(
                           color: Colors.grey,

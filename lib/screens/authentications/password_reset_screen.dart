@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 
 class PasswordResetScreen extends StatefulWidget {
-  const PasswordResetScreen({Key? key}) : super(key: key);
+  const PasswordResetScreen({super.key});
 
   @override
   State<PasswordResetScreen> createState() => _PasswordResetScreenState();
@@ -13,17 +14,6 @@ class PasswordResetScreen extends StatefulWidget {
 class _PasswordResetScreenState extends State<PasswordResetScreen> {
   String _inputEmail = '';
   final _formKey = GlobalKey<FormState>();
-
-  ButtonStyle transparentButtonStyle = OutlinedButton.styleFrom(
-    side: const BorderSide(color: Colors.grey),
-    minimumSize: const Size(300, 37),
-  );
-
-  TextStyle poppinsFontStyle = GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(119, 111, 105, 1.0),
-  );
 
   Future<void> passwordReset() async {
     String title = '';
@@ -72,10 +62,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
+        backgroundColor: backgroundColorPink,
         title: const Text('Reset Password'),
       ),
-      backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
+      backgroundColor: backgroundColorPink,
       body: Form(
         key: _formKey,
         child: Column(
@@ -86,7 +76,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               child: Text(
                 'Enter your email address, and we will send you a link to reset your password.',
                 textAlign: TextAlign.center,
-                style: poppinsFontStyle,
+                style: poppinsFontStyle(),
               ),
             ),
             const SizedBox(height: 18.0),
@@ -120,10 +110,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                   passwordReset();
                 }
               },
-              style: transparentButtonStyle,
+              style: transparentButtonStyle(),
               child: Text(
                 'Reset Password',
-                style: poppinsFontStyle,
+                style: poppinsFontStyle(),
               ),
             ),
           ],

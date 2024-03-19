@@ -27,7 +27,7 @@ class DisplayResultRichText extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(97, 42, 116, 1.0),
+                    color: const Color.fromRGBO(97, 42, 116, 1.0),
                   ),
                 ),
               ),
