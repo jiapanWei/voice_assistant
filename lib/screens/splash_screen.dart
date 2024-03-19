@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:voice_assistant/screens/start_screen.dart';
+import 'package:voice_assistant/screens/login_screen.dart';
 
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
 const headingPoppinsFontStyle = TextStyle(

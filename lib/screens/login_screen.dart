@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:voice_assistant/screens/authentications/auth_screen.dart';
+import 'package:voice_assistant/screens/auth_screen.dart';
 import 'package:voice_assistant/services/auth_service.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
 

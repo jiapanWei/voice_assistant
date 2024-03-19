@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/splash_screen.dart';
-import 'package:voice_assistant/screens/start_screen.dart';
-import 'package:voice_assistant/screens/main_screen.dart';
+import 'package:voice_assistant/screens/login_screen.dart';
+import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'firebase_options.dart';

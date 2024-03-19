@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/authentications/password_reset_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
-import 'package:voice_assistant/screens/main_screen.dart';
-import 'package:voice_assistant/screens/start_screen.dart';
+import 'package:voice_assistant/screens/home_screen.dart';
+import 'package:voice_assistant/screens/login_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
 import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 
