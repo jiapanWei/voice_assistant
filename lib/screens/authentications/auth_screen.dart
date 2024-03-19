@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:voice_assistant/screens/authentications/password_reset_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
 import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
-import 'package:voice_assistant/screens/widgets/build_text_form_field.dart';
-import 'package:voice_assistant/screens/widgets/build_button.dart';
+import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -16,30 +16,18 @@ class AuthScreen extends StatefulWidget {
 
   const AuthScreen({required this.isNewUser});
 
+  TextStyle poppinsFontStyle() {
+    return GoogleFonts.poppins(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      color: const Color.fromRGBO(119, 111, 105, 1.0),
+    );
+  }
+
   @override
   State<AuthScreen> createState() {
     return _AuthScreenState();
   }
-}
-
-InputDecoration userInputDecoration(
-    {required String labelText, required IconData icon}) {
-  return InputDecoration(
-    prefixIcon: Icon(icon),
-    filled: true,
-    fillColor: Colors.grey[200],
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(105.0),
-      borderSide: BorderSide.none,
-    ),
-    labelText: labelText,
-    labelStyle: GoogleFonts.poppins(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-      color: const Color.fromRGBO(119, 111, 105, 1.0),
-    ),
-    floatingLabelBehavior: FloatingLabelBehavior.never,
-  );
 }
 
 class _AuthScreenState extends State<AuthScreen> {
@@ -129,10 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           Text(
                             _isLogin ? 'Login' : 'Create an account',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: poppinsFontStyle(),
                           ),
                           const SizedBox(height: 15),
 
@@ -155,8 +140,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                 _inputUsername = value!;
                               },
                             ),
-
                           const SizedBox(height: 15),
+
                           // Email
                           TextFormField(
                             decoration: userInputDecoration(
@@ -177,8 +162,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               _inputEmail = value!;
                             },
                           ),
-
                           const SizedBox(height: 15),
+
                           // Password
                           TextFormField(
                             decoration: userInputDecoration(
@@ -199,6 +184,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           const SizedBox(height: 15),
+
                           Row(
                             children: [
                               Expanded(
@@ -217,13 +203,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                       children: [
                                         Text(
                                           _isLogin ? 'Login' : 'Signup',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color.fromRGBO(
-                                                119, 111, 105, 1.0),
-                                          ),
-                                        )
+                                          style: poppinsFontStyle(),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -241,12 +222,26 @@ class _AuthScreenState extends State<AuthScreen> {
                               _isLogin
                                   ? "Don't have an account? Sign Up"
                                   : 'Already have an account? Login',
-                              style: GoogleFonts.poppins(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: poppinsFontStyle(),
                             ),
                           ),
+
+                          //Forgot Password
+                          if (_isLogin)
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PasswordResetScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Forgot Password?',
+                                style: poppinsFontStyle(),
+                              ),
+                            ),
                         ],
                       ),
                     ),
