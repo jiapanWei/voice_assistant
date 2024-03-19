@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/start_screen.dart';
 
 class SuccessLoginScreen extends StatelessWidget {
-  SuccessLoginScreen({super.key});
+  final String username;
+
+  SuccessLoginScreen({required this.username});
 
   final user = FirebaseAuth.instance.currentUser!;
 
-// sign user out method
   Future<void> signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
@@ -31,10 +32,11 @@ class SuccessLoginScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          "LOGGED IN SUCCESSFULLY",
-          style: TextStyle(fontSize: 20),
+          "LOGGED IN SUCCESSFULLY\nWelcome, $username",
+          style: const TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
         ),
       ),
     );

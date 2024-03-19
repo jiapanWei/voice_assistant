@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_assistant/screens/authentications/password_reset_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
@@ -8,8 +10,6 @@ import 'package:voice_assistant/screens/main_screen.dart';
 import 'package:voice_assistant/screens/start_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
 import 'package:voice_assistant/screens/widgets/input_decoration.dart';
-
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
@@ -31,6 +31,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late bool _isLogin;
@@ -52,19 +53,31 @@ class _AuthScreenState extends State<AuthScreen> {
     _formKey.currentState!.save();
 
     UserCredential userCredentials;
+    String username;
 
     try {
       if (_isLogin) {
         userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
             email: _inputEmail, password: _inputPassword);
+
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user?.uid)
+            .get();
+        username = userDoc['username'];
       } else {
         userCredentials = await _firebaseAuth.createUserWithEmailAndPassword(
             email: _inputEmail, password: _inputPassword);
+
+        addUserDetails(_inputUsername, _inputEmail);
+        username = _inputUsername;
       }
 
       if (userCredentials.user != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => SuccessLoginScreen()),
+          MaterialPageRoute(
+            builder: (context) => SuccessLoginScreen(username: username),
+          ),
         );
       }
     } on FirebaseAuthException catch (error) {
@@ -78,6 +91,20 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       );
     }
+  }
+
+  Future addUserDetails(String usrname, String email) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid;
+    users
+        .doc(uid)
+        .set({
+          'username': usrname,
+          'email': email,
+        })
+        .then((value) => print('User Added'))
+        .catchError((error) => print('Failed to add user: $error'));
   }
 
   @override
