@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:voice_assistant/screens/widgets/avatar.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
@@ -15,9 +16,11 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('users');
+  final avatarSelected = AvatarSelected();
 
   Future<void> editField(String field) async {
     String newField = '';
+
     await showDialog(
       context: context,
       builder: (context) {
@@ -67,17 +70,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
+            final avatarUrl = userData['avatar'] as String?;
 
             return ListView(
               children: [
                 const SizedBox(height: 50),
-                const Icon(Icons.person, size: 70, color: Colors.black),
-                Text(
-                  currentUser.email!,
-                  textAlign: TextAlign.center,
-                  style: titleStyle(),
+                if (avatarUrl != null)
+                  Image.network(avatarUrl, width: 70, height: 70)
+                else
+                  const Icon(Icons.person, size: 70, color: Colors.black),
+                Container(
+                  margin:
+                      const EdgeInsets.only(top: 30.0, left: 30.0, right: 30.0),
+
+                  // Upload avatar
+                  child: OutlinedButton(
+                    style: transparentButtonStyle(),
+                    onPressed: () => avatarSelected.pickImage(
+                      currentUser,
+                      userCollection,
+                    ),
+                    child: const Text('Upload Avatar'),
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
+
+                // Profile Header
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
                   child: Column(
