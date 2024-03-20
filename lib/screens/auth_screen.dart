@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/authentications/auth_services.dart';
 import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
-import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
+import 'package:voice_assistant/screens/success_login_screen.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/input_decoration.dart';

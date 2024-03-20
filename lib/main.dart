@@ -17,7 +17,7 @@ void main() async {
   await FlutterDownloader.initialize(
     debug: true,
   );
-  await FirebaseAuth.instance.signOut(); // user every time the app starts
+  await FirebaseAuth.instance.signOut();
   runApp(const MyApp());
 }
 

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
