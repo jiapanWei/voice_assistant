@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:voice_assistant/screens/authentications/auth_services.dart';
 import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
-import 'package:voice_assistant/screens/success_login_screen.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/input_decoration.dart';
@@ -11,6 +11,7 @@ import 'package:voice_assistant/screens/widgets/input_decoration.dart';
 import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:voice_assistant/screens/login_screen.dart';
 import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
+import 'package:voice_assistant/screens/success_login_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
@@ -66,6 +67,15 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         );
       }
+      // Notify user of successful login or account creation
+      Fluttertoast.showToast(
+          msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
     } on FirebaseAuthException catch (error) {
       String errorMessage = 'Authentication failed.';
       ScaffoldMessenger.of(context).clearSnackBars();

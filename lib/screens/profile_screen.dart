@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:voice_assistant/screens/authentications/change_password.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
+
+const successEmoji = '\u2705';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('users');
   final changeUserAvatar = ChangeUserAvatar();
-  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late String newPassword;
 
@@ -27,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (newField.trim().length > 0) {
       await userCollection.doc(currentUser.uid).update({field: newField});
+      //// The second way to notifu user of successful update
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('$field updated successfully')),
       // );
@@ -35,11 +39,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Update Successful'),
-            content: Text('$field updated successfully'),
+            title: const Text('Success $successEmoji'),
+            content: Text('$field updated successfully.'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -212,15 +216,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: () => editField('username'),
               ),
 
-              // Change password
               ProfileTextBoxStyle(
                 text: '********',
                 section: 'Password',
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) => ChangePassword(),
-                  );
+                onPressed: () async {
+                  final bool passwordChanged = await showDialog<bool>(
+                        context: context,
+                        builder: (BuildContext context) => ChangePassword(),
+                      ) ??
+                      false;
+
+                  if (passwordChanged) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Success $successEmoji'),
+                          content: const Text('Password updated successfully.'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  //// The third way to notifu user of successful update
+                  // if (passwordChanged) {
+                  //   Fluttertoast.showToast(
+                  //       msg: 'Password updated successfully',
+                  //       toastLength: Toast.LENGTH_SHORT,
+                  //       gravity: ToastGravity.TOP,
+                  //       timeInSecForIosWeb: 1,
+                  //       backgroundColor: Colors.green,
+                  //       textColor: Colors.white,
+                  //       fontSize: 16.0);
+                  // }
                 },
               ),
             ],

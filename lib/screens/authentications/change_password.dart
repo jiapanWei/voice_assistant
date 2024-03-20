@@ -9,17 +9,20 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   String newPassword = '';
 
-  Future<void> changePassword(String newPassword) async {
+  Future<bool> changePassword(String newPassword) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print('No user is signed in.');
-      return;
+      return false;
     }
-    await user.updatePassword(newPassword).then((_) {
+    try {
+      await user.updatePassword(newPassword);
       print('Password changed successfully');
-    }).catchError((error) {
+      return true;
+    } catch (error) {
       print('Password can\'t be changed' + error.toString());
-    });
+      return false;
+    }
   }
 
   @override
@@ -28,17 +31,23 @@ class _ChangePasswordState extends State<ChangePassword> {
       title: const Text('Change Password'),
       content: TextField(
         onChanged: (value) {
-          newPassword = value; // Update the new password
+          newPassword = value;
         },
         decoration: const InputDecoration(hintText: "Enter new password"),
-        obscureText: true, // Use secure text for passwords.
+        obscureText: true,
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Submit'),
+          child: const Text('Cancel'),
           onPressed: () {
-            changePassword(newPassword);
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: const Text('Submit'),
+          onPressed: () async {
+            bool passwordChanged = await changePassword(newPassword);
+            Navigator.of(context).pop(passwordChanged);
           },
         ),
       ],
