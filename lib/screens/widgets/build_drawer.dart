@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/profile_screen.dart';
-
-import 'package:voice_assistant/screens/widgets/styles.dart';
+import 'package:voice_assistant/screens/storyboard_screen.dart';
 
 import 'package:voice_assistant/screens/splash_screen.dart';
 import 'package:voice_assistant/screens/home_screen.dart';
-import 'package:voice_assistant/screens/success_login_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   final String username;
@@ -31,37 +29,36 @@ class AppDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.home),
-                  title: const Text('H O M E'),
+                  title: const Text('Home'),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
+                        builder: (context) => const HomeScreen(),
                       ),
                     );
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.person),
-                  title: const Text('P R O F I L E'),
+                  title: const Text('My Profile'),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
+                        builder: (context) => const ProfileScreen(),
                       ),
                     );
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text('T E S T I N G'),
+                  leading: const Icon(Icons.help),
+                  title: const Text('Help & Support'),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            SuccessLoginScreen(username: username),
+                        builder: (context) => const StoryboardScreen(),
                       ),
                     );
                   },
@@ -73,7 +70,7 @@ class AppDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20.0, bottom: 40.0),
             child: ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('L O G O U T'),
+              title: const Text('Log out'),
               onTap: () {
                 Navigator.push(
                   context,

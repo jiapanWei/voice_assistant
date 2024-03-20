@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:voice_assistant/screens/widgets/avatar.dart';
 
+import 'package:voice_assistant/screens/authentications/change_password.dart';
+import 'package:voice_assistant/screens/widgets/avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
 
@@ -17,13 +18,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('users');
   final avatarSelected = AvatarSelected();
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late String newPassword;
 
   Future<void> editField(String field) async {
-    String newField = '';
+    String newField = await _showEditFieldDialog(field);
 
-    await showDialog(
+    if (newField.trim().length > 0) {
+      await userCollection.doc(currentUser.uid).update({field: newField});
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('$field updated successfully')),
+      // );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Update Successful'),
+            content: Text('$field updated successfully'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future _showEditFieldDialog(String field) {
+    return showDialog(
       context: context,
       builder: (context) {
+        String newField = '';
         return AlertDialog(
           title: Text('Edit $field'),
           content: TextField(
@@ -48,83 +80,167 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
     );
-
-    if (newField.trim().length > 0) {
-      await userCollection.doc(currentUser.uid).update({field: newField});
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // key: scaffoldKey,
       backgroundColor: backgroundColorPink,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('My Profile'),
         backgroundColor: backgroundColorPink,
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
-            final avatarUrl = userData['avatar'] as String?;
+      body: _buildBody(),
+    );
+  }
 
-            return ListView(
-              children: [
-                const SizedBox(height: 50),
-                if (avatarUrl != null)
-                  Image.network(avatarUrl, width: 70, height: 70)
-                else
-                  const Icon(Icons.person, size: 70, color: Colors.black),
-                Container(
-                  margin:
-                      const EdgeInsets.only(top: 30.0, left: 30.0, right: 30.0),
+  Widget _buildBody() {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: userCollection.doc(currentUser.uid).snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildProfile(snapshot.data!);
+        } else if (snapshot.hasError) {
+          return _buildErrorUI(snapshot.error);
+        } else {
+          return _buildLoadingUI();
+        }
+      },
+    );
+  }
 
-                  // Upload avatar
+  Widget _buildProfile(DocumentSnapshot snapshot) {
+    final userData = snapshot.data() as Map<String, dynamic>;
+    final avatarUrl = userData['avatar'] as String?;
+
+    return ListView(
+      children: [
+        const SizedBox(height: 50.0),
+        if (avatarUrl != null)
+          Image.network(avatarUrl, width: 120.0, height: 120.0)
+        else
+          Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('images/avatar.png'),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+
+        // Buttons container
+        Container(
+          margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Change avatar button
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 15.0),
                   child: OutlinedButton(
                     style: transparentButtonStyle(),
-                    onPressed: () => avatarSelected.pickImage(
-                      currentUser,
-                      userCollection,
+                    onPressed: () =>
+                        avatarSelected.pickImage(currentUser, userCollection),
+                    child: Text(
+                      'Change',
+                      style: poppinsFontStyle(),
                     ),
-                    child: const Text('Upload Avatar'),
                   ),
                 ),
-                const SizedBox(height: 50),
-
-                // Profile Header
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('My Profile', style: sidenotePoppinsFontStyle()),
-
-                      // Edit username
-                      TextBoxStyle(
-                        text: userData['username'],
-                        section: 'Username',
-                        onPressed: () => editField('username'),
-                      ),
-                    ],
+              ),
+              // Reset avatar button
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 30.0),
+                  child: OutlinedButton(
+                    style: transparentButtonStyle(),
+                    onPressed: () async {
+                      try {
+                        await userCollection
+                            .doc(currentUser.uid)
+                            .update({'avatar': null});
+                      } catch (e) {
+                        print('Error resetting avatar: $e');
+                      }
+                    },
+                    child: Text(
+                      'Reset',
+                      style: poppinsFontStyle(),
+                    ),
                   ),
                 ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error loading profile ${snapshot.error}'),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 50),
+
+        // Profile Header
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'My Profile',
+                      style: headingPoppinsFontStyle(),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Edit email
+              TextBoxStyle(
+                text: userData['email'],
+                section: 'Email',
+                onPressed: null,
+              ),
+
+              // Edit username
+              TextBoxStyle(
+                text: userData['username'],
+                section: 'Username',
+                onPressed: () => editField('username'),
+              ),
+
+              // Change password
+              TextBoxStyle(
+                text: '********',
+                section: 'Password',
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ChangePassword();
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildErrorUI(Object? error) {
+    return Center(
+      child: Text('Error loading profile $error'),
+    );
+  }
+
+  Widget _buildLoadingUI() {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

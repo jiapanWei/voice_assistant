@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     color: Colors.pink,
                   ),
                   text: 'Get Started!',
-                  textStyle: headingPoppinsFontStyle(),
+                  textStyle: poppinsFontStyle().copyWith(fontSize: 20.0),
                   onSubmit: () {
                     Navigator.push(
                       context,

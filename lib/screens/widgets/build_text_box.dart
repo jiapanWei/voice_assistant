@@ -17,11 +17,11 @@ class TextBoxStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(25.0),
         color: Colors.white,
       ),
-      padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
-      margin: const EdgeInsets.only(left: 10.0, right: 40.0, top: 20.0),
+      padding: const EdgeInsets.only(left: 15.0, bottom: 8.0),
+      margin: const EdgeInsets.only(left: 8.0, right: 30.0, top: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,15 +30,21 @@ class TextBoxStyle extends StatelessWidget {
             children: [
               Text(
                 section,
-                style: titleStyle(),
+                style: poppinsFontStyle().copyWith(fontSize: 14.0),
               ),
-              IconButton(
-                onPressed: onPressed,
-                icon: Icon(
-                  Icons.settings,
-                  color: Colors.grey[400],
+              if (onPressed != null)
+                IconButton(
+                  onPressed: onPressed,
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.grey[400],
+                  ),
+                )
+              else
+                const SizedBox(
+                  width: 48.0,
+                  height: 48.0,
                 ),
-              )
             ],
           ),
           Text(text)

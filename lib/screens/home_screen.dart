@@ -18,6 +18,7 @@ import 'package:text_to_speech/text_to_speech.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_assistant/screens/widgets/avatar.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
@@ -46,8 +47,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final currentUser = FirebaseAuth.instance.currentUser!;
+  final avatarSelected = AvatarSelected();
 
   TextEditingController userInputTextEditingController =
       TextEditingController();
@@ -120,12 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             color: Colors.black,
             fontFamily: "Arial",
-            fontSize: 16,
+            fontSize: 16.0,
           ),
         ),
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         backgroundColor: snackBarColorPink,
       ),
@@ -243,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (snapshot.hasData) {
           final userData = snapshot.data!.data() as Map<String, dynamic>;
           final username = userData['username'] ?? 'N/A';
+          final avatarUrl = userData['avatar'] as String?;
 
           return Scaffold(
             appBar: AppBar(
@@ -258,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               leading: Builder(
                 builder: (context) => IconButton(
-                  icon: Icon(Icons.menu),
+                  icon: const Icon(Icons.menu),
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 ),
               ),
@@ -270,11 +273,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               elevation: 0,
-              actions: const [
+              actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: 16.0),
+                  padding: const EdgeInsets.only(right: 16.0),
                   child: CircleAvatar(
-                    backgroundImage: AssetImage('images/avatar.png'),
+                    backgroundImage: avatarUrl != null
+                        ? NetworkImage(avatarUrl)
+                        : const AssetImage('images/avatar.png')
+                            as ImageProvider<Object>?,
                   ),
                 ),
               ],
@@ -288,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 13, top: 2, right: 13, bottom: 8),
+                        left: 13.0, top: 2.0, right: 13.0, bottom: 8.0),
                     child: Column(
                       children: [
                         // button row
@@ -321,14 +327,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 24.0),
 
                         // hi text
                         Text(
-                          "Hi, ${username} !",
+                          "Hi, $username !",
                           style: bricolageGrotesqueFontStyle(),
                         ),
-                        const SizedBox(height: 3),
+                        const SizedBox(height: 3.0),
 
                         gradientText(
                           text: 'Say Something',
@@ -336,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         const SizedBox(
-                          height: 20,
+                          height: 20.0,
                         ),
 
                         // voice assistant
@@ -363,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.only(
                                 right: 16.0, bottom: 32.0),
                             child: SizedBox(
-                              width: 50,
+                              width: 50.0,
                               child: SoundButton(
                                 speakAI: speakAI,
                                 isLoading: isLoading,
@@ -382,14 +388,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         // text input field
                         TextInputField(onSearch: handleTextSearch),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 10.0),
 
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 10.0),
+                              horizontal: 13.0, vertical: 10.0),
                           child: Container(
                             margin: const EdgeInsets.only(left: 0, right: 0),
-                            width: 450,
+                            width: 450.0,
                             // height: 400,
                             decoration: BoxDecoration(
                               color: backgroundColorPink,
