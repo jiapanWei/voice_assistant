@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
-class TextBoxStyle extends StatelessWidget {
+class ProfileTextBoxStyle extends StatelessWidget {
   final String text;
   final String section;
   final void Function()? onPressed;
 
-  const TextBoxStyle(
+  const ProfileTextBoxStyle(
       {super.key,
       required this.text,
       required this.section,

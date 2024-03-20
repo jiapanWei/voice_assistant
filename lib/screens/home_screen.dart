@@ -18,7 +18,7 @@ import 'package:text_to_speech/text_to_speech.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/widgets/avatar.dart';
+import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
@@ -49,7 +49,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final currentUser = FirebaseAuth.instance.currentUser!;
-  final avatarSelected = AvatarSelected();
+  final changeUserAvatar = ChangeUserAvatar();
 
   TextEditingController userInputTextEditingController =
       TextEditingController();

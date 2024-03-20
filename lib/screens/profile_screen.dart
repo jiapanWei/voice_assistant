@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:voice_assistant/screens/authentications/change_password.dart';
-import 'package:voice_assistant/screens/widgets/avatar.dart';
+import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
 
@@ -17,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('users');
-  final avatarSelected = AvatarSelected();
+  final changeUserAvatar = ChangeUserAvatar();
   // final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late String newPassword;
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: OutlinedButton(
                     style: transparentButtonStyle(),
                     onPressed: () =>
-                        avatarSelected.pickImage(currentUser, userCollection),
+                        changeUserAvatar.pickImage(currentUser, userCollection),
                     child: Text(
                       'Change',
                       style: poppinsFontStyle(),
@@ -198,30 +198,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-              // Edit email
-              TextBoxStyle(
+              // Do not allow editing of email
+              ProfileTextBoxStyle(
                 text: userData['email'],
                 section: 'Email',
                 onPressed: null,
               ),
 
               // Edit username
-              TextBoxStyle(
+              ProfileTextBoxStyle(
                 text: userData['username'],
                 section: 'Username',
                 onPressed: () => editField('username'),
               ),
 
               // Change password
-              TextBoxStyle(
+              ProfileTextBoxStyle(
                 text: '********',
                 section: 'Password',
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return ChangePassword();
-                    },
+                    builder: (BuildContext context) => ChangePassword(),
                   );
                 },
               ),
