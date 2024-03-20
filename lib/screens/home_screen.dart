@@ -1,6 +1,7 @@
 import "dart:convert";
 import "dart:io";
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 
 import "package:flutter_downloader/flutter_downloader.dart";
@@ -31,12 +32,14 @@ import 'package:voice_assistant/screens/login_screen.dart';
 import 'package:voice_assistant/screens/success_login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String username;
+  // final String username;
 
-  const HomeScreen({
-    super.key,
-    required this.username,
-  });
+  // const HomeScreen({
+  //   super.key,
+  //   required this.username,
+  // });
+
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -44,6 +47,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   TextEditingController userInputTextEditingController =
       TextEditingController();
@@ -230,177 +234,199 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // leading: Padding(
-        //   padding: const EdgeInsets.only(left: 16.0),
-        //   child: IconButton(
-        //     icon: const Icon(Icons.arrow_back),
-        //     // onPressed: () async {
-        //     //   await FirebaseAuth.instance.signOut();
-        //     //   _navigatorKey.currentState?.pushReplacementNamed('/login');
-        //   ),
-        // ),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          final username = userData['username'] ?? 'N/A';
 
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
+          return Scaffold(
+            appBar: AppBar(
+              // leading: Padding(
+              //   padding: const EdgeInsets.only(left: 16.0),
+              //   child: IconButton(
+              //     icon: const Icon(Icons.arrow_back),
+              //     // onPressed: () async {
+              //     //   await FirebaseAuth.instance.signOut();
+              //     //   _navigatorKey.currentState?.pushReplacementNamed('/login');
+              //   ),
+              // ),
 
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            color: backgroundColorPink,
-          ),
-        ),
-
-        elevation: 0,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              backgroundImage: AssetImage('images/avatar.png'),
-            ),
-          ),
-        ],
-      ),
-      drawer: AppDrawer(username: widget.username),
-      body: Stack(
-        children: [
-          Container(
-            color: backgroundColorPink,
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 13, top: 2, right: 13, bottom: 8),
-              child: Column(
-                children: [
-                  // button row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ModeButtonBuilder.buildModeButton(
-                        "chat",
-                        "chats",
-                        "images/chats_icon.png",
-                        "images/white_chats_icon.png",
-                        modeOfAI,
-                        (mode) {
-                          setState(() {
-                            modeOfAI = mode;
-                          });
-                        },
-                      ),
-                      ModeButtonBuilder.buildModeButton(
-                        "images",
-                        "images",
-                        "images/images_icon.png",
-                        "images/white_images_icon.png",
-                        modeOfAI,
-                        (mode) {
-                          setState(() {
-                            modeOfAI = mode;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // hi text
-                  Text(
-                    "Hi, ${widget.username} !",
-                    style: bricolageGrotesqueFontStyle(),
-                  ),
-                  const SizedBox(height: 3),
-
-                  gradientText(
-                    text: 'Say Something',
-                    style: headingBricolageGrotesqueFontStyle(),
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  // voice assistant
-                  Center(
-                    child: InkWell(
-                      onTap: () {
-                        speechToTextInstance.isListening
-                            ? stopListeningNow()
-                            : startListeningNow();
-                      },
-                      child: speechToTextInstance.isListening
-                          ? ListeningUI(
-                              isLoading: isLoading,
-                              showCloseButton: showCloseButton,
-                              stopListeningNow: stopListeningNow)
-                          : const NotListeningUI(),
-                    ),
-                  ),
-
-                  // sound button
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0, bottom: 32.0),
-                      child: SizedBox(
-                        width: 50,
-                        child: SoundButton(
-                          speakAI: speakAI,
-                          isLoading: isLoading,
-                          onPressed: () {
-                            if (!isLoading) {
-                              setState(() {
-                                speakAI = !speakAI;
-                              });
-                            }
-                            textToSpeechInstance.stop();
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // text input field
-                  TextInputField(onSearch: handleTextSearch),
-                  const SizedBox(height: 10),
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 13, vertical: 10.0),
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 0, right: 0),
-                      width: 450,
-                      // height: 400,
-                      decoration: BoxDecoration(
-                        color: backgroundColorPink,
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
-                      child: DisplayResult(
-                        modeOfAI: modeOfAI,
-                        answerTextFromAI: answerTextFromAI,
-                        imageUrlFromAI: imageUrlFromAI,
-                        isDownloadComplete: isDownloadComplete,
-                        getPublicDirectoryPath: getPublicDirectoryPath,
-                      ),
-                    ),
-                  )
-                ],
+              leading: Builder(
+                builder: (context) => IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
               ),
+
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  color: backgroundColorPink,
+                ),
+              ),
+
+              elevation: 0,
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('images/avatar.png'),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
+            drawer: AppDrawer(username: username),
+            body: Stack(
+              children: [
+                Container(
+                  color: backgroundColorPink,
+                ),
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 13, top: 2, right: 13, bottom: 8),
+                    child: Column(
+                      children: [
+                        // button row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ModeButtonBuilder.buildModeButton(
+                              "chat",
+                              "chats",
+                              "images/chats_icon.png",
+                              "images/white_chats_icon.png",
+                              modeOfAI,
+                              (mode) {
+                                setState(() {
+                                  modeOfAI = mode;
+                                });
+                              },
+                            ),
+                            ModeButtonBuilder.buildModeButton(
+                              "images",
+                              "images",
+                              "images/images_icon.png",
+                              "images/white_images_icon.png",
+                              modeOfAI,
+                              (mode) {
+                                setState(() {
+                                  modeOfAI = mode;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+
+                        // hi text
+                        Text(
+                          "Hi, ${username} !",
+                          style: bricolageGrotesqueFontStyle(),
+                        ),
+                        const SizedBox(height: 3),
+
+                        gradientText(
+                          text: 'Say Something',
+                          style: headingBricolageGrotesqueFontStyle(),
+                        ),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        // voice assistant
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              speechToTextInstance.isListening
+                                  ? stopListeningNow()
+                                  : startListeningNow();
+                            },
+                            child: speechToTextInstance.isListening
+                                ? ListeningUI(
+                                    isLoading: isLoading,
+                                    showCloseButton: showCloseButton,
+                                    stopListeningNow: stopListeningNow)
+                                : const NotListeningUI(),
+                          ),
+                        ),
+
+                        // sound button
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 16.0, bottom: 32.0),
+                            child: SizedBox(
+                              width: 50,
+                              child: SoundButton(
+                                speakAI: speakAI,
+                                isLoading: isLoading,
+                                onPressed: () {
+                                  if (!isLoading) {
+                                    setState(() {
+                                      speakAI = !speakAI;
+                                    });
+                                  }
+                                  textToSpeechInstance.stop();
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // text input field
+                        TextInputField(onSearch: handleTextSearch),
+                        const SizedBox(height: 10),
+
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 10.0),
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 0, right: 0),
+                            width: 450,
+                            // height: 400,
+                            decoration: BoxDecoration(
+                              color: backgroundColorPink,
+                              borderRadius: BorderRadius.circular(25.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 16.0),
+                            child: DisplayResult(
+                              modeOfAI: modeOfAI,
+                              answerTextFromAI: answerTextFromAI,
+                              imageUrlFromAI: imageUrlFromAI,
+                              isDownloadComplete: isDownloadComplete,
+                              getPublicDirectoryPath: getPublicDirectoryPath,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error loading user data ${snapshot.error}'),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

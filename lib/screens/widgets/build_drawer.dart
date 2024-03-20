@@ -36,7 +36,7 @@ class AppDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeScreen(username: username),
+                        builder: (context) => HomeScreen(),
                       ),
                     );
                   },

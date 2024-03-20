@@ -34,8 +34,7 @@ class MyApp extends StatelessWidget {
         builder: (ctx, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.data != null) {
-              return HomeScreen(
-                  username: snapshot.data!.displayName ?? 'there');
+              return HomeScreen();
             }
             // return LoginScreen();
             return const SplashScreen();
