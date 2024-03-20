@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/authentications/password_reset_screen.dart';
+import 'package:voice_assistant/screens/authentications/auth_services.dart';
+import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
@@ -13,7 +14,6 @@ import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.d
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;
-
   const AuthScreen({super.key, required this.isNewUser});
 
   @override
@@ -23,7 +23,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late bool _isLogin;
@@ -37,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
     _isLogin = !widget.isNewUser;
   }
 
-  Future<void> _submit() async {
+  Future<void> _submitAuthForm() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -49,19 +49,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
     try {
       if (_isLogin) {
-        userCredentials = await _firebaseAuth.signInWithEmailAndPassword(
-            email: _inputEmail, password: _inputPassword);
-
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredentials.user?.uid)
-            .get();
-        username = userDoc['username'];
+        userCredentials =
+            await _authService.signIn(_inputEmail, _inputPassword);
+        username = await _authService.getUsername(userCredentials);
       } else {
-        userCredentials = await _firebaseAuth.createUserWithEmailAndPassword(
-            email: _inputEmail, password: _inputPassword);
-
-        addUserDetails(_inputUsername, _inputEmail);
+        userCredentials =
+            await _authService.signUp(_inputEmail, _inputPassword);
+        _authService.addUserDetails(_inputUsername, _inputEmail);
         username = _inputUsername;
       }
 
@@ -73,30 +67,14 @@ class _AuthScreenState extends State<AuthScreen> {
         );
       }
     } on FirebaseAuthException catch (error) {
-      if (error.code == 'email-already-in-use') {
-        // ...
-      }
+      String errorMessage = 'Authentication failed.';
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error.message ?? 'Authentication failed.'),
+          content: Text(error.message ?? errorMessage),
         ),
       );
     }
-  }
-
-  Future addUserDetails(String usrname, String email) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String uid = auth.currentUser!.uid;
-    users
-        .doc(uid)
-        .set({
-          'username': usrname,
-          'email': email,
-        })
-        .then((value) => print('User Added'))
-        .catchError((error) => print('Failed to add user: $error'));
   }
 
   @override
@@ -216,7 +194,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                           const BorderSide(color: Colors.grey),
                                       minimumSize: const Size(300, 37),
                                     ),
-                                    onPressed: _submit,
+                                    onPressed: _submitAuthForm,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
