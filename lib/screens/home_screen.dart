@@ -26,6 +26,7 @@ import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
 
+import 'package:voice_assistant/screens/widgets/build_drawer.dart';
 import 'package:voice_assistant/screens/login_screen.dart';
 import 'package:voice_assistant/screens/authentications/success_login_screen.dart';
 
@@ -231,29 +232,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            // onPressed: () async {
-            //   await FirebaseAuth.instance.signOut();
-            //   _navigatorKey.currentState?.pushReplacementNamed('/login');
+        // leading: Padding(
+        //   padding: const EdgeInsets.only(left: 16.0),
+        //   child: IconButton(
+        //     icon: const Icon(Icons.arrow_back),
+        //     // onPressed: () async {
+        //     //   await FirebaseAuth.instance.signOut();
+        //     //   _navigatorKey.currentState?.pushReplacementNamed('/login');
+        //   ),
+        // ),
 
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SuccessLoginScreen(
-                  username: widget.username,
-                ),
-              ),
-            ),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             color: backgroundColorPink,
           ),
         ),
+
         elevation: 0,
         actions: const [
           Padding(
@@ -264,6 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: AppDrawer(username: widget.username),
       body: Stack(
         children: [
           Container(
