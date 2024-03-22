@@ -21,7 +21,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _inputEmail);
-      title = 'Success';
+      title = 'Success $successEmoji';
       content = 'Password reset email sent.';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

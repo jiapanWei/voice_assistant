@@ -3,6 +3,8 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:logger/logger.dart';
+import 'package:voice_assistant/screens/widgets/logging.dart';
 
 class DisplayResultImage extends StatefulWidget {
   final String imageUrlFromAI;
@@ -20,6 +22,7 @@ class DisplayResultImage extends StatefulWidget {
 
 class DisplayResultImageState extends State<DisplayResultImage> {
   bool isDownloadComplete = false;
+  final Logger logger = getLogger();
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +71,12 @@ class DisplayResultImageState extends State<DisplayResultImage> {
 
                     if (filePath.isNotEmpty) {
                       final result = await ImageGallerySaver.saveFile(filePath);
-                      print('Image saved to gallery: $result');
+                      logger.i('Image saved to gallery: $result');
                       setState(() {
                         isDownloadComplete = true;
                       });
                     } else {
-                      print(
+                      logger.i(
                           'File path is empty. Cannot save image to gallery.');
                     }
                   }

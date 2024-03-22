@@ -29,19 +29,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> editField(String field) async {
     String newField = await _showEditFieldDialog(field);
 
-    if (newField.trim().length > 0) {
+    if (newField.trim().isNotEmpty) {
       await userCollection.doc(currentUser.uid).update({field: newField});
       //// The second way to notify user of successful update
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('$field updated successfully')),
       // );
-
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Success $successEmoji'),
             content: Text('$field updated successfully.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Field cannot be empty.'),
             actions: <Widget>[
               TextButton(
                 child: const Text('OK'),

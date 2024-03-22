@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 
 import "package:flutter_downloader/flutter_downloader.dart";
 import "package:image_gallery_saver/image_gallery_saver.dart";
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
@@ -19,6 +20,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
+import 'package:voice_assistant/screens/widgets/logging.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
@@ -47,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final currentUser = FirebaseAuth.instance.currentUser!;
   final changeUserAvatar = ChangeUserAvatar();
+  final Logger logger = getLogger();
 
   TextEditingController userInputTextEditingController =
       TextEditingController();
@@ -80,11 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
       showCloseButton = true;
     });
 
-    print('Before: ${speechToTextInstance.isListening}');
+    logger.i('Before: ${speechToTextInstance.isListening}');
 
     await speechToTextInstance.listen(onResult: onSpeechToTextResult);
 
-    print('After: ${speechToTextInstance.isListening}');
+    logger.i('After: ${speechToTextInstance.isListening}');
   }
 
   void stopListeningNow() async {
@@ -97,18 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
-    print('onSpeechToTextResult called');
-    print(
+    logger.i('onSpeechToTextResult called');
+    logger.i(
         'recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
-    print('recognitionResult.finalResult: ${recognitionResult.finalResult}');
+    logger.i('recognitionResult.finalResult: ${recognitionResult.finalResult}');
     recordedAudioString = recognitionResult.recognizedWords;
 
     if (!speechToTextInstance.isListening) {
       sendRequestToOpenAI(recordedAudioString);
     }
 
-    print("Speech Result:");
-    print(recordedAudioString);
+    logger.i("Speech Result:");
+    logger.i(recordedAudioString);
   }
 
   void showSendingRequestMessage() {
@@ -169,8 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
           answerTextFromAI =
               responseAvailable["choices"][0]["message"]["content"];
 
-          print("AI Chatbot: ");
-          print(answerTextFromAI);
+          logger.i("AI Chatbot: ");
+          logger.i(answerTextFromAI);
 
           if (speakAI == true) {
             textToSpeechInstance.speak(answerTextFromAI);
@@ -181,8 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           imageUrlFromAI = responseAvailable["data"][0]["url"];
 
-          print("Generated Dale E Image Url: ");
-          print(imageUrlFromAI);
+          logger.i("Generated Dale E Image Url: ");
+          logger.i(imageUrlFromAI);
         });
       }
     }).catchError((errorMessage) {
@@ -206,8 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (publicDirectoryPath != null) {
       publicDirectoryPath = '$publicDirectoryPath/$directoryName';
-      print("public dir" + publicDirectoryPath);
-      print(publicDirectoryPath);
+      logger.i("public dir" + publicDirectoryPath);
+      logger.i(publicDirectoryPath);
 
       await Directory(publicDirectoryPath).create(recursive: true);
     }

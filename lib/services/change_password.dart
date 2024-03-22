@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:voice_assistant/screens/widgets/logging.dart';
-import 'package:voice_assistant/screens/widgets/styles.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -18,8 +17,8 @@ class ChangePasswordState extends State<ChangePassword> {
   Future<bool> changePassword(String newPassword) async {
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (newPassword.length < 6) {
-      logger.w('Password must be at least 6 characters long.');
+    if (newPassword.trim().length < 6) {
+      logger.i('Password must be at least 6 characters long.');
       return false;
     }
 

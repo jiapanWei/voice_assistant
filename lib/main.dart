@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:voice_assistant/screens/splash_screen.dart';
 import 'package:voice_assistant/screens/home_screen.dart';
-import 'package:voice_assistant/screens/authentications/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
