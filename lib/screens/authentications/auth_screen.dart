@@ -58,11 +58,13 @@ class _AuthScreenState extends State<AuthScreen> {
       }
 
       if (userCredentials.user != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ),
-        );
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        }
       }
       // Notify user of successful login or account creation
       Fluttertoast.showToast(
@@ -75,12 +77,14 @@ class _AuthScreenState extends State<AuthScreen> {
           fontSize: 16.0);
     } on FirebaseAuthException catch (error) {
       String errorMessage = 'Authentication failed.';
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? errorMessage),
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? errorMessage),
+          ),
+        );
+      }
     }
   }
 
