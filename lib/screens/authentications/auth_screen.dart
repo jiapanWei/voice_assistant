@@ -1,17 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:voice_assistant/screens/authentications/auth_services.dart';
-import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
 
+import 'package:voice_assistant/screens/widgets/build_divider_line.dart';
+import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
+import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/screens/widgets/input_decoration.dart';
+import 'package:voice_assistant/screens/widgets/build_input_decoration.dart';
 
+import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
+import 'package:voice_assistant/screens/authentications/login_screen.dart';
 import 'package:voice_assistant/screens/home_screen.dart';
-import 'package:voice_assistant/screens/login_screen.dart';
-import 'package:voice_assistant/screens/authentications/auth_sign_in_providers.dart';
-import 'package:voice_assistant/screens/success_login_screen.dart';
+import 'package:voice_assistant/services/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool isNewUser;

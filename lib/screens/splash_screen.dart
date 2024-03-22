@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/screens/login_screen.dart';
+import 'package:voice_assistant/screens/authentications/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
