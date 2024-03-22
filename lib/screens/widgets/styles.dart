@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const successEmoji = '\u2705';
+
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
 const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
 

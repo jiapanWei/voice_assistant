@@ -10,8 +10,6 @@ import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
 
-const successEmoji = '\u2705';
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -230,7 +228,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ) ??
                       false;
 
-                  if (passwordChanged) {
+                  if (!passwordChanged) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text(
+                              'Password must be at least 6 characters long.'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -249,6 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     );
                   }
+
                   //// The third way to notify user of successful update
                   // if (passwordChanged) {
                   //   Fluttertoast.showToast(
