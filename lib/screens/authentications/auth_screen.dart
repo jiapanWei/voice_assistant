@@ -46,18 +46,15 @@ class _AuthScreenState extends State<AuthScreen> {
     _formKey.currentState!.save();
 
     UserCredential userCredentials;
-    String username;
 
     try {
       if (_isLogin) {
         userCredentials =
             await _authService.signIn(_inputEmail, _inputPassword);
-        username = await _authService.getUsername(userCredentials);
       } else {
         userCredentials =
             await _authService.signUp(_inputEmail, _inputPassword);
         _authService.addUserDetails(_inputUsername, _inputEmail);
-        username = _inputUsername;
       }
 
       if (userCredentials.user != null) {
