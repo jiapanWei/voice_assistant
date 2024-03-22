@@ -7,8 +7,8 @@ import 'package:voice_assistant/screens/widgets/styles.dart';
 
 import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
 
   void _navigateToAuthScreen(BuildContext context, bool isNewUser) {
     Navigator.push(

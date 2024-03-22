@@ -16,10 +16,7 @@ ShaderMask gradientText({
   return ShaderMask(
     shaderCallback: (Rect bounds) {
       return const LinearGradient(
-        colors: [
-          Color.fromRGBO(97, 42, 116, 1),
-          Color.fromRGBO(232, 160, 137, 1)
-        ],
+        colors: [Color.fromRGBO(97, 42, 116, 1), Color.fromRGBO(232, 160, 137, 1)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(bounds);
@@ -29,6 +26,22 @@ ShaderMask gradientText({
       text,
       style: style,
     ),
+  );
+}
+
+TextStyle typewriterGraientStyle(double fontsize) {
+  return TextStyle(
+    fontSize:fontsize,
+    foreground: Paint()
+      ..shader = const LinearGradient(
+        colors:  [Color.fromRGBO(97, 42, 116, 1),
+          Color.fromRGBO(97, 42, 116, 1),
+          Color.fromRGBO(244, 169, 144, 1),
+          
+        ],
+        begin: Alignment.centerLeft,
+        end: Alignment.topRight,
+      ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
   );
 }
 

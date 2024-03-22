@@ -10,8 +10,7 @@ import 'package:voice_assistant/screens/widgets/logging.dart';
 class ChangeUserAvatar {
   final Logger logger = getLogger();
 
-  Future<void> pickImage(
-      User currentUser, CollectionReference userCollection) async {
+  Future<void> pickImage(User currentUser, CollectionReference userCollection) async {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -24,13 +23,9 @@ class ChangeUserAvatar {
     }
   }
 
-  Future<void> uploadImage(
-      XFile image, User currentUser, CollectionReference userCollection) async {
+  Future<void> uploadImage(XFile image, User currentUser, CollectionReference userCollection) async {
     try {
-      final storageReference = FirebaseStorage.instance
-          .ref()
-          .child('user_avatars')
-          .child('${currentUser.uid}.jpg');
+      final storageReference = FirebaseStorage.instance.ref().child('user_avatars').child('${currentUser.uid}.jpg');
 
       await storageReference.putFile(File(image.path));
 
