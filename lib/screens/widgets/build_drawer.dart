@@ -8,7 +8,7 @@ import 'package:voice_assistant/screens/home_screen.dart';
 class AppDrawer extends StatelessWidget {
   final String username;
 
-  AppDrawer({super.key, required this.username});
+  const AppDrawer({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {

@@ -7,10 +7,10 @@ class TextInputField extends StatefulWidget {
   const TextInputField({super.key, required this.onSearch});
 
   @override
-  _TextInputFieldState createState() => _TextInputFieldState();
+  TextInputFieldState createState() => TextInputFieldState();
 }
 
-class _TextInputFieldState extends State<TextInputField> {
+class TextInputFieldState extends State<TextInputField> {
   final TextEditingController _controller = TextEditingController();
 
   @override

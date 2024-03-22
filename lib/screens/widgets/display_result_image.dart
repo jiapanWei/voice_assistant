@@ -15,10 +15,10 @@ class DisplayResultImage extends StatefulWidget {
   });
 
   @override
-  _DisplayResultImageState createState() => _DisplayResultImageState();
+  DisplayResultImageState createState() => DisplayResultImageState();
 }
 
-class _DisplayResultImageState extends State<DisplayResultImage> {
+class DisplayResultImageState extends State<DisplayResultImage> {
   bool isDownloadComplete = false;
 
   @override

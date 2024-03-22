@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
+
   @override
-  _ChangePasswordState createState() => _ChangePasswordState();
+  ChangePasswordState createState() => ChangePasswordState();
 }
 
-class _ChangePasswordState extends State<ChangePassword> {
+class ChangePasswordState extends State<ChangePassword> {
   String newPassword = '';
 
   Future<bool> changePassword(String newPassword) async {
@@ -20,7 +22,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       print('Password changed successfully');
       return true;
     } catch (error) {
-      print('Password can\'t be changed' + error.toString());
+      print('Password can\'t be changed$error');
       return false;
     }
   }

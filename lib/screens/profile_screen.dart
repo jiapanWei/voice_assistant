@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:voice_assistant/services/change_password.dart';
 
@@ -31,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (newField.trim().length > 0) {
       await userCollection.doc(currentUser.uid).update({field: newField});
-      //// The second way to notifu user of successful update
+      //// The second way to notify user of successful update
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('$field updated successfully')),
       // );
@@ -223,7 +222,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: () async {
                   final bool passwordChanged = await showDialog<bool>(
                         context: context,
-                        builder: (BuildContext context) => ChangePassword(),
+                        builder: (BuildContext context) =>
+                            const ChangePassword(),
                       ) ??
                       false;
 
@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     );
                   }
-                  //// The third way to notifu user of successful update
+                  //// The third way to notify user of successful update
                   // if (passwordChanged) {
                   //   Fluttertoast.showToast(
                   //       msg: 'Password updated successfully',

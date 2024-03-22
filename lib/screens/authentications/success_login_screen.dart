@@ -5,7 +5,7 @@ import 'package:voice_assistant/screens/authentications/login_screen.dart';
 class SuccessLoginScreen extends StatelessWidget {
   final String username;
 
-  SuccessLoginScreen({required this.username});
+  SuccessLoginScreen({super.key, required this.username});
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -14,7 +14,7 @@ class SuccessLoginScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => const LoginScreen(),
       ),
     );
   }

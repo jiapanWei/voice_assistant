@@ -7,10 +7,10 @@ class DisplayResultRichText extends StatelessWidget {
   final Color color;
 
   const DisplayResultRichText({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

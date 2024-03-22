@@ -9,8 +9,8 @@ class ChangeUserAvatar {
   Future<void> pickImage(
       User currentUser, CollectionReference userCollection) async {
     try {
-      final ImagePicker _picker = ImagePicker();
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
       if (image != null) {
         await uploadImage(image, currentUser, userCollection);
