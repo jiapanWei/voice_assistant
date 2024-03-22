@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_input_decoration.dart';
@@ -49,7 +50,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AuthScreen(isNewUser: false)),
+              );
                 },
                 child: const Text('OK'),
               ),
