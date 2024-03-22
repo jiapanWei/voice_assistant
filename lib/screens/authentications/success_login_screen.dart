@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
 
 class SuccessLoginScreen extends StatelessWidget {

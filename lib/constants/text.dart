@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 // OnBoarding Screen Text
 const String onBoardingTitle1 = "Meet Your Personal AI Assistant";
 const String onBoardingTitle2 = "Unleash the Power of Voice";

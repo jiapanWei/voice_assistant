@@ -3,25 +3,17 @@ import "dart:io";
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
-
 import "package:flutter_downloader/flutter_downloader.dart";
-import "package:image_gallery_saver/image_gallery_saver.dart";
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
-
 import "package:speech_to_text/speech_recognition_result.dart";
 import "package:speech_to_text/speech_to_text.dart";
-import 'package:lottie/lottie.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import "package:voice_assistant/api/api_service.dart";
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/logging.dart';
-
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
 import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
@@ -30,9 +22,6 @@ import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
 import 'package:voice_assistant/screens/widgets/build_drawer.dart';
-
-import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
-import 'package:voice_assistant/screens/success_login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   // final String username;
@@ -54,8 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final changeUserAvatar = ChangeUserAvatar();
   final Logger logger = getLogger();
 
-  TextEditingController userInputTextEditingController =
-      TextEditingController();
+  TextEditingController userInputTextEditingController = TextEditingController();
 
   final SpeechToText speechToTextInstance = SpeechToText();
   String recordedAudioString = "";
@@ -104,8 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     logger.i('onSpeechToTextResult called');
-    logger.i(
-        'recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
+    logger.i('recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
     logger.i('recognitionResult.finalResult: ${recognitionResult.finalResult}');
     recordedAudioString = recognitionResult.recognizedWords;
 
@@ -172,8 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (modeOfAI == "chat") {
         setState(() {
-          answerTextFromAI =
-              responseAvailable["choices"][0]["message"]["content"];
+          answerTextFromAI = responseAvailable["choices"][0]["message"]["content"];
 
           logger.i("AI Chatbot: ");
           logger.i(answerTextFromAI);
@@ -296,8 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 13.0, top: 2.0, right: 13.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(left: 13.0, top: 2.0, right: 13.0, bottom: 8.0),
                     child: Column(
                       children: [
                         // button row
@@ -369,8 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 16.0, bottom: 32.0),
+                            padding: const EdgeInsets.only(right: 16.0, bottom: 32.0),
                             child: SizedBox(
                               width: 50.0,
                               child: SoundButton(
@@ -394,8 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 10.0),
 
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13.0, vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
                           child: Container(
                             margin: const EdgeInsets.only(left: 0, right: 0),
                             width: 450.0,
@@ -408,8 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 1.0,
                               ),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                             child: DisplayResult(
                               modeOfAI: modeOfAI,
                               answerTextFromAI: answerTextFromAI,

@@ -9,7 +9,8 @@ class OnBoardingPages extends StatelessWidget {
   final String subtitle;
   final String pageNumber;
 
-  OnBoardingPages({
+  const OnBoardingPages({
+    super.key,
     required this.color,
     required this.imagePath,
     required this.title,
@@ -35,7 +36,7 @@ class OnBoardingPages extends StatelessWidget {
             ],
           ),
           Text(pageNumber, style: titleStyle()),
-          SizedBox(height: 80),
+          const SizedBox(height: 80),
         ],
       ),
     );

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:voice_assistant/screens/widgets/build_divider_line.dart';
 import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
+import 'package:voice_assistant/screens/widgets/show_toast.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_input_decoration.dart';
 
 import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
+
 import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:voice_assistant/services/auth_service.dart';
 
@@ -65,7 +66,9 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       }
       // Notify user of successful login or account creation
-      Fluttertoast.showToast(msg: _isLogin ? 'Login successful!' : 'Account created successfully!', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.green, textColor: Colors.white, fontSize: 16.0);
+      showToastBox(
+        msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
+      );
     } on FirebaseAuthException catch (error) {
       String errorMessage = 'Authentication failed.';
       if (mounted) {

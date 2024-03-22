@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+
 import 'package:voice_assistant/screens/widgets/logging.dart';
-
-import 'package:voice_assistant/services/change_password.dart';
-
+import 'package:voice_assistant/screens/widgets/show_dialog.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
+
+import 'package:voice_assistant/services/change_password.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,42 +37,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //   SnackBar(content: Text('$field updated successfully')),
       // );
       if (mounted) {
-        showDialog(
+        showDialogBox(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Success $successEmoji'),
-              content: Text('$field updated successfully.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+          title: 'Success $successEmoji',
+          content: '$field updated successfully.',
         );
       }
     } else {
       if (mounted) {
-        showDialog(
+        showDialogBox(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('Field cannot be empty.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+          title: 'Error',
+          content: 'Field cannot be empty.',
         );
       }
     }
@@ -251,59 +228,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   if (!passwordChanged) {
                     if (mounted) {
-                      showDialog(
+                      showDialogBox(
                         context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Error'),
-                            content: const Text(
-                                'Password must be at least 6 characters long.'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                        title: 'Error',
+                        content: 'Password must be at least 6 characters long.',
                       );
                     }
                   } else {
                     if (mounted) {
-                      showDialog(
+                      showDialogBox(
                         context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Success $successEmoji'),
-                            content:
-                                const Text('Password updated successfully.'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                        title: 'Success $successEmoji',
+                        content: 'Password updated successfully.',
                       );
                     }
+                    //// The third way to notify user of successful update
+                    //   showToast(
+                    //   msg: 'Password updated successfully',
+                    // );
                   }
-
-                  //// The third way to notify user of successful update
-                  // if (passwordChanged) {
-                  //   Fluttertoast.showToast(
-                  //       msg: 'Password updated successfully',
-                  //       toastLength: Toast.LENGTH_SHORT,
-                  //       gravity: ToastGravity.TOP,
-                  //       timeInSecForIosWeb: 1,
-                  //       backgroundColor: Colors.green,
-                  //       textColor: Colors.white,
-                  //       fontSize: 16.0);
-                  // }
                 },
               ),
             ],

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:slide_to_act/slide_to_act.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
-import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
@@ -21,7 +19,7 @@ class SplashScreenState extends State<SplashScreen> with TickerProviderStateMixi
   void initState() {
     super.initState();
     sizeController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       vsync: this,
       upperBound: 200,
     );
@@ -39,7 +37,7 @@ class SplashScreenState extends State<SplashScreen> with TickerProviderStateMixi
   }
 
   Future startAnimation() async {
-    await Future.delayed(Duration(milliseconds: 7000));
+    await Future.delayed(const Duration(milliseconds: 7000));
     Navigator.pushNamed(context, '/onBoardingScreen');
   }
 
@@ -65,7 +63,7 @@ class SplashScreenState extends State<SplashScreen> with TickerProviderStateMixi
                   child: Image.asset('images/ball.png'),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: SizedBox(
                   width: 250.0,

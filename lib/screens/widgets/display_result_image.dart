@@ -76,8 +76,7 @@ class DisplayResultImageState extends State<DisplayResultImage> {
                         isDownloadComplete = true;
                       });
                     } else {
-                      logger.i(
-                          'File path is empty. Cannot save image to gallery.');
+                      logger.i('File path is empty. Cannot save image to gallery.');
                     }
                   }
                   if (isDownloadComplete) {
@@ -115,8 +114,7 @@ class DisplayResultImageState extends State<DisplayResultImage> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content:
-                          Text('Failed to get external storage directory.'),
+                      content: Text('Failed to get external storage directory.'),
                     ),
                   );
                 }

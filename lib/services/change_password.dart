@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
+
 import 'package:voice_assistant/screens/widgets/logging.dart';
 
 class ChangePassword extends StatefulWidget {

@@ -7,9 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:voice_assistant/screens/splash_screen.dart';
-
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
-
 import 'package:voice_assistant/screens/home_screen.dart';
 
 void main() async {
@@ -53,9 +51,9 @@ class MyApp extends StatelessWidget {
               }
             },
           ),
-      '/splashScreen': (context) => SplashScreen(),
-      '/onBoardingScreen':(context) => OnBoardingSceen(),
-      '/welcomeScreen': (context) => WelcomeScreen(),
+      '/splashScreen': (context) => const SplashScreen(),
+      '/onBoardingScreen': (context) => const OnBoardingSceen(),
+      '/welcomeScreen': (context) => const WelcomeScreen(),
     }
         // '/register': (context) => RegistrationScreen(),
         // '/chat': (context) => ChatScreen(),
