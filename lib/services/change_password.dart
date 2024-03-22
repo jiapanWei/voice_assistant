@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
+import 'package:voice_assistant/screens/widgets/logging.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -9,20 +11,21 @@ class ChangePassword extends StatefulWidget {
 }
 
 class ChangePasswordState extends State<ChangePassword> {
+  final Logger logger = getLogger();
   String newPassword = '';
 
   Future<bool> changePassword(String newPassword) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      print('No user is signed in.');
+      logger.w('No user is signed in.');
       return false;
     }
     try {
       await user.updatePassword(newPassword);
-      print('Password changed successfully');
+      logger.i('Password changed successfully');
       return true;
     } catch (error) {
-      print('Password can\'t be changed$error');
+      logger.e('Password can\'t be changed$error');
       return false;
     }
   }

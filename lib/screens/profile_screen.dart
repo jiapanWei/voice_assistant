@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+import 'package:voice_assistant/screens/widgets/logging.dart';
 
 import 'package:voice_assistant/services/change_password.dart';
 
@@ -22,6 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final userCollection = FirebaseFirestore.instance.collection('users');
   final changeUserAvatar = ChangeUserAvatar();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final Logger logger = getLogger();
 
   late String newPassword;
 
@@ -169,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             .doc(currentUser.uid)
                             .update({'avatar': null});
                       } catch (e) {
-                        print('Error resetting avatar: $e');
+                        logger.e('Error resetting avatar: $e');
                       }
                     },
                     child: Text(

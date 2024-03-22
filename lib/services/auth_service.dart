@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
+
+import 'package:voice_assistant/screens/widgets/logging.dart';
 
 class AuthService {
+  final Logger logger = getLogger();
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<UserCredential> signIn(String email, String password) {
@@ -24,8 +29,8 @@ class AuthService {
           'username': username,
           'email': email,
         })
-        .then((value) => print('User Added'))
-        .catchError((error) => print('Failed to add user: $error'));
+        .then((value) => logger.i('User Added'))
+        .catchError((error) => logger.e('Failed to add user: $error'));
   }
 
   Future<String> getUsername(UserCredential userCredentials) async {
@@ -51,7 +56,7 @@ class AuthService {
 
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      print('Google sign-in failed: $e');
+      logger.e('Google sign-in failed: $e');
       rethrow;
     }
   }
@@ -63,7 +68,7 @@ class AuthService {
           {'tenant': 'a8eec281-aaa3-4dae-ac9b-9a398b9215e7'});
       return await FirebaseAuth.instance.signInWithProvider(oAuthProvider);
     } catch (e) {
-      print('Microsoft sign-in failed: $e');
+      logger.e('Microsoft sign-in failed: $e');
       rethrow;
     }
   }
