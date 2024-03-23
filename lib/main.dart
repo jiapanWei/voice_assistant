@@ -9,12 +9,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/splash_screen.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
 import 'package:voice_assistant/screens/home_screen.dart';
+// Import the firebase_app_check plugin
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate(
+      // webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      );
   await FlutterDownloader.initialize(
     debug: true,
   );
@@ -54,34 +59,6 @@ class MyApp extends StatelessWidget {
       '/splashScreen': (context) => const SplashScreen(),
       '/onBoardingScreen': (context) => const OnBoardingSceen(),
       '/welcomeScreen': (context) => const WelcomeScreen(),
-    }
-        // '/register': (context) => RegistrationScreen(),
-        // '/chat': (context) => ChatScreen(),
-        // home: StreamBuilder(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (ctx, AsyncSnapshot<User?> snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.active) {
-        //       if (snapshot.data != null) {
-        //         return const HomeScreen();
-        //       }
-        //       // return LoginScreen();
-        //       return const SplashScreen();
-        //     } else {
-        //       return const Scaffold(
-        //         // Add a loading spinner
-        //         body: Center(
-        //           child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: [
-        //               CircularProgressIndicator(),
-        //               Text('Loading...'),
-        //             ],
-        //           ),
-        //         ),
-        //       );
-        //     }
-        //   },
-        // ),
-        );
+    });
   }
 }
