@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/services/auth_service.dart';
+import 'package:voice_assistant/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-Container microsoftAuthButton() {
+Container microsoftAuthButton(BuildContext context) {
   return Container(
     margin: const EdgeInsets.only(left: 30.0, right: 30.0),
     child: OutlinedButton(
       style: transparentButtonStyle(),
-      onPressed: () => AuthService().signInWithMicrosoft(),
+      onPressed: () async {
+        UserCredential? userCredential = await AuthService().signInWithMicrosoft();
+        if (userCredential != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Login Failed'),
+              content: Text('Failed to sign in with Microsoft.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          );
+        }
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
