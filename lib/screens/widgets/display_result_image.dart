@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
-import 'package:voice_assistant/screens/widgets/logging.dart';
+
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 
 class DisplayResultImage extends StatefulWidget {
   final String imageUrlFromAI;
@@ -22,7 +23,7 @@ class DisplayResultImage extends StatefulWidget {
 
 class _DisplayResultImageState extends State<DisplayResultImage> {
   bool isDownloadComplete = false;
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
 
   @override
   Widget build(BuildContext context) {

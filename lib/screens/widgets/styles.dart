@@ -9,6 +9,21 @@ const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
 const double titleFontSize = 16;
 const Color titleColor = Colors.black;
 
+InputDecoration userInputDecoration({required String labelText, required IconData icon}) {
+  return InputDecoration(
+    prefixIcon: Icon(icon),
+    filled: true,
+    fillColor: Colors.grey[200],
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(105.0),
+      borderSide: BorderSide.none,
+    ),
+    labelText: labelText,
+    labelStyle: poppinsFontStyle(),
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+  );
+}
+
 ShaderMask gradientText({
   required String text,
   required TextStyle style,
@@ -108,3 +123,4 @@ ButtonStyle transparentButtonStyle() {
     minimumSize: const Size(300, 37),
   );
 }
+

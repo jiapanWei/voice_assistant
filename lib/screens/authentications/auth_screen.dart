@@ -4,9 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/widgets/build_divider_line.dart';
 import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
-import 'package:voice_assistant/screens/widgets/show_toast.dart';
+import 'package:voice_assistant/screens/widgets/build_toast_box.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/screens/widgets/build_input_decoration.dart';
 
 import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
@@ -66,9 +65,9 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       }
       // Notify user of successful login or account creation
-      showToastBox(
+     ToastBox(
         msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
-      );
+      ).showToast();
     } on FirebaseAuthException catch (error) {
       String errorMessage = 'Authentication failed.';
       if (mounted) {
@@ -239,10 +238,10 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
               ),
-              dividerLine(),
-              googleAuthButton(context),
+              const DividerLine(),
+              const GoogleAuthButton(),
               const SizedBox(height: 5),
-              microsoftAuthButton(context),
+              const MicrosoftAuthButton(),
             ],
           ),
         ),

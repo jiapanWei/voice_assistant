@@ -13,15 +13,15 @@ import 'package:text_to_speech/text_to_speech.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
-import 'package:voice_assistant/screens/widgets/logging.dart';
-import 'package:voice_assistant/screens/widgets/styles.dart';
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
 import 'package:voice_assistant/screens/widgets/build_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
 import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
-import 'package:voice_assistant/screens/widgets/build_drawer.dart';
+import 'package:voice_assistant/screens/widgets/build_app_drawer.dart';
+import 'package:voice_assistant/screens/widgets/styles.dart';
 
 class HomeScreen extends StatefulWidget {
   // final String username;
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final currentUser = FirebaseAuth.instance.currentUser!;
   final changeUserAvatar = ChangeUserAvatar();
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
 
   TextEditingController userInputTextEditingController = TextEditingController();
 

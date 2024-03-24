@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 
+import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/screens/widgets/build_input_decoration.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({super.key});
