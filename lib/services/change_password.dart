@@ -12,7 +12,7 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
   String newPassword = '';
 
   Future<bool> changePassword(String newPassword) async {
