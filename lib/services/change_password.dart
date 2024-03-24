@@ -8,10 +8,10 @@ class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
   @override
-  ChangePasswordState createState() => ChangePasswordState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class ChangePasswordState extends State<ChangePassword> {
+class _ChangePasswordState extends State<ChangePassword> {
   final Logger logger = getLogger();
   String newPassword = '';
 
