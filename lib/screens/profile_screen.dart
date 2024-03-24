@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
-import 'package:voice_assistant/screens/widgets/logging.dart';
-import 'package:voice_assistant/screens/widgets/show_dialog.dart';
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
+import 'package:voice_assistant/screens/widgets/build_dialog_box.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final userCollection = FirebaseFirestore.instance.collection('users');
   final changeUserAvatar = ChangeUserAvatar();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
 
   late String newPassword;
 
@@ -37,18 +37,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //   SnackBar(content: Text('$field updated successfully')),
       // );
       if (mounted) {
-        showDialogBox(
+        showDialog(
           context: context,
-          title: 'Success $successEmoji',
-          content: '$field updated successfully.',
+          builder: (BuildContext context) {
+            return AlertDialogBox(
+              title: 'Success $successEmoji',
+              content: '$field updated successfully.',
+            );
+          },
         );
       }
     } else {
       if (mounted) {
-        showDialogBox(
+        showDialog(
           context: context,
-          title: 'Error',
-          content: 'Field cannot be empty.',
+          builder: (BuildContext context) {
+            return const AlertDialogBox(
+              title: 'Error',
+              content: 'Field cannot be empty.',
+            );
+          },
         );
       }
     }
@@ -147,8 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(left: 30.0, right: 15.0),
                   child: OutlinedButton(
                     style: transparentButtonStyle(),
-                    onPressed: () =>
-                        changeUserAvatar.pickImage(currentUser, userCollection),
+                    onPressed: () => changeUserAvatar.pickImage(currentUser, userCollection),
                     child: Text(
                       'Change',
                       style: poppinsFontStyle(),
@@ -164,9 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: transparentButtonStyle(),
                     onPressed: () async {
                       try {
-                        await userCollection
-                            .doc(currentUser.uid)
-                            .update({'avatar': null});
+                        await userCollection.doc(currentUser.uid).update({'avatar': null});
                       } catch (e) {
                         logger.e('Error resetting avatar: $e');
                       }
@@ -221,25 +226,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: () async {
                   final bool passwordChanged = await showDialog<bool>(
                         context: context,
-                        builder: (BuildContext context) =>
-                            const ChangePassword(),
+                        builder: (BuildContext context) => const ChangePassword(),
                       ) ??
                       false;
 
                   if (!passwordChanged) {
                     if (mounted) {
-                      showDialogBox(
+                      showDialog(
                         context: context,
-                        title: 'Error',
-                        content: 'Password must be at least 6 characters long.',
+                        builder: (BuildContext context) {
+                          return const AlertDialogBox(
+                            title: 'Error',
+                            content: 'Password must be at least 6 characters long.',
+                          );
+                        },
                       );
                     }
                   } else {
                     if (mounted) {
-                      showDialogBox(
+                      showDialog(
                         context: context,
-                        title: 'Success $successEmoji',
-                        content: 'Password updated successfully.',
+                        builder: (BuildContext context) {
+                          return const AlertDialogBox(
+                            title: 'Success $successEmoji',
+                            content: 'Password updated successfully.',
+                          );
+                        },
                       );
                     }
                     //// The third way to notify user of successful update

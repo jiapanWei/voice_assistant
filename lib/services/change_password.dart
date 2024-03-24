@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
-import 'package:voice_assistant/screens/widgets/logging.dart';
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -12,7 +12,7 @@ class ChangePassword extends StatefulWidget {
 }
 
 class ChangePasswordState extends State<ChangePassword> {
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
   String newPassword = '';
 
   Future<bool> changePassword(String newPassword) async {

@@ -5,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:voice_assistant/screens/widgets/logging.dart';
+
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 
 class ChangeUserAvatar {
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
 
   Future<void> pickImage(User currentUser, CollectionReference userCollection) async {
     try {

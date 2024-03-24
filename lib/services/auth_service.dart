@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:voice_assistant/screens/widgets/logging.dart';
+
+import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 
 class AuthService {
-  final Logger logger = getLogger();
+  final Logger logger = LoggerStyle.getLogger();
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
