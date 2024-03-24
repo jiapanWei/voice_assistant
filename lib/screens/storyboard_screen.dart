@@ -10,10 +10,10 @@ class StoryboardScreen extends StatefulWidget {
   const StoryboardScreen({super.key});
 
   @override
-  StoryboardScreenState createState() => StoryboardScreenState();
+  State<StoryboardScreen> createState() => _StoryboardScreenState();
 }
 
-class StoryboardScreenState extends State<StoryboardScreen> {
+class _StoryboardScreenState extends State<StoryboardScreen> {
   String? storyboardPdfPath;
 
   @override

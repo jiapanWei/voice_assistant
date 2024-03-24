@@ -13,11 +13,11 @@ class OnBoardingSceen extends StatefulWidget {
   const OnBoardingSceen({super.key});
 
   @override
-  OnBoardingSceenState createState() => OnBoardingSceenState();
+  State<OnBoardingSceen> createState() => _OnBoardingSceenState();
 }
 
 @override
-class OnBoardingSceenState extends State<OnBoardingSceen> {
+class _OnBoardingSceenState extends State<OnBoardingSceen> {
   final controller = LiquidController();
 
   int currentPage = 0;

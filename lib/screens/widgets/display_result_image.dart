@@ -18,10 +18,10 @@ class DisplayResultImage extends StatefulWidget {
   });
 
   @override
-  DisplayResultImageState createState() => DisplayResultImageState();
+  State<DisplayResultImage> createState() => _DisplayResultImageState();
 }
 
-class DisplayResultImageState extends State<DisplayResultImage> {
+class _DisplayResultImageState extends State<DisplayResultImage> {
   bool isDownloadComplete = false;
   final Logger logger = LoggerStyle.getLogger();
 
