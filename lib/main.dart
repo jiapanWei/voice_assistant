@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:voice_assistant/screens/on_boarding_screen.dart';
+import 'package:voice_assistant/screens/widgets/entry_point.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
             builder: (ctx, AsyncSnapshot<User?> snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.data != null) {
-                  return const HomeScreen();
+                  return const EntryPoint();
+                  // return const HomeScreen();
                 }
                 return const SplashScreen();
               } else {

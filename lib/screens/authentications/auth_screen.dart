@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:voice_assistant/screens/widgets/build_divider_line.dart';
+import 'package:voice_assistant/screens/widgets/entry_point.dart';
 import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/build_toast_box.dart';
@@ -59,13 +60,14 @@ class _AuthScreenState extends State<AuthScreen> {
         if (mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+              // builder: (context) => const HomeScreen(),
+              builder: (context) => const EntryPoint(),
             ),
           );
         }
       }
       // Notify user of successful login or account creation
-     ToastBox(
+      ToastBox(
         msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
       ).showToast();
     } on FirebaseAuthException catch (error) {

@@ -5,6 +5,8 @@ const successEmoji = '\u2705';
 
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
 const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
+const Color backgroundColorPurple = Color.fromARGB(255, 23, 21, 27);
+const Color backgroundColorLightPurple = Color.fromARGB(255, 149, 117, 252);
 
 const double titleFontSize = 16;
 const Color titleColor = Colors.black;
@@ -46,13 +48,13 @@ ShaderMask gradientText({
 
 TextStyle typewriterGraientStyle(double fontsize) {
   return TextStyle(
-    fontSize:fontsize,
+    fontSize: fontsize,
     foreground: Paint()
       ..shader = const LinearGradient(
-        colors:  [Color.fromRGBO(97, 42, 116, 1),
+        colors: [
+          Color.fromRGBO(97, 42, 116, 1),
           Color.fromRGBO(97, 42, 116, 1),
           Color.fromRGBO(244, 169, 144, 1),
-          
         ],
         begin: Alignment.centerLeft,
         end: Alignment.topRight,
@@ -123,4 +125,3 @@ ButtonStyle transparentButtonStyle() {
     minimumSize: const Size(300, 37),
   );
 }
-

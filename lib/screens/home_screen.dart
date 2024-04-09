@@ -11,6 +11,7 @@ import "package:speech_to_text/speech_to_text.dart";
 import "package:voice_assistant/api/api_service.dart";
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_assistant/screens/widgets/styles.dart';
 
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
@@ -107,13 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void showSendingRequestMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text(
+        content:  Text(
           'Sending request...',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: "Arial",
-            fontSize: 16.0,
-          ),
+          style: sidenotePoppinsFontStyle().copyWith(color: Colors.black, fontSize: 15),
         ),
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
@@ -235,22 +232,13 @@ class _HomeScreenState extends State<HomeScreen> {
             final avatarUrl = userData['avatar'] as String?;
             return Scaffold(
               appBar: AppBar(
-                // leading: Padding(
-                //   padding: const EdgeInsets.only(left: 16.0),
-                //   child: IconButton(
-                //     icon: const Icon(Icons.arrow_back),
-                //     // onPressed: () async {
-                //     //   await FirebaseAuth.instance.signOut();
-                //     //   _navigatorKey.currentState?.pushReplacementNamed('/login');
+
+                // leading: Builder(
+                //   builder: (context) => IconButton(
+                //     icon: const Icon(Icons.menu),
+                //     onPressed: () => Scaffold.of(context).openDrawer(),
                 //   ),
                 // ),
-
-                leading: Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
-                ),
 
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
@@ -268,7 +256,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              drawer: AppDrawer(username: username),
+              // drawer: AppDrawer(username: username),
+              // drawer: AppDrawer(),
+              // drawer: AppDrawer(),
               body: Stack(
                 children: [
                   Container(
