@@ -68,11 +68,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) {
         String newField = '';
         return AlertDialog(
-          title: Text('Edit $field'),
+          title: Text('Edit $field',style: headingPoppinsFontStyle().copyWith(color: Colors.black),),
           content: TextField(
             autofocus: true,
             decoration: InputDecoration(
               hintText: 'Enter new $field',
+              hintStyle: sidenotePoppinsFontStyle().copyWith(fontSize: 15),
             ),
             onChanged: (value) {
               newField = value;
@@ -80,11 +81,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text('Cancel', style:sidenotePoppinsFontStyle().copyWith(color:Colors.deepPurple)),
               onPressed: () => Navigator.pop(context),
             ),
             TextButton(
-              child: const Text('Save'),
+              child: Text('Save',style:sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
               onPressed: () => Navigator.of(context).pop(newField),
             ),
           ],

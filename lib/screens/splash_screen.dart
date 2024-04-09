@@ -94,29 +94,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 ),
               ),
               const SizedBox(height: 120),
-              // Padding(
-              //   padding: const EdgeInsets.all(12.0),
-              //   child: SlideAction(
-              //     elevation: 0,
-              //     innerColor: Colors.white,
-              //     outerColor: const Color.fromARGB(255, 254, 205, 221),
-              //     sliderButtonIcon: const Icon(
-              //       Icons.chevron_right,
-              //       color: Colors.pink,
-              //     ),
-              //     text: 'Get Started',
-              //     textStyle: poppinsFontStyle().copyWith(fontSize: 20.0),
-              //     onSubmit: () {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => const LoginScreen(),
-              //         ),
-              //       );
-              //       return null;
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),

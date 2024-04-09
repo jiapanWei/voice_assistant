@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
 import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
+import 'package:voice_assistant/screens/widgets/styles.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -41,23 +42,29 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Change Password'),
+      title: Text(
+        'Change Password',
+        style: headingPoppinsFontStyle().copyWith(color: Colors.black),
+      ),
       content: TextField(
         onChanged: (value) {
           newPassword = value;
         },
-        decoration: const InputDecoration(hintText: "Enter new password"),
+        decoration: InputDecoration(
+          hintText: "Enter new password",
+          hintStyle: sidenotePoppinsFontStyle().copyWith(fontSize: 15),
+        ),
         obscureText: true,
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('Cancel', style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
         ),
         TextButton(
-          child: const Text('Submit'),
+          child: Text('Submit', style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
           onPressed: () async {
             bool passwordChanged = await changePassword(newPassword);
             Navigator.of(context).pop(passwordChanged);

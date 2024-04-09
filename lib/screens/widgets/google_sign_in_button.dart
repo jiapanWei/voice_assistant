@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_assistant/screens/widgets/entry_point.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/services/auth_service.dart';
@@ -19,7 +20,8 @@ class GoogleAuthButton extends StatelessWidget {
           if (userCredential != null) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              // MaterialPageRoute(builder: (context) => const HomeScreen()),
+               MaterialPageRoute(builder: (context) => const EntryPoint()),
             );
           } else {
             showDialog(

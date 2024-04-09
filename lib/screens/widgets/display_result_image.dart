@@ -42,11 +42,7 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
             width: 230,
             child: ElevatedButton(
               onPressed: () async {
-                // ... (下载图片逻辑)
-                // final imageUrl = imageUrlFromAI;
                 final imageName = 'downloaded_image.jpg'; //
-                // final picturesDirectoryPath =
-                //     await getExternalStorageDirectoryPath();
                 final publicDirectoryPath =
                     await widget.getPublicDirectoryPath('Pictures');
 
