@@ -7,49 +7,58 @@ class ProfileTextBoxStyle extends StatelessWidget {
   final String section;
   final void Function()? onPressed;
 
-  const ProfileTextBoxStyle(
-      {super.key,
-      required this.text,
-      required this.section,
-      required this.onPressed});
+  const ProfileTextBoxStyle({super.key, required this.text, required this.section, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.only(left: 15.0, bottom: 8.0),
-      margin: const EdgeInsets.only(left: 8.0, right: 30.0, top: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, bottom: 6),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            section,
+            style: poppinsFontStyle().copyWith(fontSize: 15.0),
+          ),
+        ),
+        Container(
+          height: 65,
+          decoration: BoxDecoration(
+            // border: Border.all(color: borderColorGrey),
+            borderRadius: BorderRadius.circular(15.0),
+            color: borderColorSoftPink,
+          ),
+          padding: const EdgeInsets.only(left: 15.0, top: 10, bottom: 0),
+          margin: const EdgeInsets.only(left: 3.0, right: 30.0, top: 1.0, bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                section,
-                style: poppinsFontStyle().copyWith(fontSize: 14.0),
-              ),
-              if (onPressed != null)
-                IconButton(
-                  onPressed: onPressed,
-                  icon: Icon(
-                    Icons.edit,
-                    color: Colors.grey[400],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(text,
+                    style:poppinsFontStyle().copyWith(fontSize: 15),
                   ),
-                )
-              else
-                const SizedBox(
-                  width: 48.0,
-                  height: 48.0,
-                ),
+                  if (onPressed != null)
+                    IconButton(
+                      onPressed: onPressed,
+                      icon: Icon(
+                        Icons.edit,
+                        color: borderColorGrey,
+                      ),
+                    )
+                  else
+                    const SizedBox(
+                      width: 40.0,
+                      height: 40.0,
+                    ),
+                ],
+              ),
             ],
           ),
-          Text(text)
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

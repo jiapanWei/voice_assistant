@@ -4,24 +4,26 @@ import 'package:google_fonts/google_fonts.dart';
 const successEmoji = '\u2705';
 
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
-const Color snackBarColorPink = Color.fromARGB(255, 254, 205, 221);
+const Color snackBarColorPink = Color.fromRGBO(242, 208, 240, 1.0);
 const Color backgroundColorPurple = Color.fromARGB(255, 23, 21, 27);
 const Color backgroundColorLightPurple = Color.fromARGB(255, 149, 117, 252);
+const Color borderColorGrey = Color.fromARGB(255, 93, 92, 99);
+const Color borderColorSoftPink = Color.fromRGBO(244, 241, 251, 0.612);
 
 const double titleFontSize = 16;
 const Color titleColor = Colors.black;
 
 InputDecoration userInputDecoration({required String labelText, required IconData icon}) {
   return InputDecoration(
-    prefixIcon: Icon(icon),
+    suffixIcon: Icon(icon),
     filled: true,
-    fillColor: Colors.grey[200],
+    fillColor: borderColorSoftPink,
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(105.0),
+      borderRadius: BorderRadius.circular(15.0),
       borderSide: BorderSide.none,
     ),
     labelText: labelText,
-    labelStyle: poppinsFontStyle(),
+    labelStyle: poppinsFontStyle().copyWith(fontSize: 14),
     floatingLabelBehavior: FloatingLabelBehavior.never,
   );
 }
@@ -92,7 +94,7 @@ TextStyle poppinsFontStyle() {
   return GoogleFonts.poppins(
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(119, 111, 105, 1.0),
+    color: backgroundColorPurple,
   );
 }
 
@@ -100,7 +102,7 @@ TextStyle headingPoppinsFontStyle() {
   return GoogleFonts.poppins(
     fontSize: 20.0,
     fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(119, 111, 105, 1.0),
+    color: borderColorGrey,
   );
 }
 
@@ -108,20 +110,20 @@ TextStyle sidenotePoppinsFontStyle() {
   return GoogleFonts.poppins(
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
-    color: const Color.fromRGBO(119, 111, 105, 1.0),
+    color: borderColorGrey,
   );
 }
 
 TextStyle sidenoteBricolageGrotesqueFontStyle() {
   return GoogleFonts.poppins(
     fontSize: 13.0,
-    color: Colors.grey,
+    color: borderColorGrey,
   );
 }
 
 ButtonStyle transparentButtonStyle() {
   return OutlinedButton.styleFrom(
-    side: const BorderSide(color: Colors.grey),
+    side: const BorderSide(width: 0.75, color: borderColorGrey),
     minimumSize: const Size(300, 37),
   );
 }
