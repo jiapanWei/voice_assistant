@@ -67,9 +67,22 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       }
       // Notify user of successful login or account creation
-      ToastBox(
-        msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
-      ).showToast();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _isLogin ? 'Login successful!' : 'Account created successfully!',
+            style: sidenotePoppinsFontStyle().copyWith(color: Colors.black, fontSize: 15),
+          ),
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          backgroundColor: snackBarColorPink,
+        ),
+      );
+      // ToastBox(
+      //   msg: _isLogin ? 'Login successful!' : 'Account created successfully!',
+      // ).showToast();
     } on FirebaseAuthException catch (error) {
       String errorMessage = 'Authentication failed.';
       if (mounted) {
@@ -109,20 +122,22 @@ class _AuthScreenState extends State<AuthScreen> {
             children: [
               Card(
                 color: Colors.white,
+                shadowColor: Colors.white,
+                surfaceTintColor: Colors.white,
                 margin: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.only(left:16, right:16, bottom: 16, top:30),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            _isLogin ? 'Login' : 'Create an account',
-                            style: poppinsFontStyle(),
+                            _isLogin ? 'Sign In' : 'Create Account',
+                            style: headingPoppinsFontStyle().copyWith(color: Colors.black, fontSize: 20),
                           ),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 30),
 
                           // Username
                           if (!_isLogin)
@@ -196,7 +211,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          _isLogin ? 'Login' : 'Signup',
+                                          _isLogin ? 'Sign In' : 'Create Account',
                                           style: poppinsFontStyle(),
                                         ),
                                       ],
@@ -213,7 +228,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               });
                             },
                             child: Text(
-                              _isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login',
+                              _isLogin ? "Don't have an account? Create Account" : 'Already have an account? Sign In',
                               style: sidenotePoppinsFontStyle(),
                             ),
                           ),

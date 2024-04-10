@@ -20,7 +20,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 239, 252, 1.0),
+      backgroundColor: backgroundColorPink,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 24),
               ),
               Text(
-                "Log in or create an account!",
+                "Sign In or Create Account!",
                 style: sidenoteBricolageGrotesqueFontStyle(),
               ),
               const SizedBox(height: 15),
@@ -56,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Sign up',
+                        'Create Account',
                         style: poppinsFontStyle(),
                       ),
                     ],
@@ -75,7 +75,7 @@ class WelcomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Log in',
+                        'Sign In',
                         style: poppinsFontStyle(),
                       ),
                     ],

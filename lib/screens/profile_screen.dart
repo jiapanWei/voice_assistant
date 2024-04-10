@@ -68,7 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) {
         String newField = '';
         return AlertDialog(
-          title: Text('Edit $field',style: headingPoppinsFontStyle().copyWith(color: Colors.black),),
+          title: Text(
+            'Edit $field',
+            style: headingPoppinsFontStyle().copyWith(color: Colors.black),
+          ),
           content: TextField(
             autofocus: true,
             decoration: InputDecoration(
@@ -81,11 +84,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             TextButton(
-              child: Text('Cancel', style:sidenotePoppinsFontStyle().copyWith(color:Colors.deepPurple)),
+              child: Text('Cancel', style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
               onPressed: () => Navigator.pop(context),
             ),
             TextButton(
-              child: Text('Save',style:sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
+              child: Text('Save', style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
               onPressed: () => Navigator.of(context).pop(newField),
             ),
           ],
@@ -100,7 +103,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // key: scaffoldKey,
       backgroundColor: backgroundColorPink,
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: Text(
+          'My Profile',
+          style: headingPoppinsFontStyle().copyWith(color: Colors.black),
+        ),
         backgroundColor: backgroundColorPink,
       ),
       body: _buildBody(),
@@ -126,146 +132,156 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userData = snapshot.data() as Map<String, dynamic>;
     final avatarUrl = userData['avatar'] as String?;
 
-    return ListView(
-      children: [
-        const SizedBox(height: 50.0),
-        if (avatarUrl != null)
-          Image.network(avatarUrl, width: 120.0, height: 120.0)
-        else
-          Container(
-            width: 120.0,
-            height: 120.0,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage('images/avatar.png'),
-                fit: BoxFit.contain,
+    return Padding(
+      padding: const EdgeInsets.only(top:20, left:12, right:12, bottom: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(34.0),
+        ),
+        child: ListView(
+          children: [
+            const SizedBox(height: 30.0),
+            if (avatarUrl != null)
+              CircleAvatar(
+                radius: 70,
+                child: ClipOval(
+                  child: Image.network(avatarUrl),
+                ),
+              )
+            else
+              CircleAvatar(
+                radius: 70,
+                child: ClipOval(
+                  child: Image.asset('images/avatar.png', height: 180.0, fit: BoxFit.fitHeight),
+                ),
+              ),
+      
+            SizedBox(height: 20),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    userData['username'],
+                    style: bricolageGrotesqueFontStyle(),
+                  ),
+                ],
               ),
             ),
-          ),
-
-        // Buttons container
-        Container(
-          margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Change avatar button
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 30.0, right: 15.0),
-                  child: OutlinedButton(
-                    style: transparentButtonStyle(),
-                    onPressed: () => changeUserAvatar.pickImage(currentUser, userCollection),
-                    child: Text(
-                      'Change',
-                      style: poppinsFontStyle(),
+      
+            // Buttons container
+            Container(
+              margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Change avatar button
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 15.0),
+                      child: OutlinedButton(
+                        style: transparentButtonStyle(),
+                        onPressed: () => changeUserAvatar.pickImage(currentUser, userCollection),
+                        child: Text(
+                          'Change',
+                          style: poppinsFontStyle(),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  // Reset avatar button
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0, right: 30.0),
+                      child: OutlinedButton(
+                        style: transparentButtonStyle(),
+                        onPressed: () async {
+                          try {
+                            await userCollection.doc(currentUser.uid).update({'avatar': null});
+                          } catch (e) {
+                            logger.e('Error resetting avatar: $e');
+                          }
+                        },
+                        child: Text(
+                          'Reset',
+                          style: poppinsFontStyle(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              // Reset avatar button
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 30.0),
-                  child: OutlinedButton(
-                    style: transparentButtonStyle(),
+            ),
+            const SizedBox(height: 50),
+      
+            // Profile Header
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Do not allow editing of email
+                  ProfileTextBoxStyle(
+                    text: userData['email'],
+                    section: 'Email',
+                    onPressed: null,
+                  ),
+      
+                  // Edit username
+                  ProfileTextBoxStyle(
+                    text: userData['username'],
+                    section: 'Username',
+                    onPressed: () => editField('username'),
+                  ),
+      
+                  ProfileTextBoxStyle(
+                    text: '********',
+                    section: 'Password',
                     onPressed: () async {
-                      try {
-                        await userCollection.doc(currentUser.uid).update({'avatar': null});
-                      } catch (e) {
-                        logger.e('Error resetting avatar: $e');
+                      final bool passwordChanged = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) => const ChangePassword(),
+                          ) ??
+                          false;
+      
+                      if (!passwordChanged) {
+                        if (mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const AlertDialogBox(
+                                title: 'Error',
+                                content: 'Password must be at least 6 characters long.',
+                              );
+                            },
+                          );
+                        }
+                      } else {
+                        if (mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const AlertDialogBox(
+                                title: 'Success $successEmoji',
+                                content: 'Password updated successfully.',
+                              );
+                            },
+                          );
+                        }
+                        //// The third way to notify user of successful update
+                        //   showToast(
+                        //   msg: 'Password updated successfully',
+                        // );
                       }
                     },
-                    child: Text(
-                      'Reset',
-                      style: poppinsFontStyle(),
-                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        const SizedBox(height: 50),
-
-        // Profile Header
-        Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'My Profile',
-                      style: headingPoppinsFontStyle(),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Do not allow editing of email
-              ProfileTextBoxStyle(
-                text: userData['email'],
-                section: 'Email',
-                onPressed: null,
-              ),
-
-              // Edit username
-              ProfileTextBoxStyle(
-                text: userData['username'],
-                section: 'Username',
-                onPressed: () => editField('username'),
-              ),
-
-              ProfileTextBoxStyle(
-                text: '********',
-                section: 'Password',
-                onPressed: () async {
-                  final bool passwordChanged = await showDialog<bool>(
-                        context: context,
-                        builder: (BuildContext context) => const ChangePassword(),
-                      ) ??
-                      false;
-
-                  if (!passwordChanged) {
-                    if (mounted) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const AlertDialogBox(
-                            title: 'Error',
-                            content: 'Password must be at least 6 characters long.',
-                          );
-                        },
-                      );
-                    }
-                  } else {
-                    if (mounted) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const AlertDialogBox(
-                            title: 'Success $successEmoji',
-                            content: 'Password updated successfully.',
-                          );
-                        },
-                      );
-                    }
-                    //// The third way to notify user of successful update
-                    //   showToast(
-                    //   msg: 'Password updated successfully',
-                    // );
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
