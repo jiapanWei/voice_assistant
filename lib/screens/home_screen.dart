@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
@@ -21,37 +22,35 @@ import 'package:voice_assistant/screens/widgets/build_mode_button.dart';
 import 'package:voice_assistant/screens/widgets/build_not_listening_ui.dart';
 import 'package:voice_assistant/screens/widgets/build_sound_button.dart';
 import 'package:voice_assistant/screens/widgets/build_text_input_field.dart';
-import 'package:voice_assistant/screens/widgets/build_app_drawer.dart';
-import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define HomeScreen Widget
 class HomeScreen extends StatefulWidget {
-  // final String username;
-
-  // const HomeScreen({
-  //   super.key,
-  //   required this.username,
-  // });
-
   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// Define HomeScreen state
 class _HomeScreenState extends State<HomeScreen> {
-  // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  // Get the current user from Firebase Authentication
   final currentUser = FirebaseAuth.instance.currentUser!;
+
   final changeUserAvatar = ChangeUserAvatar();
   final Logger logger = LoggerStyle.getLogger();
 
+  // Initialize text editing controller for user input
   TextEditingController userInputTextEditingController = TextEditingController();
 
+  // Create an instance of SpeechToText
   final SpeechToText speechToTextInstance = SpeechToText();
+
+  // Initialize varibles
   String recordedAudioString = "";
   bool isLoading = false;
   bool showCloseButton = false;
 
-  String modeOfAI = "";
+  String modeOfAI = "chat";
   String imageUrlFromAI = "";
   String answerTextFromAI = "";
   bool isDownloadComplete = false;
@@ -59,12 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool speakAI = true;
   final TextToSpeech textToSpeechInstance = TextToSpeech();
 
+  // Initialize SpeechToText instance
   void initializeSpeechToText() async {
     await speechToTextInstance.initialize();
-
     setState(() {});
   }
 
+  // Start listening for speech
   void startListeningNow() async {
     FocusScope.of(context).unfocus();
 
@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     logger.i('After: ${speechToTextInstance.isListening}');
   }
 
+  // Stop listening for speech
   void stopListeningNow() async {
     await speechToTextInstance.stop();
 
@@ -91,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // Handle speech recognition result
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     logger.i('onSpeechToTextResult called');
     logger.i('recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
@@ -105,14 +107,15 @@ class _HomeScreenState extends State<HomeScreen> {
     logger.i(recordedAudioString);
   }
 
+  // Show a snackbar message when sending a request
   void showSendingRequestMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content:  Text(
+        content: Text(
           'Sending request...',
           style: sidenotePoppinsFontStyle().copyWith(color: Colors.black, fontSize: 15),
         ),
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 6),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -121,10 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Handle text search
   void handleTextSearch(String query) {
     sendRequestToOpenAI(query);
   }
 
+  // Send request to OpenAI
   Future<void> sendRequestToOpenAI(String userInput) async {
     stopListeningNow();
 
@@ -134,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     showSendingRequestMessage();
 
-    // send the request to AI
+    // Send the request to AI
     await APIService().requestOpenAI(userInput, modeOfAI, 2000).then((value) {
       setState(() {
         isLoading = false;
@@ -155,10 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
       final responseAvailable = jsonDecode(value.body);
 
       if (modeOfAI == "chat") {
+        // Chat mode
         setState(() {
           answerTextFromAI = responseAvailable["choices"][0]["message"]["content"];
 
-          logger.i("AI Chatbot: ");
+          logger.i("AI Chat Mode: ");
           logger.i(answerTextFromAI);
 
           if (speakAI == true) {
@@ -166,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         });
       } else {
-        //image generation
+        // Image mode
         setState(() {
           imageUrlFromAI = responseAvailable["data"][0]["url"];
 
@@ -189,6 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // Get the public directory path
   Future<String?> getPublicDirectoryPath(String directoryName) async {
     Directory? directory = await getExternalStorageDirectory();
     String? publicDirectoryPath = directory?.path;
@@ -204,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return publicDirectoryPath;
   }
 
+  // Initilize Flutter downloader
   void initializeFlutterDownloader() async {
     await FlutterDownloader.initialize(
       debug: true,
@@ -223,7 +231,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('users').doc(currentUser.uid).snapshots(),
+      stream:
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
           final userData = snapshot.data!.data();
@@ -232,33 +241,24 @@ class _HomeScreenState extends State<HomeScreen> {
             final avatarUrl = userData['avatar'] as String?;
             return Scaffold(
               appBar: AppBar(
-
-                // leading: Builder(
-                //   builder: (context) => IconButton(
-                //     icon: const Icon(Icons.menu),
-                //     onPressed: () => Scaffold.of(context).openDrawer(),
-                //   ),
-                // ),
-
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     color: backgroundColorPink,
                   ),
                 ),
-
                 elevation: 0,
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
                     child: CircleAvatar(
-                      backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : const AssetImage('images/avatar.png') as ImageProvider<Object>?,
+                      backgroundImage: avatarUrl != null
+                          ? NetworkImage(avatarUrl)
+                          : const AssetImage('images/avatar.png')
+                              as ImageProvider<Object>?,
                     ),
                   ),
                 ],
               ),
-              // drawer: AppDrawer(username: username),
-              // drawer: AppDrawer(),
-              // drawer: AppDrawer(),
               body: Stack(
                 children: [
                   Container(
@@ -266,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 13.0, top: 2.0, right: 13.0, bottom: 8.0),
+                      padding: const EdgeInsets.only(
+                          left: 13.0, top: 2.0, right: 13.0, bottom: 8.0),
                       child: Column(
                         children: [
                           // button row
@@ -301,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 24.0),
 
-                          // hi text
+                          // Hi text
                           Text(
                             "Hi, $username !",
                             style: bricolageGrotesqueFontStyle(),
@@ -317,17 +318,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 20.0,
                           ),
 
-                          // voice assistant
+                          // Voice assistant
                           Center(
                             child: InkWell(
                               onTap: () {
-                                speechToTextInstance.isListening ? stopListeningNow() : startListeningNow();
+                                speechToTextInstance.isListening
+                                    ? stopListeningNow()
+                                    : startListeningNow();
                               },
-                              child: speechToTextInstance.isListening ? ListeningUI(isLoading: isLoading, showCloseButton: showCloseButton, stopListeningNow: stopListeningNow) : const NotListeningUI(),
+                              child: speechToTextInstance.isListening
+                                  ? ListeningUI(
+                                      isLoading: isLoading,
+                                      showCloseButton: showCloseButton,
+                                      stopListeningNow: stopListeningNow,
+                                      speechToTextInstance: speechToTextInstance,)
+                                  : const NotListeningUI(),
                             ),
                           ),
 
-                          // sound button
+                          // Sound button
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Padding(
@@ -350,12 +359,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
 
-                          // text input field
+                          // Text input field
                           TextInputField(onSearch: handleTextSearch),
                           const SizedBox(height: 10.0),
-
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 13.0, vertical: 10.0),
                             child: Container(
                               margin: const EdgeInsets.only(left: 0, right: 0),
                               width: 450.0,
@@ -368,7 +377,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 1.0,
                                 ),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 16.0),
                               child: DisplayResult(
                                 modeOfAI: modeOfAI,
                                 answerTextFromAI: answerTextFromAI,
@@ -386,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text('User data is not a valid Map.'),
             );
           }
