@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
 class ProfileTextBoxStyle extends StatelessWidget {
@@ -7,14 +6,15 @@ class ProfileTextBoxStyle extends StatelessWidget {
   final String section;
   final void Function()? onPressed;
 
-  const ProfileTextBoxStyle({super.key, required this.text, required this.section, required this.onPressed});
+  const ProfileTextBoxStyle(
+      {super.key, required this.text, required this.section, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(left: 10, bottom: 6),
+          margin: const EdgeInsets.only(left: 10, bottom: 6),
           alignment: Alignment.centerLeft,
           child: Text(
             section,
@@ -37,13 +37,14 @@ class ProfileTextBoxStyle extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(text,
-                    style:poppinsFontStyle().copyWith(fontSize: 15),
+                  Text(
+                    text,
+                    style: poppinsFontStyle().copyWith(fontSize: 15),
                   ),
                   if (onPressed != null)
                     IconButton(
                       onPressed: onPressed,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.edit,
                         color: borderColorGrey,
                       ),

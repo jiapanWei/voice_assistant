@@ -24,9 +24,13 @@ class ChangeUserAvatar {
     }
   }
 
-  Future<void> uploadImage(XFile image, User currentUser, CollectionReference userCollection) async {
+  Future<void> uploadImage(
+      XFile image, User currentUser, CollectionReference userCollection) async {
     try {
-      final storageReference = FirebaseStorage.instance.ref().child('user_avatars').child('${currentUser.uid}.jpg');
+      final storageReference = FirebaseStorage.instance
+          .ref()
+          .child('user_avatars')
+          .child('${currentUser.uid}.jpg');
 
       await storageReference.putFile(File(image.path));
 

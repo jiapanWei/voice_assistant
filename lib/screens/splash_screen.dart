@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define SplashScreen widget
 class SplashScreen extends StatefulWidget {
   static const String id = "splash_screen";
   const SplashScreen({super.key});
@@ -15,6 +15,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late AnimationController sizeController;
   late Animation animation;
 
+  // Initialize animation controller
   @override
   void initState() {
     super.initState();
@@ -30,12 +31,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     startAnimation();
   }
 
+  // Dispose animation controller
   @override
   void dispose() {
     sizeController.dispose();
     super.dispose();
   }
 
+  // Function to delay before navigating to the next screen
   Future startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 7000));
     Navigator.pushNamed(context, '/onBoardingScreen');

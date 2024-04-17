@@ -2,18 +2,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
 
+// Define SuccessLoginScreen widget
 class SuccessLoginScreen extends StatelessWidget {
   final String username;
 
+  // Constructor to receive the username
   SuccessLoginScreen({super.key, required this.username});
 
+  // Get the current user
   final user = FirebaseAuth.instance.currentUser!;
 
+  // Function to sign out the user and navigate back to the welcome screen
   Future<void> signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
+        // Navigate to the welcome screen
         builder: (context) => const WelcomeScreen(),
       ),
     );

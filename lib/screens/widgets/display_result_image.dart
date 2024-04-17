@@ -42,7 +42,7 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
             width: 230,
             child: ElevatedButton(
               onPressed: () async {
-                final imageName = 'downloaded_image.jpg'; //
+                const imageName = 'downloaded_image.jpg'; //
                 final publicDirectoryPath =
                     await widget.getPublicDirectoryPath('Pictures');
 
@@ -55,11 +55,8 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                     fileName: imageName,
                   );
 
-                  final downloadTask =
-                      await FlutterDownloader.loadTasksWithRawQuery(
-                          query: "SELECT * FROM task WHERE task_id='" +
-                              taskId! +
-                              "'");
+                  final downloadTask = await FlutterDownloader.loadTasksWithRawQuery(
+                      query: "SELECT * FROM task WHERE task_id='" + taskId! + "'");
                   if (downloadTask != null && downloadTask.isNotEmpty) {
                     final taskDetails = downloadTask.first;
                     final savedDir = taskDetails.savedDir ?? '';
@@ -87,7 +84,7 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                                     color: Color.fromARGB(255, 173, 173, 255)),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Image downloaded successfully!',
+                                  'Downloading...',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: "Arial",
@@ -96,12 +93,11 @@ class _DisplayResultImageState extends State<DisplayResultImage> {
                                 ),
                               ],
                             ),
-                            duration: const Duration(seconds: 6),
+                            duration: const Duration(seconds: 20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            backgroundColor:
-                                const Color.fromARGB(255, 129, 129, 230),
+                            backgroundColor: const Color.fromARGB(255, 129, 129, 230),
                           ),
                         );
                         isDownloadComplete = false;

@@ -40,7 +40,8 @@ class DisplayResult extends StatelessWidget {
                       children: [
                         WidgetSpan(
                           child: DisplayResultRichText(
-                            text: '\nHi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n\nI\'m here to help you with all sorts of tasks and make your day a little brighter! \n\nTo get started, just tap on the center microphone ball and say something.',
+                            text:
+                                '\nHi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n\nI\'m here to help you with all sorts of tasks and make your day a little brighter! \n\nTo get started, just tap on the center microphone ball and say something.',
                             color: Colors.grey,
                           ),
                         ),
@@ -53,7 +54,9 @@ class DisplayResult extends StatelessWidget {
                         width: 225,
                         child: Column(
                           children: [
-                           DisplayResultImage(imageUrlFromAI: imageUrlFromAI, getPublicDirectoryPath: getPublicDirectoryPath),
+                            DisplayResultImage(
+                                imageUrlFromAI: imageUrlFromAI,
+                                getPublicDirectoryPath: getPublicDirectoryPath),
                           ],
                         ),
                       )
@@ -71,7 +74,8 @@ class DisplayResult extends StatelessWidget {
                           children: [
                             WidgetSpan(
                               child: DisplayResultRichText(
-                                text: '\nHi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n\nI\'m here to help you with all sorts of tasks and make your day a little brighter! \n\nTo get started, just tap on the center microphone ball and say something.',
+                                text:
+                                    '\nHi there! I\'m MiMi, an AI assistant created by Amy and Hailey.\n\nI\'m here to help you with all sorts of tasks and make your day a little brighter! \n\nTo get started, just tap on the center microphone ball and say something.',
                                 color: Colors.grey,
                               ),
                             ),

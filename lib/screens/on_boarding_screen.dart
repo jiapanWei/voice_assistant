@@ -9,6 +9,7 @@ import 'package:voice_assistant/constants/colors.dart';
 import 'package:voice_assistant/constants/image_strings.dart';
 import 'package:voice_assistant/constants/text.dart';
 
+// Define OnBoardingSceen widget
 class OnBoardingSceen extends StatefulWidget {
   const OnBoardingSceen({super.key});
 
@@ -18,10 +19,12 @@ class OnBoardingSceen extends StatefulWidget {
 
 @override
 class _OnBoardingSceenState extends State<OnBoardingSceen> {
+  // Controller for LiquidSwipe
   final controller = LiquidController();
 
   int currentPage = 0;
 
+  // Callback function to update the current page index
   void onPageChangeCallback(int activePageIndex) {
     setState(() {
       currentPage = activePageIndex;
@@ -30,10 +33,26 @@ class _OnBoardingSceenState extends State<OnBoardingSceen> {
 
   @override
   Widget build(BuildContext context) {
+    // Define onboarding pages
     final pages = [
-      const OnBoardingPages(color: onBoardingPage1Color, imagePath: onBoardingImage1, title: onBoardingTitle1, subtitle: onBoardingSubTitle1, pageNumber: onBoardingPageNum1),
-      const OnBoardingPages(color: onBoardingPage2Color, imagePath: onBoardingImage2, title: onBoardingTitle2, subtitle: onBoardingSubTitle2, pageNumber: onBoardingPageNum2),
-      const OnBoardingPages(color: onBoardingPage3Color, imagePath: onBoardingImage3, title: onBoardingTitle3, subtitle: onBoardingSubTitle3, pageNumber: onBoardingPageNum3),
+      const OnBoardingPages(
+          color: onBoardingPage1Color,
+          imagePath: onBoardingImage1,
+          title: onBoardingTitle1,
+          subtitle: onBoardingSubTitle1,
+          pageNumber: onBoardingPageNum1),
+      const OnBoardingPages(
+          color: onBoardingPage2Color,
+          imagePath: onBoardingImage2,
+          title: onBoardingTitle2,
+          subtitle: onBoardingSubTitle2,
+          pageNumber: onBoardingPageNum2),
+      const OnBoardingPages(
+          color: onBoardingPage3Color,
+          imagePath: onBoardingImage3,
+          title: onBoardingTitle3,
+          subtitle: onBoardingSubTitle3,
+          pageNumber: onBoardingPageNum3),
     ];
 
     return Scaffold(
@@ -50,38 +69,36 @@ class _OnBoardingSceenState extends State<OnBoardingSceen> {
           Positioned(
             bottom: 60,
             child: OutlinedButton(
-                onPressed: () {
-                  int nextPage = controller.currentPage + 1;
-                  controller.animateToPage(page: nextPage);
-                },
-                style: ElevatedButton.styleFrom(
-                  side: const BorderSide(color: Colors.black),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
+              onPressed: () {
+                int nextPage = controller.currentPage + 1;
+                controller.animateToPage(page: nextPage);
+              },
+              style: ElevatedButton.styleFrom(
+                side: const BorderSide(color: Colors.black),
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(10),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.black,
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  // decoration: const BoxDecoration(
-                  //   color: Colors.white,
-                  //   shape: BoxShape.circle,
-                  // ),
-
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.black,
-                  ),
-                )),
+              ),
+            ),
           ),
           Positioned(
             top: 50,
             right: 20,
             child: TextButton(
               onPressed: () {
+                // Navigate to welcome screen
                 Navigator.pushNamed(context, '/welcomeScreen');
               },
               child: Text(
                 "skip",
-                style: titleStyle().copyWith(color: const Color.fromARGB(255, 44, 45, 44)),
+                style:
+                    titleStyle().copyWith(color: const Color.fromARGB(255, 44, 45, 44)),
               ),
             ),
           ),

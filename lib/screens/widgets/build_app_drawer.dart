@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
 import 'package:voice_assistant/screens/profile_screen.dart';
 import 'package:voice_assistant/screens/storyboard_screen.dart';
-
-import 'package:voice_assistant/screens/splash_screen.dart';
-import 'package:voice_assistant/screens/home_screen.dart';
 import 'package:voice_assistant/screens/widgets/entry_point.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
@@ -138,7 +135,8 @@ class SideMenuTitle extends StatefulWidget {
   State<SideMenuTitle> createState() => _SideMenuTitleState();
 }
 
-class _SideMenuTitleState extends State<SideMenuTitle> with SingleTickerProviderStateMixin {
+class _SideMenuTitleState extends State<SideMenuTitle>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
   bool _isExpanded = false;
