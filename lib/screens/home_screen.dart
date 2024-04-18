@@ -40,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final Logger logger = LoggerStyle.getLogger();
 
   // Initialize text editing controller for user input
-  TextEditingController userInputTextEditingController = TextEditingController();
+  TextEditingController userInputTextEditingController =
+      TextEditingController();
 
   // Create an instance of SpeechToText
   final SpeechToText speechToTextInstance = SpeechToText();
@@ -95,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // Handle speech recognition result
   void onSpeechToTextResult(SpeechRecognitionResult recognitionResult) {
     logger.i('onSpeechToTextResult called');
-    logger.i('recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
+    logger.i(
+        'recognitionResult.recognizedWords: ${recognitionResult.recognizedWords}');
     logger.i('recognitionResult.finalResult: ${recognitionResult.finalResult}');
     recordedAudioString = recognitionResult.recognizedWords;
 
@@ -113,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
       SnackBar(
         content: Text(
           'Sending request...',
-          style: sidenotePoppinsFontStyle().copyWith(color: Colors.black, fontSize: 15),
+          style: sidenotePoppinsFontStyle()
+              .copyWith(color: Colors.black, fontSize: 15),
         ),
         duration: const Duration(seconds: 6),
         shape: RoundedRectangleBorder(
@@ -162,7 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (modeOfAI == "chat") {
         // Chat mode
         setState(() {
-          answerTextFromAI = responseAvailable["choices"][0]["message"]["content"];
+          answerTextFromAI =
+              responseAvailable["choices"][0]["message"]["content"];
 
           logger.i("AI Chat Mode: ");
           logger.i(answerTextFromAI);
@@ -231,8 +235,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream:
-          FirebaseFirestore.instance.collection('users').doc(currentUser.uid).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
           final userData = snapshot.data!.data();
@@ -241,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final avatarUrl = userData['avatar'] as String?;
             return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                     color: backgroundColorPink,
@@ -331,7 +338,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       isLoading: isLoading,
                                       showCloseButton: showCloseButton,
                                       stopListeningNow: stopListeningNow,
-                                      speechToTextInstance: speechToTextInstance,)
+                                      speechToTextInstance:
+                                          speechToTextInstance,
+                                    )
                                   : const NotListeningUI(),
                             ),
                           ),
@@ -340,7 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 16.0, bottom: 32.0),
+                              padding: const EdgeInsets.only(
+                                  right: 16.0, bottom: 32.0),
                               child: SizedBox(
                                 width: 50.0,
                                 child: SoundButton(

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define PasswordResetScreen Widget
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({super.key});
 
@@ -11,19 +12,25 @@ class PasswordResetScreen extends StatefulWidget {
   State<PasswordResetScreen> createState() => _PasswordResetScreenState();
 }
 
+// Define PasswordResetScreen state
 class _PasswordResetScreenState extends State<PasswordResetScreen> {
+  // Create a variable to store the email input
   String _inputEmail = '';
+  // Create a global key for the form
   final _formKey = GlobalKey<FormState>();
 
+  // Reset password
   Future<void> passwordReset() async {
     String title = '';
     String content = '';
 
+    // Try to send password reset email
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _inputEmail);
       title = 'Success $successEmoji';
       content = 'Password reset email sent.';
     } on FirebaseAuthException catch (e) {
+      // Handle errors
       if (e.code == 'user-not-found') {
         title = 'Error';
         content = 'No user found for that email.';
@@ -39,6 +46,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
       }
     }
 
+    // If there is a title and content, show a dialog
     if (title.isNotEmpty && content.isNotEmpty) {
       if (mounted) {
         showDialog(
@@ -49,10 +57,13 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             actions: [
               TextButton(
                 onPressed: () {
+                  // Navigate to the AuthScreen when the back button is pressed
                   Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AuthScreen(isNewUser: false)),
-              );
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AuthScreen(isNewUser: false),
+                    ),
+                  );
                 },
                 child: const Text('OK'),
               ),
@@ -63,6 +74,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
     }
   }
 
+  // Build method for widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +88,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Notify user to enter email address
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 45.0),
               child: Text(
@@ -85,6 +98,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               ),
             ),
             const SizedBox(height: 18.0),
+            // Email input field
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 45.0),
               child: TextFormField(
@@ -95,6 +109,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                 textCapitalization: TextCapitalization.none,
                 obscureText: false,
                 validator: (value) {
+                  // Validate the email input
                   if (value == null ||
                       value.trim().isEmpty ||
                       !value.contains('@')) {
@@ -103,11 +118,13 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                   return null;
                 },
                 onSaved: (value) {
+                  // Save the email input
                   _inputEmail = value!;
                 },
               ),
             ),
             const SizedBox(height: 18.0),
+            // Button to submit the form and reset password
             OutlinedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
