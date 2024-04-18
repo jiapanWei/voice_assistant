@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import "package:flutter/cupertino.dart";
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define DrawerBtn widget that used for the drawer button
 class DrawerBtn extends StatelessWidget {
+  // Define DrawerBtn constructor
   const DrawerBtn({
     super.key,
     required this.press,
     required this.isDrawerOpen,
   });
 
+  // Define the variables
   final VoidCallback press;
   final bool isDrawerOpen;
 
+  // Build the DrawerBtn widget
   @override
   Widget build(BuildContext context) {
     return SafeArea(

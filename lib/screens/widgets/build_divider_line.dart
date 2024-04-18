@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Define DividerLine widget that used for the divider line
 class DividerLine extends StatelessWidget {
   const DividerLine({super.key});
 

@@ -4,6 +4,7 @@ import 'package:voice_assistant/screens/widgets/build_divider_line.dart';
 import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
+
 import 'package:voice_assistant/screens/authentications/auth_screen.dart';
 
 // Define WelcomeScreen Widget

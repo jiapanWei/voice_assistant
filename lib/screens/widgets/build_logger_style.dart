@@ -1,6 +1,8 @@
 import 'package:logger/logger.dart';
 
+// Define LoggerStyle class
 class LoggerStyle {
+  // Define getLogger method
   static Logger getLogger() {
     return Logger(
       printer: PrettyPrinter(

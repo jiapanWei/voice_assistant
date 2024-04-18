@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
 // Define StoryboardScreen widget
 class StoryboardScreen extends StatelessWidget {
   const StoryboardScreen({super.key});
 
+  // Build the StoryboardScreen widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(

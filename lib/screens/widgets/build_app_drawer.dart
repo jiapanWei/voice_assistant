@@ -6,6 +6,7 @@ import 'package:voice_assistant/screens/storyboard_screen.dart';
 import 'package:voice_assistant/screens/widgets/entry_point.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define AppDrawer Widget that used for the drawer in the app
 class AppDrawer extends StatefulWidget {
   final String username;
   const AppDrawer({super.key, required this.username});
@@ -14,6 +15,7 @@ class AppDrawer extends StatefulWidget {
   State<AppDrawer> createState() => _AppDrawerState();
 }
 
+// Define AppDrawer state
 class _AppDrawerState extends State<AppDrawer> {
   String activeTitle = "";
 
@@ -23,6 +25,7 @@ class _AppDrawerState extends State<AppDrawer> {
     });
   }
 
+  // Build the AppDrawer widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +43,7 @@ class _AppDrawerState extends State<AppDrawer> {
             const SizedBox(
               height: 40,
             ),
+            // Define the SideMenuTitle widget for each menu item
             SideMenuTitle(
               title: "Home",
               press: () async {
@@ -88,6 +92,7 @@ class _AppDrawerState extends State<AppDrawer> {
             const SizedBox(
               height: 450,
             ),
+            // Define the log out button
             ListTile(
               onTap: () {
                 Navigator.push(
@@ -117,6 +122,7 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 }
 
+// Define the SideMenuTitle widget
 class SideMenuTitle extends StatefulWidget {
   const SideMenuTitle({
     super.key,
@@ -135,6 +141,7 @@ class SideMenuTitle extends StatefulWidget {
   State<SideMenuTitle> createState() => _SideMenuTitleState();
 }
 
+// Define the SideMenuTitle state
 class _SideMenuTitleState extends State<SideMenuTitle>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
@@ -157,6 +164,7 @@ class _SideMenuTitleState extends State<SideMenuTitle>
     super.dispose();
   }
 
+  // Handle tap on the menu item
   void _onTap() async {
     if (!widget.isActive) {
       setState(() {
@@ -173,6 +181,7 @@ class _SideMenuTitleState extends State<SideMenuTitle>
     }
   }
 
+  // Build the SideMenuTitle widget
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -200,7 +209,9 @@ class _SideMenuTitleState extends State<SideMenuTitle>
                   child: Container(
                     decoration: const BoxDecoration(
                       color: backgroundColorLightPurple,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                     ),
                   ),
                 );
@@ -228,6 +239,7 @@ class _SideMenuTitleState extends State<SideMenuTitle>
   }
 }
 
+// Define the InfoCard widget
 class InfoCard extends StatelessWidget {
   const InfoCard({
     super.key,
@@ -236,6 +248,7 @@ class InfoCard extends StatelessWidget {
 
   final String username;
 
+  // Build the InfoCard widget
   @override
   Widget build(BuildContext context) {
     return ListTile(
