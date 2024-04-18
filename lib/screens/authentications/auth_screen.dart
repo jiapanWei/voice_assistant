@@ -30,11 +30,11 @@ class _AuthScreenState extends State<AuthScreen> {
   String _inputEmail = '';
   String _inputPassword = '';
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _isLogin = !widget.isNewUser;
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _isLogin = !widget.isNewUser;
+  }
 
   // Submit authentication form
   Future<void> _submitAuthForm() async {
@@ -104,7 +104,6 @@ class _AuthScreenState extends State<AuthScreen> {
   // Build method for widget
   @override
   Widget build(BuildContext context) {
-    _isLogin = !widget.isNewUser;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: backgroundColorPink,
