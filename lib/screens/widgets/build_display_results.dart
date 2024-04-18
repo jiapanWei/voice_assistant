@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:voice_assistant/screens/widgets/display_default_text.dart';
 import 'package:voice_assistant/screens/widgets/display_result_image.dart';
 
+// Define DisplayResultRichText widget
 class DisplayResult extends StatelessWidget {
   final String modeOfAI;
   final String answerTextFromAI;
@@ -11,6 +12,7 @@ class DisplayResult extends StatelessWidget {
   final bool isDownloadComplete;
   final Function(String) getPublicDirectoryPath;
 
+  // Define DisplayResult constructor
   const DisplayResult({
     super.key,
     required this.modeOfAI,
@@ -20,11 +22,13 @@ class DisplayResult extends StatelessWidget {
     required this.getPublicDirectoryPath,
   });
 
+  // Build the DisplayResult widget
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // Display the result based on the mode of AI
         modeOfAI == "chat"
             ? answerTextFromAI.isNotEmpty
                 ? SelectableText(
@@ -35,6 +39,7 @@ class DisplayResult extends StatelessWidget {
                       color: const Color.fromARGB(255, 101, 100, 100),
                     ),
                   )
+                //  Display the default text if the answer is empty
                 : RichText(
                     text: const TextSpan(
                       children: [
@@ -48,6 +53,7 @@ class DisplayResult extends StatelessWidget {
                       ],
                     ),
                   )
+            // Display the image if the mode of AI is images
             : modeOfAI == "images"
                 ? imageUrlFromAI.isNotEmpty
                     ? SizedBox(
@@ -68,6 +74,7 @@ class DisplayResult extends StatelessWidget {
                           height: 200,
                         ),
                       )
+                // Display the default text if the image URL is empty
                 : modeOfAI == ""
                     ? RichText(
                         text: const TextSpan(

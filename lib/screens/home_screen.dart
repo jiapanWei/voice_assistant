@@ -12,8 +12,8 @@ import "package:speech_to_text/speech_to_text.dart";
 import "package:voice_assistant/api/api_service.dart";
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:voice_assistant/screens/widgets/styles.dart';
 
+import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 import 'package:voice_assistant/screens/widgets/build_display_results.dart';
@@ -133,10 +133,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> sendRequestToOpenAI(String userInput) async {
     stopListeningNow();
 
+    // Set the loading state to true to show a loading spinner on the UI
     setState(() {
       isLoading = true;
     });
 
+    // Show a message on the UI that the request is being sent
     showSendingRequestMessage();
 
     // Send the request to AI
@@ -155,10 +157,13 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
 
+      // Clear the user input field
       userInputTextEditingController.clear();
 
+      // Parse the response body
       final responseAvailable = jsonDecode(value.body);
 
+      // If the mode of AI is "chat", set the answer text from AI
       if (modeOfAI == "chat") {
         // Chat mode
         setState(() {
@@ -222,12 +227,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     initializeSpeechToText();
-
     initializeFlutterDownloader();
   }
 
+  // Build the HomeScreen widget
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
@@ -239,6 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (userData is Map<String, dynamic>) {
             final username = userData['username'] ?? 'N/A';
             final avatarUrl = userData['avatar'] as String?;
+
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -303,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 24.0),
 
-                          // Hi text
+                          // Greeting text with username
                           Text(
                             "Hi, $username !",
                             style: bricolageGrotesqueFontStyle(),
@@ -370,7 +375,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               margin: const EdgeInsets.only(left: 0, right: 0),
                               width: 450.0,
-                              // height: 400,
                               decoration: BoxDecoration(
                                 color: backgroundColorPink,
                                 borderRadius: BorderRadius.circular(25.0),

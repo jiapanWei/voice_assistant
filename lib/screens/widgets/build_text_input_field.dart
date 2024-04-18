@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Define TextInputField widget that used for the text input field
 class TextInputField extends StatefulWidget {
   final Function(String) onSearch;
 
+  // Define TextInputField constructor
   const TextInputField({super.key, required this.onSearch});
 
   @override
   State<TextInputField> createState() => _TextInputFieldState();
 }
 
+// Define TextInputField state
 class _TextInputFieldState extends State<TextInputField> {
   final TextEditingController _controller = TextEditingController();
 

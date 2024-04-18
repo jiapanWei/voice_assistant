@@ -4,12 +4,15 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:logger/logger.dart';
 import 'package:voice_assistant/screens/widgets/build_logger_style.dart';
 
+// Define ListeningUI widget
 class ListeningUI extends StatefulWidget {
+  // Define the variables
   final bool isLoading;
   final bool showCloseButton;
   final VoidCallback stopListeningNow;
   final SpeechToText speechToTextInstance;
 
+  // Define ListeningUI constructor
   const ListeningUI({
     super.key,
     required this.isLoading,
@@ -22,6 +25,7 @@ class ListeningUI extends StatefulWidget {
   ListeningUIState createState() => ListeningUIState();
 }
 
+// Define ListeningUI state
 class ListeningUIState extends State<ListeningUI> {
   bool isListening = false;
   final Logger logger = LoggerStyle.getLogger();
@@ -38,6 +42,7 @@ class ListeningUIState extends State<ListeningUI> {
     };
   }
 
+  // Build the ListeningUI widget
   @override
   Widget build(BuildContext context) {
     const String ballAnimationPath = 'images/ball_animation.json';
@@ -51,6 +56,7 @@ class ListeningUIState extends State<ListeningUI> {
       child: Stack(
         alignment: Alignment.topRight,
         children: [
+          // Display the animation or image based on the listening status
           isListening
               ? LottieBuilder.asset(
                   ballAnimationPath,

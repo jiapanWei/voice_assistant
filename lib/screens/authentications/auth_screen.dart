@@ -6,9 +6,10 @@ import 'package:voice_assistant/screens/widgets/entry_point.dart';
 import 'package:voice_assistant/screens/widgets/google_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/microsoft_sign_in_button.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
+
 import 'package:voice_assistant/screens/authentications/reset_password_screen.dart';
 import 'package:voice_assistant/screens/authentications/welcome_screen.dart';
-import 'package:voice_assistant/services/auth_service.dart';
+import 'package:voice_assistant/screens/authentications/auth_service.dart';
 
 // Define AuthScreen Widget
 class AuthScreen extends StatefulWidget {

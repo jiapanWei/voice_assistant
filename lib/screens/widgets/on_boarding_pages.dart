@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define OnBoardingPages widget that used for the onboarding pages
 class OnBoardingPages extends StatelessWidget {
+  // Define the variables
   final Color color;
   final String imagePath;
   final String title;
   final String subtitle;
   final String pageNumber;
 
+  // Define OnBoardingPages constructor
   const OnBoardingPages({
     super.key,
     required this.color,
@@ -18,6 +21,7 @@ class OnBoardingPages extends StatelessWidget {
     required this.pageNumber,
   });
 
+  // Build the OnBoardingPages widget
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -31,9 +35,16 @@ class OnBoardingPages extends StatelessWidget {
           Image.asset(imagePath, height: size.height * 0.4),
           Column(
             children: [
-              Text(title,
-                  textAlign: TextAlign.center, style: bricolageGrotesqueFontStyle()),
-              Text(subtitle, textAlign: TextAlign.center, style: titleStyle()),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: bricolageGrotesqueFontStyle(),
+              ),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: titleStyle(),
+              ),
             ],
           ),
           Text(pageNumber, style: titleStyle()),

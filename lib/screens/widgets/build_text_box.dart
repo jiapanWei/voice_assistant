@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 
+// Define ProfileTextBoxStyle widget
 class ProfileTextBoxStyle extends StatelessWidget {
+  // Define the variables
   final String text;
   final String section;
   final void Function()? onPressed;
 
+  // Define ProfileTextBoxStyle constructor
   const ProfileTextBoxStyle(
       {super.key, required this.text, required this.section, required this.onPressed});
 
+  // Build the ProfileTextBoxStyle widget
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +28,6 @@ class ProfileTextBoxStyle extends StatelessWidget {
         Container(
           height: 65,
           decoration: BoxDecoration(
-            // border: Border.all(color: borderColorGrey),
             borderRadius: BorderRadius.circular(15.0),
             color: borderColorSoftPink,
           ),
@@ -41,6 +44,7 @@ class ProfileTextBoxStyle extends StatelessWidget {
                     text,
                     style: poppinsFontStyle().copyWith(fontSize: 15),
                   ),
+                  // Check if onPressed is not null
                   if (onPressed != null)
                     IconButton(
                       onPressed: onPressed,

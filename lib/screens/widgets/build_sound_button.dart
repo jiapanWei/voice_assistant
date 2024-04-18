@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+// Define SoundButton widget that used for the sound button
 class SoundButton extends StatelessWidget {
   final bool speakAI;
   final bool isLoading;
   final VoidCallback onPressed;
 
+  // Define SoundButton constructor
   const SoundButton({
     super.key,
     required this.speakAI,
@@ -12,6 +14,7 @@ class SoundButton extends StatelessWidget {
     required this.onPressed,
   });
 
+  // Build the SoundButton widget
   @override
   Widget build(BuildContext context) {
     const double iconSize = 20.0;

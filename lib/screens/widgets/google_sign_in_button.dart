@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:voice_assistant/screens/widgets/entry_point.dart';
 
 import 'package:voice_assistant/screens/widgets/styles.dart';
-import 'package:voice_assistant/services/auth_service.dart';
-import 'package:voice_assistant/screens/home_screen.dart';
+import 'package:voice_assistant/screens/authentications/auth_service.dart';
 
+// Define GoogleAuthButton Widget that used for Google authentication
 class GoogleAuthButton extends StatelessWidget {
   const GoogleAuthButton({super.key});
 
@@ -20,8 +20,7 @@ class GoogleAuthButton extends StatelessWidget {
           if (userCredential != null) {
             Navigator.pushReplacement(
               context,
-              // MaterialPageRoute(builder: (context) => const HomeScreen()),
-               MaterialPageRoute(builder: (context) => const EntryPoint()),
+              MaterialPageRoute(builder: (context) => const EntryPoint()),
             );
           } else {
             showDialog(

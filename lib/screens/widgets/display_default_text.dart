@@ -1,17 +1,20 @@
-// display_result_rich_text.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Define DisplayResultRichText widget that used for displaying a rich text with a predefined style
 class DisplayResultRichText extends StatelessWidget {
+  // Define the variables
   final String text;
   final Color color;
 
+  // Define DisplayResultRichText constructor
   const DisplayResultRichText({
     super.key,
     required this.text,
     required this.color,
   });
 
+  // Build the DisplayResultRichText widget
   @override
   Widget build(BuildContext context) {
     return RichText(

@@ -8,8 +8,7 @@ import 'package:voice_assistant/screens/widgets/build_dialog_box.dart';
 import 'package:voice_assistant/screens/widgets/change_avatar.dart';
 import 'package:voice_assistant/screens/widgets/styles.dart';
 import 'package:voice_assistant/screens/widgets/build_text_box.dart';
-
-import 'package:voice_assistant/services/change_password.dart';
+import 'package:voice_assistant/screens/authentications/change_password.dart';
 
 // Define ProfileScreen widget
 class ProfileScreen extends StatefulWidget {
@@ -19,21 +18,23 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+// Define the state of ProfileScreen widget
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('users');
   final changeUserAvatar = ChangeUserAvatar();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final Logger logger = LoggerStyle.getLogger();
-
   late String newPassword;
 
   // Function to edit user profile field
   Future<void> editField(String field) async {
     String newField = await _showEditFieldDialog(field);
 
+    // Update the field in the Firestore database if the new field is not empty
     if (newField.trim().isNotEmpty) {
       await userCollection.doc(currentUser.uid).update({field: newField});
+      // Show dialog box for successful update
       if (mounted) {
         showDialog(
           context: context,
@@ -46,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } else {
+      // Show error dialog if field is empty
       if (mounted) {
         showDialog(
           context: context,
@@ -98,10 +100,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Function to build the main widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: scaffoldKey,
       backgroundColor: backgroundColorPink,
       appBar: AppBar(
         title: Text(
@@ -132,9 +134,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Function to build the profile view
   Widget _buildProfile(DocumentSnapshot snapshot) {
+    // Extract user data from the Firestore database
     final userData = snapshot.data() as Map<String, dynamic>;
     final avatarUrl = userData['avatar'] as String?;
 
+    // Build profile view with user data
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 12, right: 12, bottom: 20),
       child: Container(
@@ -161,7 +165,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -235,13 +240,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: null,
                   ),
 
-                  // Edit username
+                  // On press, it opens a dialog for changing the Username
                   ProfileTextBoxStyle(
                     text: userData['username'],
                     section: 'Username',
                     onPressed: () => editField('username'),
                   ),
 
+                  // On press, it opens a dialog for changing the password
                   ProfileTextBoxStyle(
                     text: '********',
                     section: 'Password',
@@ -253,6 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           false;
 
                       if (!passwordChanged) {
+                        // Show dialog box for password error
                         if (mounted) {
                           showDialog(
                             context: context,
@@ -265,6 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         }
                       } else {
+                        // Show dialog box for successful password update
                         if (mounted) {
                           showDialog(
                             context: context,
@@ -288,12 +296,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Function to build the error UI
   Widget _buildErrorUI(Object? error) {
     return Center(
       child: Text('Error loading profile $error'),
     );
   }
 
+  // Function to build the loading UI
   Widget _buildLoadingUI() {
     return const Center(
       child: CircularProgressIndicator(),

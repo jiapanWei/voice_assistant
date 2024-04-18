@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Define various constants and functions for styling the application.
 const successEmoji = '\u2705';
 
+// Define the colors
 const Color backgroundColorPink = Color.fromRGBO(255, 239, 252, 1.0);
 const Color snackBarColorPink = Color.fromRGBO(242, 208, 240, 1.0);
 const Color backgroundColorPurple = Color.fromARGB(255, 23, 21, 27);
@@ -10,9 +12,11 @@ const Color backgroundColorLightPurple = Color.fromARGB(255, 149, 117, 252);
 const Color borderColorGrey = Color.fromARGB(255, 93, 92, 99);
 const Color borderColorSoftPink = Color.fromRGBO(244, 241, 251, 0.612);
 
+// Define the font sizes and colors
 const double titleFontSize = 16;
 const Color titleColor = Colors.black;
 
+// Define the styles for user input fields
 InputDecoration userInputDecoration({required String labelText, required IconData icon}) {
   return InputDecoration(
     suffixIcon: Icon(icon),
@@ -28,6 +32,7 @@ InputDecoration userInputDecoration({required String labelText, required IconDat
   );
 }
 
+// Define the gradient text style
 ShaderMask gradientText({
   required String text,
   required TextStyle style,
@@ -121,6 +126,7 @@ TextStyle sidenoteBricolageGrotesqueFontStyle() {
   );
 }
 
+// Button Style
 ButtonStyle transparentButtonStyle() {
   return OutlinedButton.styleFrom(
     side: const BorderSide(width: 0.75, color: borderColorGrey),
