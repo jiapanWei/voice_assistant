@@ -31,7 +31,8 @@ class OnBoardingPages extends StatelessWidget {
           Image.asset(imagePath, height: size.height * 0.4),
           Column(
             children: [
-              Text(title, textAlign: TextAlign.center, style: bricolageGrotesqueFontStyle()),
+              Text(title,
+                  textAlign: TextAlign.center, style: bricolageGrotesqueFontStyle()),
               Text(subtitle, textAlign: TextAlign.center, style: titleStyle()),
             ],
           ),
