@@ -15,14 +15,12 @@ class AuthService {
 
   // Sign in with email and password
   Future<UserCredential> signIn(String email, String password) {
-    return _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    return _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   // Sign up with email and password
   Future<UserCredential> signUp(String email, String password) {
-    return _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    return _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
   }
 
   // Add user data to Firestore
@@ -60,8 +58,7 @@ class AuthService {
       }
 
       // Get the Google sign-in authentication details
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       // Create a new Google credential with the access token and ID token
       final credential = GoogleAuthProvider.credential(
@@ -81,10 +78,8 @@ class AuthService {
         String? email = user.email;
 
         // Get the user data from Firestore
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
 
         // If the user document exists, get the username and avatar
         if (userDoc.exists) {
@@ -132,10 +127,8 @@ class AuthService {
         String? email = user.email;
 
         // Get the user data from Firestore
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
 
         // If the user document exists, get the username and avatar
         if (userDoc.exists) {

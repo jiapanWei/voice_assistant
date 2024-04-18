@@ -16,27 +16,26 @@ class ModeButtonBuilder {
       width: 170,
       height: 48,
       child: OutlinedButton.icon(
-        onPressed: () {
-          onModeChanged(isSelected ? "" : mode);
-        },
-        icon: Image.asset(
-          isSelected ? selectedIconAsset : iconAsset,
-          width: 24,
-          height: 24,
-        ),
-        label: Text(
-          label,
-          style: GoogleFonts.poppins(
-            textStyle: TextStyle(
-              color: isSelected ? const Color.fromRGBO(255, 255, 255, 1) : Colors.black,
-              fontSize: 14,
+          onPressed: () {
+            onModeChanged(isSelected ? "" : mode);
+          },
+          icon: Image.asset(
+            isSelected ? selectedIconAsset : iconAsset,
+            width: 24,
+            height: 24,
+          ),
+          label: Text(
+            label,
+            style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                color: isSelected ? const Color.fromRGBO(255, 255, 255, 1) : Colors.black,
+                fontSize: 14,
+              ),
             ),
           ),
-        ),
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected ? const Color.fromRGBO(152, 149, 198, 1): null,
-        )
-      ),
+          style: OutlinedButton.styleFrom(
+            backgroundColor: isSelected ? const Color.fromRGBO(152, 149, 198, 1) : null,
+          )),
     );
   }
 }

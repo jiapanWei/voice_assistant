@@ -52,12 +52,10 @@ class _AuthScreenState extends State<AuthScreen> {
       // Check if user is signing in or signing up
       if (_isLogin) {
         // Sign in
-        userCredentials =
-            await _authService.signIn(_inputEmail, _inputPassword);
+        userCredentials = await _authService.signIn(_inputEmail, _inputPassword);
       } else {
         // Sign up
-        userCredentials =
-            await _authService.signUp(_inputEmail, _inputPassword);
+        userCredentials = await _authService.signUp(_inputEmail, _inputPassword);
         _authService.addUserDetails(_inputUsername, _inputEmail);
       }
 
@@ -76,8 +74,7 @@ class _AuthScreenState extends State<AuthScreen> {
         SnackBar(
           content: Text(
             _isLogin ? 'Login successful!' : 'Account created successfully!',
-            style: sidenotePoppinsFontStyle()
-                .copyWith(color: Colors.black, fontSize: 15),
+            style: sidenotePoppinsFontStyle().copyWith(color: Colors.black, fontSize: 15),
           ),
           duration: const Duration(seconds: 2),
           shape: RoundedRectangleBorder(
@@ -134,8 +131,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 margin: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, bottom: 16, top: 30),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 30),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -216,24 +213,19 @@ class _AuthScreenState extends State<AuthScreen> {
                             children: [
                               Expanded(
                                 child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 6.0),
+                                  margin: const EdgeInsets.symmetric(horizontal: 6.0),
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      side:
-                                          const BorderSide(color: Colors.grey),
+                                      side: const BorderSide(color: Colors.grey),
                                       minimumSize: const Size(300, 37),
                                     ),
                                     onPressed: _submitAuthForm,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         // Text changes based on whether the user is signing in or signing up
                                         Text(
-                                          _isLogin
-                                              ? 'Sign In'
-                                              : 'Create Account',
+                                          _isLogin ? 'Sign In' : 'Create Account',
                                           style: poppinsFontStyle(),
                                         ),
                                       ],
@@ -265,8 +257,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PasswordResetScreen(),
+                                    builder: (context) => const PasswordResetScreen(),
                                   ),
                                 );
                               },

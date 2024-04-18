@@ -102,17 +102,14 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 45.0),
               child: TextFormField(
-                decoration:
-                    userInputDecoration(labelText: 'Email', icon: Icons.email),
+                decoration: userInputDecoration(labelText: 'Email', icon: Icons.email),
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 textCapitalization: TextCapitalization.none,
                 obscureText: false,
                 validator: (value) {
                   // Validate the email input
-                  if (value == null ||
-                      value.trim().isEmpty ||
-                      !value.contains('@')) {
+                  if (value == null || value.trim().isEmpty || !value.contains('@')) {
                     return 'Please enter a valid email address with @.';
                   }
                   return null;

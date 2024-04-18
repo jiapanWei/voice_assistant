@@ -73,8 +73,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         // Cancel button to close the AlertDialog without changing the password
         TextButton(
           child: Text('Cancel',
-              style: sidenotePoppinsFontStyle()
-                  .copyWith(color: Colors.deepPurple)),
+              style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
@@ -82,8 +81,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         // Submit button to change the password
         TextButton(
           child: Text('Submit',
-              style: sidenotePoppinsFontStyle()
-                  .copyWith(color: Colors.deepPurple)),
+              style: sidenotePoppinsFontStyle().copyWith(color: Colors.deepPurple)),
           onPressed: () async {
             // Call the changePassword method to change the password
             bool passwordChanged = await changePassword(newPassword);

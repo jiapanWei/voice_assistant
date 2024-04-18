@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:voice_assistant/config/env.dart';
 
 class APIService {
-  Future<http.Response> requestOpenAI(String userInput, String mode, int maximumTokens) async {
+  Future<http.Response> requestOpenAI(
+      String userInput, String mode, int maximumTokens) async {
     const String url = "https://api.openai.com/";
-    final String openAIAPIUrl = mode == "chat" ? "v1/chat/completions" : "v1/images/generations";
+    final String openAIAPIUrl =
+        mode == "chat" ? "v1/chat/completions" : "v1/images/generations";
 
     final body = mode == "chat"
         ? {
@@ -21,7 +23,10 @@ class APIService {
 
     final responseFromOpenAIAPI = await http.post(
       Uri.parse(url + openAIAPIUrl),
-      headers: {"Content-Type": "application/json", "Authorization": "Bearer ${Env.apiKey}"},
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${Env.apiKey}"
+      },
       body: jsonEncode(body),
     );
 

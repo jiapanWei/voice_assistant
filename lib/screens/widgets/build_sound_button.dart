@@ -12,10 +12,9 @@ class SoundButton extends StatelessWidget {
     required this.onPressed,
   });
 
-
   @override
-  Widget build(BuildContext context){
-        const double iconSize = 20.0;
+  Widget build(BuildContext context) {
+    const double iconSize = 20.0;
     const double containerSize = 40.0;
     const double paddingRight = 16.0;
     const double paddingBottom = 32.0;
@@ -62,4 +61,3 @@ class SoundButton extends StatelessWidget {
     );
   }
 }
-
