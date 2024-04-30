@@ -44,6 +44,10 @@ MiMi is an intelligent, AI-powered virtual assistant application designed to hel
 # Clone the repository
 git clone git@github.com:jiapanWei/voice_assistant.git
 
+# Generate API Key
+- add your API key in .env file
+- flutter pub run build_runner build --delete-conflicting-outputs
+
 # Install dependencies
 flutter pub get
 
